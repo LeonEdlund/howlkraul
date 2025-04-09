@@ -44,6 +44,7 @@ howlkraul.data.Requests.prototype.constructor = howlkraul.data.Requests;
 howlkraul.data.Requests.prototype.m_construct = function() {
     rune.resource.Requests.prototype.m_construct.call(this);
     this.add("background", "./../asset/jpg/background.jpg");
+	this.add("Wizard_28x40", "./../asset/png/Wizard_28x40.png");
 	this.add("knight_walk", "./../asset/png/knight_walk.png");
 	this.add("wiz_idle", "./../asset/png/wiz_idle.png");
 };

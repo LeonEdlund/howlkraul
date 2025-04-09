@@ -15,6 +15,10 @@
  */
 howlkraul.scene.Game = function () {
 
+    this.players = null;
+
+    this.borders = null;
+
     //--------------------------------------------------------------------------
     // Super call
     //--------------------------------------------------------------------------
@@ -46,7 +50,7 @@ howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
     this.m_initBackground();
     this.m_initPlayers();
-    this.m_setBoarders();
+    this.m_setBorders();
 };
 
 /**
@@ -62,6 +66,8 @@ howlkraul.scene.Game.prototype.update = function (step) {
     if (this.keyboard.justPressed("escape")) {
         this.m_endGame();
     }
+
+    this.borders.hitTestAndSeparate(this.players);
 };
 
 /**
@@ -81,8 +87,14 @@ howlkraul.scene.Game.prototype.m_endGame = function () {
 };
 
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
+    this.players = this.groups.create(this.stage);
+
     var knight = new howlkraul.entity.Knight();
     var wiz = new howlkraul.entity.Wizard();
+
+    this.players.addMember(knight);
+    this.players.addMember(wiz);
+
     this.stage.addChild(knight);
     this.stage.addChild(wiz);
 };
@@ -99,6 +111,29 @@ howlkraul.scene.Game.prototype.m_initBackground = function () {
     this.stage.addChild(background);
 };
 
-howlkraul.scene.Game.prototype.m_setBoarders = function () {
+howlkraul.scene.Game.prototype.m_setBorders = function () {
+    this.borders = this.groups.create(this.stage);
+    var thicknessTop = 25;
+    var thicknessSides = 35;
 
+    var top = new rune.display.Graphic(0, 0, 400, thicknessTop);
+    var left = new rune.display.Graphic(0, 0, thicknessSides, 225);
+    var bottom = new rune.display.Graphic(0, (225 - thicknessTop), 400, thicknessTop);
+    var right = new rune.display.Graphic((400 - thicknessSides), 0, thicknessSides, 225);
+
+    this.borders.addMember(top);
+    this.borders.addMember(left);
+    this.borders.addMember(bottom);
+    this.borders.addMember(right);
+
+    this.borders.forEachMember(function (wall) {
+        wall.immovable = true;
+        wall.backgroundColor = "red";
+        wall.alpha = 0.2;
+    }, this);
+
+    this.stage.addChild(top);
+    this.stage.addChild(left);
+    this.stage.addChild(bottom);
+    this.stage.addChild(right);
 };

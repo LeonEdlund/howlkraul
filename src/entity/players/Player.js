@@ -48,6 +48,8 @@ howlkraul.entity.Player.prototype.init = function () {
 
   this.hitbox.debug = true;
   this.debug = true;
+  this.elasticity = 1;
+  this.sticky = true;
   this.hitbox.set(0, (this.height - 10), this.width, 9);
 };
 
