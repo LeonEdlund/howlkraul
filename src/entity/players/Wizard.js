@@ -1,5 +1,8 @@
 howlkraul.entity.Wizard = function () {
   howlkraul.entity.Player.call(this, 50, 50, 27, 32, "Wizard_28x40");
+
+  this.spell = null;
+
 }
 
 howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.Player.prototype);
@@ -10,8 +13,8 @@ howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
  */
 howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Player.prototype.init.call(this);
-  this.hitbox.debugColor = "red";
   this.m_initAnimation();
+  this.m_initSpell();
 };
 
 /**
@@ -51,6 +54,7 @@ howlkraul.entity.Wizard.prototype.m_move = function () {
   };
 
   if (this.keyboard.pressed("q")) {
+    this.spell.emit(1);
     this.animation.gotoAndPlay("running-hit");
   };
 
@@ -65,6 +69,18 @@ howlkraul.entity.Wizard.prototype.m_setAnimation = function () {
   // } else {
   //   this.m_idle();
   // }
+};
+
+howlkraul.entity.Wizard.prototype.m_initSpell = function () {
+  this.spell = new rune.particle.Emitter(this.centerX, this.centerY, 10, 10, {
+    acceleration: new rune.geom.Point(20, 0),
+    minVelocity: new rune.geom.Point(20, 0),
+    maxLifespan: 500,
+    minLifespan: 200,
+    particles: [howlkraul.particle.Spell],
+  });
+  this.spell.debug = true;
+  this.stage.addChild(this.spell);
 };
 
 howlkraul.entity.Wizard.prototype.m_run = function () {
@@ -82,4 +98,5 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Player.prototype.update.call(this, step);
   this.m_setAnimation();
   this.m_move();
+  this.spell.center = this.center;
 };
