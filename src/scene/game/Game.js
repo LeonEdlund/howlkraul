@@ -128,7 +128,7 @@ howlkraul.scene.Game.prototype.m_setBorders = function () {
 
     this.borders.forEachMember(function (wall) {
         wall.immovable = true;
-        wall.backgroundColor = "red";
+        // wall.backgroundColor = "red";
         wall.alpha = 0.2;
     }, this);
 

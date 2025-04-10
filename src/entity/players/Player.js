@@ -46,16 +46,14 @@ howlkraul.entity.Player.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
   this.m_initVelocity();
 
-  this.hitbox.debug = true;
-  this.debug = true;
-  this.elasticity = 1;
-  this.sticky = true;
+  // this.hitbox.debug = true;
+  // this.debug = true;
   this.hitbox.set(0, (this.height - 10), this.width, 9);
 };
 
 howlkraul.entity.Player.prototype.m_initVelocity = function () {
-  this.velocity.drag.x = 0.3;
-  this.velocity.drag.y = 0.3;
+  this.velocity.drag.x = 0.8;
+  this.velocity.drag.y = 0.8;
   this.velocity.max.x = 1.6;
   this.velocity.max.y = 1.6;
 };

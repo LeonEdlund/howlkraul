@@ -60,10 +60,19 @@ var howlkraul = function () {
     * This package contains all entities
     *
     * @namespace entity
-    * @memberof test
+    * @memberof howlkraul
     * @since 1.0
     */
     m_this.entity = {};
+
+    /**
+    * This package contains all entities
+    *
+    * @namespace entity
+    * @memberof test
+    * @since 1.0
+    */
+    m_this.particle = {};
 
     //--------------------------------------------------------------------------
     // Return public scope object
