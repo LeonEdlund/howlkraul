@@ -52,8 +52,8 @@ howlkraul.entity.Player.prototype.init = function () {
 };
 
 howlkraul.entity.Player.prototype.m_initVelocity = function () {
-  this.velocity.drag.x = 0.3;
-  this.velocity.drag.y = 0.3;
+  this.velocity.drag.x = 0.8;
+  this.velocity.drag.y = 0.8;
   this.velocity.max.x = 1.6;
   this.velocity.max.y = 1.6;
 };
