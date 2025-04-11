@@ -19,6 +19,8 @@ howlkraul.scene.Game = function () {
 
     this.borders = null;
 
+    this.m_spells = null;
+
     //--------------------------------------------------------------------------
     // Super call
     //--------------------------------------------------------------------------
@@ -36,6 +38,19 @@ howlkraul.scene.Game = function () {
 howlkraul.scene.Game.prototype = Object.create(rune.scene.Scene.prototype);
 howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
 
+Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
+    get: function () {
+        return this.m_spells;
+    },
+
+    set: function (spell) {
+        if (this.m_spells && this.m_spells.numMembers < 5) {
+            this.m_spells.addMember(spell);
+        }
+        console.log(this.m_spells);
+    }
+});
+
 //------------------------------------------------------------------------------
 // Override public prototype methods (ENGINE)
 //------------------------------------------------------------------------------
@@ -50,6 +65,7 @@ howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
     this.m_initBackground();
     this.m_initPlayers();
+    this.m_initSpells();
     this.m_setBorders();
 };
 
@@ -68,6 +84,15 @@ howlkraul.scene.Game.prototype.update = function (step) {
     }
 
     this.borders.hitTestAndSeparate(this.players);
+    this.borders.hitTestAndSeparate(this.spells, function (spell) {
+        this.m_spells.removeMember(this.m_spells.getMemberAt(0), true);
+    }, this);
+
+    this.players.hitTestAndSeparate(this.spells, function (spell) {
+        this.m_spells.removeMember(this.m_spells.getMemberAt(0), true);
+        this.cameras.getCameraAt(0).shake.start(300, 1, 1);
+
+    }, this);
 };
 
 /**
@@ -97,6 +122,10 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
 
     this.stage.addChild(knight);
     this.stage.addChild(wiz);
+};
+
+howlkraul.scene.Game.prototype.m_initSpells = function () {
+    this.m_spells = this.groups.create(this.stage);
 };
 
 howlkraul.scene.Game.prototype.m_initBackground = function () {

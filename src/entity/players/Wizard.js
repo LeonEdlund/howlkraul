@@ -15,7 +15,6 @@ howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
 howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Player.prototype.init.call(this);
   this.m_initAnimation();
-  this.m_initSpell();
 };
 
 /**
@@ -68,45 +67,22 @@ howlkraul.entity.Wizard.prototype.m_move = function () {
   };
 };
 
-howlkraul.entity.Wizard.prototype.m_initSpell = function () {
-  this.spell = new rune.particle.Emitter(this.centerX, this.centerY, 10, 10, {
-    capacity: 1,
-    particles: [howlkraul.particle.Spell],
-  });
-
-  //this.spell.debug = true;
-  this.stage.addChild(this.spell);
-};
-
 /**
  * @override
  */
 howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Player.prototype.update.call(this, step);
   this.m_move();
-  this.spell.center = this.center;
 };
 
-howlkraul.entity.Wizard.prototype.shoot = function (step) {
-  this.spell.emit(1);
-  var particle = this.spell.getParticles()[0];
+howlkraul.entity.Wizard.prototype.shoot = function () {
+  var scene = this.application.scenes.selected;
 
-  switch (this.facing) {
-    case "down":
-      particle.velocity.x = 0;
-      particle.velocity.y = 4;
-      break;
-    case "up":
-      particle.velocity.x = 0;
-      particle.velocity.y = -4;
-      break;
-    case "right":
-      particle.velocity.x = 4;
-      particle.velocity.y = 0;
-      break;
-    case "left":
-      particle.velocity.x = -4;
-      particle.velocity.y = 0;
-      break;
-  }
+  if (scene.spells.numMembers >= 2) return;
+
+  var particle = new howlkraul.particle.Spell(this.centerX, this.centerY);
+  particle.emit(this.facing);
+  scene.spells = particle;
+
+  this.stage.addChild(particle);
 };
