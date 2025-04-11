@@ -14,21 +14,15 @@
  * Game scene.
  */
 howlkraul.scene.Game = function () {
-
-    this.players = null;
-
-    this.borders = null;
-
-    this.m_spells = null;
-
-    //--------------------------------------------------------------------------
-    // Super call
-    //--------------------------------------------------------------------------
-
-    /**
-     * Calls the constructor method of the super class.
-     */
     rune.scene.Scene.call(this);
+
+    this.players = this.groups.create(this.stage);
+
+    this.enemies = this.groups.create(this.stage);
+
+    this.borders = this.groups.create(this.stage);
+
+    this.m_spells = this.groups.create(this.stage);
 };
 
 //------------------------------------------------------------------------------
@@ -63,10 +57,10 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
  */
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
+    this.m_setBorders();
     this.m_initBackground();
     this.m_initPlayers();
-    this.m_initSpells();
-    this.m_setBorders();
+    this.m_initEnemies();
 };
 
 /**
@@ -84,14 +78,17 @@ howlkraul.scene.Game.prototype.update = function (step) {
     }
 
     this.borders.hitTestAndSeparate(this.players);
-    this.borders.hitTestAndSeparate(this.spells, function (spell) {
+
+    this.borders.hitTestAndSeparate(this.enemies);
+    this.players.hitTestAndSeparate(this.enemies);
+
+    this.borders.hitTest(this.spells, function () {
         this.m_spells.removeMember(this.m_spells.getMemberAt(0), true);
     }, this);
 
-    this.players.hitTestAndSeparate(this.spells, function (spell) {
+    this.enemies.hitTestAndSeparate(this.spells, function () {
         this.m_spells.removeMember(this.m_spells.getMemberAt(0), true);
         this.cameras.getCameraAt(0).shake.start(300, 1, 1);
-
     }, this);
 };
 
@@ -112,20 +109,7 @@ howlkraul.scene.Game.prototype.m_endGame = function () {
 };
 
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
-    this.players = this.groups.create(this.stage);
-
-    var knight = new howlkraul.entity.Knight();
-    var wiz = new howlkraul.entity.Wizard();
-
-    this.players.addMember(knight);
-    this.players.addMember(wiz);
-
-    this.stage.addChild(knight);
-    this.stage.addChild(wiz);
-};
-
-howlkraul.scene.Game.prototype.m_initSpells = function () {
-    this.m_spells = this.groups.create(this.stage);
+    this.players.addMember(new howlkraul.entity.Wizard());
 };
 
 howlkraul.scene.Game.prototype.m_initBackground = function () {
@@ -157,12 +141,10 @@ howlkraul.scene.Game.prototype.m_setBorders = function () {
 
     this.borders.forEachMember(function (wall) {
         wall.immovable = true;
-        // wall.backgroundColor = "red";
-        wall.alpha = 0.2;
     }, this);
-
-    this.stage.addChild(top);
-    this.stage.addChild(left);
-    this.stage.addChild(bottom);
-    this.stage.addChild(right);
 };
+
+howlkraul.scene.Game.prototype.m_initEnemies = function () {
+    this.enemies.addMember(new howlkraul.entity.Knight(this.players));
+}
+
