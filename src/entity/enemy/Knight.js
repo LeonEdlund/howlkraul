@@ -1,6 +1,6 @@
-howlkraul.entity.Knight = function (players) {
-  howlkraul.entity.Entity.call(this, 300, 50, 28, 42, "knight_walk");
-  this.players = players;
+howlkraul.entity.Knight = function (x, y) {
+  howlkraul.entity.Entity.call(this, x, y, 28, 42, "knight_walk");
+  this.hp = 100;
 }
 
 howlkraul.entity.Knight.prototype = Object.create(howlkraul.entity.Entity.prototype);
@@ -25,6 +25,7 @@ howlkraul.entity.Knight.prototype.init = function () {
 */
 howlkraul.entity.Knight.prototype.m_initAnimation = function () {
   this.animation.create("running", [0, 1, 1, 2, 2, 3, 4, 5, 6], 10, true);
+  this.animation.create("dead", [0], 0, false);
   this.flippedX = true;
 };
 
@@ -33,11 +34,10 @@ howlkraul.entity.Knight.prototype.m_initAnimation = function () {
  */
 howlkraul.entity.Knight.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
-  //this.m_followPlayer();
 };
 
-howlkraul.entity.Knight.prototype.m_followPlayer = function (step) {
-  var closestPlayer = this.players.getMembersCloseTo(this)[0];
+howlkraul.entity.Knight.prototype.followPlayers = function (players) {
+  var closestPlayer = players.getMembersCloseTo(this)[0];
 
   var tX = rune.util.Math.abs(this.centerX);
   var tY = rune.util.Math.abs(this.centerY);
@@ -56,4 +56,19 @@ howlkraul.entity.Knight.prototype.m_followPlayer = function (step) {
   } else if (tY < pY) {
     this.moveDown();
   }
+};
+
+howlkraul.entity.Knight.prototype.takeDamage = function (amount) {
+  this.hp -= amount;
+
+  if (this.hp <= 0) {
+    this.die();
+  }
+};
+
+howlkraul.entity.Knight.prototype.die = function () {
+  this.animation.gotoAndPlay("dead");
+  this.y += 10;
+  this.rotation = -90;
+  this.hitbox.set(0, 0, 0, 0);
 };

@@ -13,7 +13,7 @@ npx google-closure-compiler \
 --js "./../../src/entity/Entity.js" \
 --js "./../../src/entity/players/Player.js" \
 --js "./../../src/entity/players/Wizard.js" \
---js "./../../src/enemy/players/Knight.js" \
+--js "./../../src/entity/enemy/Knight.js" \
 --js "./../../src/scene/menu/Menu.js" \
 --js "./../../src/scene/game/Game.js" \
 --js "./../../src/system/Main.js" \
