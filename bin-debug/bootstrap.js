@@ -5,7 +5,7 @@ function createWindow() {
         width: 1280,
         height: 720,
         useContentSize: true,
-        resizable: false,
+        resizable: true,
         webPreferences: {
             nodeIntegration: false
         }
@@ -13,7 +13,7 @@ function createWindow() {
 
     win.setBackgroundColor("#000000");
     win.loadFile('./index.html');
-    win.setFullScreen(true);
+    win.setFullScreen(false);
 }
 
 app.whenReady().then(createWindow);

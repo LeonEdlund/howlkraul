@@ -38,18 +38,22 @@ howlkraul.entity.Knight.prototype.update = function (step) {
 
 howlkraul.entity.Knight.prototype.m_followPlayer = function (step) {
   var closestPlayer = this.players.getMembersCloseTo(this)[0];
-  console.log(closestPlayer);
 
-  if (this.centerX > closestPlayer.centerX) {
+  var tX = rune.util.Math.abs(this.centerX);
+  var tY = rune.util.Math.abs(this.centerY);
+  var pX = rune.util.Math.abs(closestPlayer.centerX);
+  var pY = rune.util.Math.abs(closestPlayer.centerY);
+
+
+  if (tX > pX) {
     this.moveLeft();
-  } else if (this.centerX < closestPlayer.centerX) {
+  } else if (tX < pX) {
     this.moveRight();
   }
 
-  if (this.centerY > closestPlayer.centerY) {
+  if (tY > pY) {
     this.moveUp();
-  } else if (this.centerY < closestPlayer.centerY) {
+  } else if (tY < pY) {
     this.moveDown();
   }
-  //this.moveTo(closestPlayer.centerX, closestPlayer.centerY);
 };

@@ -36,10 +36,7 @@ howlkraul.particle.Spell.prototype.m_initAnimation = function () {
 
 howlkraul.particle.Spell.prototype.m_initHitbox = function () {
   this.hitbox.set(10, 10, 10, 10);
-  this.debug = true;
-  this.hitbox.debug = true;
 };
-
 
 howlkraul.particle.Spell.prototype.emit = function (direction) {
   switch (direction) {
@@ -48,10 +45,30 @@ howlkraul.particle.Spell.prototype.emit = function (direction) {
       this.velocity.y = 4;
       this.rotation = 90;
       break;
+    case "down-right":
+      this.velocity.x = 2;
+      this.velocity.y = 2;
+      this.rotation = 45;
+      break;
+    case "down-left":
+      this.velocity.x = -2;
+      this.velocity.y = 2;
+      this.rotation = 145;
+      break;
     case "up":
       this.velocity.x = 0;
       this.velocity.y = -4;
       this.rotation = -90;
+      break;
+    case "up-right":
+      this.velocity.x = 4;
+      this.velocity.y = -4;
+      this.rotation = -45;
+      break;
+    case "up-left":
+      this.velocity.x = -4;
+      this.velocity.y = -4;
+      this.rotation = -145;
       break;
     case "right":
       this.velocity.x = 4;

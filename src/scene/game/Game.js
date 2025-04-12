@@ -84,11 +84,13 @@ howlkraul.scene.Game.prototype.update = function (step) {
 
     this.borders.hitTest(this.spells, function () {
         this.m_spells.removeMember(this.m_spells.getMemberAt(0), true);
+        this.gamepads.get(0).vibrate(500);
     }, this);
 
     this.enemies.hitTestAndSeparate(this.spells, function () {
         this.m_spells.removeMember(this.m_spells.getMemberAt(0), true);
         this.cameras.getCameraAt(0).shake.start(300, 1, 1);
+        this.gamepads.get(0).vibrate(500);
     }, this);
 };
 
