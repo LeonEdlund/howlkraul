@@ -41,3 +41,26 @@ howlkraul.entity.Goblin.prototype.m_initAnimation = function () {
   this.flippedX = true;
 };
 
+howlkraul.entity.Goblin.prototype.moveRight = function () {
+  howlkraul.entity.Entity.prototype.moveRight.call(this);
+  this.animation.gotoAndPlay("r-side");
+}
+
+howlkraul.entity.Goblin.prototype.moveLeft = function () {
+  howlkraul.entity.Entity.prototype.moveLeft.call(this);
+
+  this.animation.gotoAndPlay("r-side");
+}
+
+howlkraul.entity.Goblin.prototype.moveUp = function () {
+  howlkraul.entity.Entity.prototype.moveUp.call(this);
+
+  //this.animation.gotoAndPlay("r-up");
+}
+
+howlkraul.entity.Goblin.prototype.moveDown = function () {
+  howlkraul.entity.Entity.prototype.moveDown.call(this);
+
+  //this.animation.gotoAndPlay("r");
+}
+

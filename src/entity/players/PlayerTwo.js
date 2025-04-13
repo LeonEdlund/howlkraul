@@ -14,7 +14,8 @@ howlkraul.entity.PlayerTwo.prototype.constructor = howlkraul.entity.PlayerTwo;
  */
 howlkraul.entity.PlayerTwo.prototype.update = function (step) {
   howlkraul.entity.Wizard.prototype.update.call(this, step);
-  this.m_move();
+  var input = this.m_getInput();
+  this.move(input);
 };
 
 //--------------------------------------------------------------------------
@@ -33,17 +34,5 @@ howlkraul.entity.PlayerTwo.prototype.m_getInput = function () {
     shoot: this.keyboard.justPressed("m") || gamepad.justPressed(0),
   }
 }
-
-// howlkraul.entity.PlayerTwo.prototype.m_move = function () {
-//   var input = this.m_getInput();
-
-//   if (input.up) { this.moveUp(); };
-//   if (input.down) { this.moveDown(); };
-//   if (input.left) { this.moveLeft(); };
-//   if (input.right) { this.moveRight(); };
-//   if (input.shoot) { this.shoot() };
-
-//   this.m_setAnimation(input);
-// };
 
 

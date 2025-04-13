@@ -1,6 +1,6 @@
 howlkraul.entity.Enemy = function (x, y, width, height, texture) {
   howlkraul.entity.Entity.call(this, x, y, width, height, texture);
-
+  this.m_horizontalMovement = false;
   this.hp = 100;
 }
 
@@ -9,6 +9,10 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture) {
 //--------------------------------------------------------------------------
 howlkraul.entity.Enemy.prototype = Object.create(howlkraul.entity.Entity.prototype);
 howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
+
+//--------------------------------------------------------------------------
+// Overide
+//--------------------------------------------------------------------------
 
 /**
  * Follow the players in the display group. 
@@ -20,6 +24,7 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var closestPlayer = players.getMembersCloseTo(this)[0];
 
+  console.log(players.getMembersCloseTo(this));
   var tX = this.centerX;
   var tY = this.centerY;
   var pX = closestPlayer.centerX;
