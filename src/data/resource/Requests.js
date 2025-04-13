@@ -46,8 +46,10 @@ howlkraul.data.Requests.prototype.m_construct = function() {
     this.add("background", "./../asset/jpg/background.jpg");
 	this.add("dwd", "./../asset/jpg/dwd.jpg");
 	this.add("Wizard_28x40", "./../asset/png/Wizard_28x40.png");
+	this.add("goblin_29x27", "./../asset/png/goblin_29x27.png");
 	this.add("knight_walk", "./../asset/png/knight_walk.png");
 	this.add("magic_27x27", "./../asset/png/magic_27x27.png");
+	this.add("slime_19x19", "./../asset/png/slime_19x19.png");
 	this.add("wiz_idle", "./../asset/png/wiz_idle.png");
 	this.add("wizard_27x32", "./../asset/png/wizard_27x32.png");
 };
