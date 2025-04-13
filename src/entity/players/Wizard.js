@@ -2,6 +2,7 @@ howlkraul.entity.Wizard = function () {
   howlkraul.entity.Player.call(this, 50, 50, 27, 32, "Wizard_27x32");
 
   this.facing = "down";
+  this.power = 100;
 }
 
 howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.Player.prototype);
@@ -36,11 +37,9 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
 
   if (scene.spells.numMembers >= 5) return;
 
-  var particle = new howlkraul.particle.Spell(this.centerX, this.centerY);
-  particle.emit(this.facing);
-  scene.spells = particle;
-
-  this.stage.addChild(particle);
+  var spell = new howlkraul.particle.Spell(this.centerX, this.centerY, this);
+  spell.emit(this.facing);
+  scene.spells = spell;
 };
 
 //--------------------------------------------------------------------------

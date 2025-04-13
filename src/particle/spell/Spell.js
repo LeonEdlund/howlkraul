@@ -1,5 +1,7 @@
-howlkraul.particle.Spell = function (x, y) {
+howlkraul.particle.Spell = function (x, y, castedBy) {
   rune.display.Sprite.call(this, x || 0, y || 0, 27, 32, "magic_27x27");
+
+  this.castedBy = castedBy;
 }
 
 howlkraul.particle.Spell.prototype = Object.create(rune.display.Sprite.prototype);

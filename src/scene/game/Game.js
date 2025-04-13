@@ -87,10 +87,18 @@ howlkraul.scene.Game.prototype.update = function (step) {
     }, this);
 
     this.enemies.hitTestAndSeparate(this.spells, function (enemy, spell) {
-        enemy.takeDamage(20);
+        enemy.takeDamage(spell.castedBy.power);
         this.m_spells.removeMember(spell, true);
         this.cameras.getCameraAt(0).shake.start(300, 1, 1);
         this.gamepads.get(0).vibrate(500);
+
+        if (enemy.hp <= 0) {
+            this.timers.create({
+                duration: 500,
+                onComplete: enemy.dispose,
+                scope: enemy
+            }, true);
+        }
     }, this);
 
     // follow player
