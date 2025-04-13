@@ -153,7 +153,7 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
         var y1 = rune.util.Math.randomInt(30, (this.application.height - 50));
         var y2 = rune.util.Math.randomInt(30, (this.application.height - 50));
 
-        this.enemies.addMember(new howlkraul.entity.Knight(x1, y1));
+        //this.enemies.addMember(new howlkraul.entity.Knight(x1, y1));
         this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
         this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
     }

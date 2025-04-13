@@ -36,7 +36,7 @@ howlkraul.room.Room.prototype.m_init = function () {
 
 howlkraul.room.Room.prototype.m_initAnimations = function () {
   this.animation.create("closed-door", [0], 0, false);
-  this.animation.create("open-door", [0, 1, 2, 3, 4], 10, false);
+  this.animation.create("open-door", [0, 1, 2, 3, 4, 5], 10, false);
 }
 
 howlkraul.room.Room.prototype.m_initBorders = function () {
