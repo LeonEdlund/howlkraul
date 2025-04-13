@@ -1,5 +1,6 @@
 howlkraul.entity.Enemy = function (x, y, width, height, texture) {
   howlkraul.entity.Entity.call(this, x, y, width, height, texture);
+
   this.hp = 100;
 }
 
@@ -23,7 +24,6 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var tY = this.centerY;
   var pX = closestPlayer.centerX;
   var pY = closestPlayer.centerY;
-
 
   if (tX > pX) {
     this.moveLeft();
@@ -79,4 +79,9 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
   coin.backgroundColor = "gold";
   coin.hitbox.set(0, 0, coin.width, coin.height);
   this.application.scenes.selected.addCoin(coin);
+};
+
+howlkraul.entity.Enemy.prototype.m_stop = function () {
+  this.velocity.x = 0;
+  this.velocity.y = 0;
 };

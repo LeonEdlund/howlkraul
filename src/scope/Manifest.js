@@ -83,6 +83,15 @@ var howlkraul = function () {
     */
     m_this.handler = {};
 
+    /**
+    * This package contains all handlers
+    *
+    * @namespace room
+    * @memberof howlkraul
+    * @since 1.0
+    */
+    m_this.room = {};
+
     //--------------------------------------------------------------------------
     // Return public scope object
     //--------------------------------------------------------------------------

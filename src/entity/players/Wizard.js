@@ -2,7 +2,7 @@ howlkraul.entity.Wizard = function () {
   howlkraul.entity.Player.call(this, 50, 50, 27, 32, "Wizard_27x32");
 
   this.facing = "down";
-  this.power = 100;
+  this.power = 50;
 }
 
 howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.Player.prototype);

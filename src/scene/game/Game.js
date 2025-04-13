@@ -16,7 +16,11 @@
 howlkraul.scene.Game = function () {
     rune.scene.Scene.call(this);
 
-    this.borders = this.groups.create(this.stage);
+    this.m_room = new howlkraul.room.Room(this);
+
+    this.borders = this.m_room.borders;
+
+    this.m_background = this.m_room.background;
 
     this.players = this.groups.create(this.stage);
 
@@ -28,9 +32,9 @@ howlkraul.scene.Game = function () {
 
     this.m_collisionHandler = new howlkraul.handler.CollisionHandler(this);
 
-    this.m_background = null;
-
     this.moneyCounter = null;
+
+    console.log(this.m_room.borders)
 };
 
 //------------------------------------------------------------------------------
@@ -64,8 +68,6 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
  */
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
-    this.m_initBackground();
-    this.m_setBorders();
     this.m_initMoneyCounter();
     this.m_initPlayers();
     this.m_initEnemies(5);
@@ -84,6 +86,7 @@ howlkraul.scene.Game.prototype.update = function (step) {
     rune.scene.Scene.prototype.update.call(this, step);
     this.m_handlePause();
     this.m_collisionHandler.update();
+    this.m_handleRoundWin();
 
     // follow player
     this.enemies.forEachMember(function (enemy) {
@@ -128,18 +131,6 @@ howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
 // Private Methods
 //--------------------------------------------------------------------------
 
-howlkraul.scene.Game.prototype.m_initBackground = function () {
-    this.m_background = new rune.display.Graphic(
-        0,
-        0,
-        this.application.screen.width,
-        this.application.screen.height,
-        "background"
-    );
-
-    this.stage.addChild(this.m_background);
-};
-
 howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
     this.moneyCounter = new rune.ui.Counter(5, undefined, undefined, undefined, 5);
     this.moneyCounter.moveTo(320, 0);
@@ -149,28 +140,6 @@ howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
 
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
     this.players.addMember(new howlkraul.entity.Wizard());
-};
-
-
-
-howlkraul.scene.Game.prototype.m_setBorders = function () {
-    this.borders = this.groups.create(this.stage);
-    var thicknessTop = 25;
-    var thicknessSides = 35;
-
-    var top = new rune.display.Graphic(0, 0, 400, thicknessTop);
-    var left = new rune.display.Graphic(0, 0, thicknessSides, 225);
-    var bottom = new rune.display.Graphic(0, (225 - thicknessTop), 400, thicknessTop);
-    var right = new rune.display.Graphic((400 - thicknessSides), 0, thicknessSides, 225);
-
-    this.borders.addMember(top);
-    this.borders.addMember(left);
-    this.borders.addMember(bottom);
-    this.borders.addMember(right);
-
-    this.borders.forEachMember(function (wall) {
-        wall.immovable = true;
-    }, this);
 };
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
@@ -202,4 +171,10 @@ howlkraul.scene.Game.prototype.m_handlePause = function () {
         this.application.scenes.load([new howlkraul.scene.Menu()]);
     }
 };
+
+howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
+    if (this.enemies.numMembers <= 0 && !this.m_room.gateOpen) {
+        this.m_room.openDoor();
+    }
+}
 
