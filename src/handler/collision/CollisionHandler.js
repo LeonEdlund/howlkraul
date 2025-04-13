@@ -42,6 +42,5 @@ howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
     this.game.addToMoneyCounter(1);
     this.game.coins.removeMember(coin);
     coin.dispose();
-    console.log(this.game.coins);
   }, this);
 }
