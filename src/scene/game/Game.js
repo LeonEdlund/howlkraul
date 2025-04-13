@@ -20,7 +20,7 @@ howlkraul.scene.Game = function () {
 
     this.borders = this.m_room.borders;
 
-    this.m_background = this.m_room.background;
+    //this.m_background = this.m_room.background;
 
     this.players = this.groups.create(this.stage);
 
@@ -70,6 +70,7 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
  */
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
+    this.stage.addChild(this.m_room);
     this.m_initMoneyCounter();
     this.m_initPlayers();
     this.m_initEnemies(this.m_round);
@@ -147,10 +148,14 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
     for (var i = 0; i < amount; i++) {
-        var x = rune.util.Math.randomInt(30, (this.application.width - 50));
-        var y = rune.util.Math.randomInt(30, (this.application.height - 50));
+        var x1 = rune.util.Math.randomInt(30, (this.application.width - 50));
+        var x2 = rune.util.Math.randomInt(30, (this.application.width - 50));
+        var y1 = rune.util.Math.randomInt(30, (this.application.height - 50));
+        var y2 = rune.util.Math.randomInt(30, (this.application.height - 50));
 
-        this.enemies.addMember(new howlkraul.entity.Knight(x, y));
+        this.enemies.addMember(new howlkraul.entity.Knight(x1, y1));
+        this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
+        this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
     }
 }
 
@@ -158,9 +163,14 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
  * @private
  */
 howlkraul.scene.Game.prototype.m_initSort = function () {
-    var m_this = this;
+    var room = this.m_room;
+
     this.stage.sort = function (a, b) {
-        if (b == m_this.m_background) {
+        if (a === room) {
+            return Number.NEGATIVE_INFINITY;
+        }
+
+        if (b == room) {
             return Number.POSITIVE_INFINITY;
         }
 
