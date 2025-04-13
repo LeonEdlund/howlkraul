@@ -25,7 +25,7 @@ howlkraul.entity.Wizard.prototype.init = function () {
  */
 howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Player.prototype.update.call(this, step);
-  this.m_move();
+  //this.m_move();
 };
 
 //--------------------------------------------------------------------------
@@ -40,6 +40,7 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
   var spell = new howlkraul.particle.Spell(this.centerX, this.centerY, this);
   spell.emit(this.facing);
   scene.spells = spell;
+  console.trace("shot")
 };
 
 //--------------------------------------------------------------------------
@@ -123,9 +124,7 @@ howlkraul.entity.Wizard.prototype.m_setAnimation = function (input) {
 
 }
 
-howlkraul.entity.Wizard.prototype.m_move = function () {
-  var input = this.m_getInput();
-
+howlkraul.entity.Wizard.prototype.move = function (input) {
   if (input.up) { this.moveUp(); };
   if (input.down) { this.moveDown(); };
   if (input.left) { this.moveLeft(); };
@@ -134,5 +133,3 @@ howlkraul.entity.Wizard.prototype.m_move = function () {
 
   this.m_setAnimation(input);
 };
-
-

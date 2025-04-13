@@ -14,13 +14,14 @@ howlkraul.entity.PlayerOne.prototype.constructor = howlkraul.entity.PlayerOne;
  */
 howlkraul.entity.PlayerOne.prototype.update = function (step) {
   howlkraul.entity.Wizard.prototype.update.call(this, step);
-  this.m_move();
+
+  var input = this.m_getInput();
+  this.move(input);
 };
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
-
 
 howlkraul.entity.PlayerOne.prototype.m_getInput = function () {
   var gamepad = this.gamepads.get(0);
@@ -33,17 +34,5 @@ howlkraul.entity.PlayerOne.prototype.m_getInput = function () {
     shoot: this.keyboard.justPressed("q") || gamepad.justPressed(0),
   }
 }
-
-howlkraul.entity.PlayerOne.prototype.m_move = function () {
-  var input = this.m_getInput();
-
-  if (input.up) { this.moveUp(); };
-  if (input.down) { this.moveDown(); };
-  if (input.left) { this.moveLeft(); };
-  if (input.right) { this.moveRight(); };
-  if (input.shoot) { this.shoot() };
-
-  this.m_setAnimation(input);
-};
 
 

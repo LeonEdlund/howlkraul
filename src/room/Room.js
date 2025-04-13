@@ -63,7 +63,7 @@ howlkraul.room.Room.prototype.m_initBorders = function () {
 
   this.m_borders.forEachMember(function (wall) {
     wall.immovable = true;
-    wall.backgroundColor = "red";
+    //wall.backgroundColor = "red";
     wall.alpha = 0.5;
   }, this);
 }
