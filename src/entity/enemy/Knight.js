@@ -12,7 +12,7 @@ howlkraul.entity.Knight.prototype.constructor = howlkraul.entity.Knight;
 howlkraul.entity.Knight.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
-  this.setVelocity(0.1, 0.5);
+  this.setVelocity(0.1, 0.3);
   this.m_initAnimation();
   this.hitbox.set(0, (this.height - 10), this.width, 9);
 };
