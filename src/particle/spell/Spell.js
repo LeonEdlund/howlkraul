@@ -1,5 +1,5 @@
 howlkraul.particle.Spell = function (x, y, castedBy) {
-  rune.display.Sprite.call(this, x || 0, y || 0, 27, 32, "magic_27x27");
+  rune.display.Sprite.call(this, x, y, 27, 32, "magic_27x27");
 
   this.castedBy = castedBy;
 }
@@ -48,13 +48,13 @@ howlkraul.particle.Spell.prototype.emit = function (direction) {
       this.rotation = 90;
       break;
     case "down-right":
-      this.velocity.x = 2;
-      this.velocity.y = 2;
+      this.velocity.x = 4;
+      this.velocity.y = 4;
       this.rotation = 45;
       break;
     case "down-left":
-      this.velocity.x = -2;
-      this.velocity.y = 2;
+      this.velocity.x = -4;
+      this.velocity.y = 4;
       this.rotation = 145;
       break;
     case "up":

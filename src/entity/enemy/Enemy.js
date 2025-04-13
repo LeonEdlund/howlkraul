@@ -19,10 +19,10 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var closestPlayer = players.getMembersCloseTo(this)[0];
 
-  var tX = rune.util.Math.abs(this.centerX);
-  var tY = rune.util.Math.abs(this.centerY);
-  var pX = rune.util.Math.abs(closestPlayer.centerX);
-  var pY = rune.util.Math.abs(closestPlayer.centerY);
+  var tX = this.centerX;
+  var tY = this.centerY;
+  var pX = closestPlayer.centerX;
+  var pY = closestPlayer.centerY;
 
 
   if (tX > pX) {
@@ -64,6 +64,7 @@ howlkraul.entity.Enemy.prototype.die = function () {
   this.animation.gotoAndPlay("dead");
   this.y += 10;
   this.rotation = -90;
+  this.allowCollisions = rune.physics.Space.NONE;
   this.dropCoin();
 };
 
@@ -76,5 +77,6 @@ howlkraul.entity.Enemy.prototype.die = function () {
 howlkraul.entity.Enemy.prototype.dropCoin = function () {
   var coin = new rune.display.Graphic(this.centerX, this.centerY, 10, 10);
   coin.backgroundColor = "gold";
-  this.stage.addChild(coin);
+  coin.hitbox.set(0, 0, coin.width, coin.height);
+  this.application.scenes.selected.addCoin(coin);
 };
