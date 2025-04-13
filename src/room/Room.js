@@ -55,22 +55,30 @@ howlkraul.room.Room.prototype.m_initBorders = function () {
   var left = new rune.display.Graphic(0, 0, thicknessSides, height);
   var bottom = new rune.display.Graphic(0, bottomY, width, thicknessTop);
   var rightTop = new rune.display.Graphic(rightX, 0, thicknessSides, 80);
-  this.gate = new rune.display.Graphic(rightX, 50, thicknessSides, 180);
+  this.m_gate = new rune.display.Graphic(rightX, 50, thicknessSides, 180);
 
   this.m_borders.addMember(top);
   this.m_borders.addMember(left);
   this.m_borders.addMember(bottom);
   this.m_borders.addMember(rightTop);
-  this.m_borders.addMember(this.gate);
+  this.m_borders.addMember(this.m_gate);
 
   this.m_borders.forEachMember(function (wall) {
     wall.immovable = true;
+    //wall.backgroundColor = "red";
   }, this);
 }
 
 howlkraul.room.Room.prototype.openDoor = function () {
   if (!this.m_gateOpen) {
     this.m_gateOpen = true;
-    this.gate.centerY += 70;
+    this.m_gate.y = 130;
+  }
+}
+
+howlkraul.room.Room.prototype.closeDoor = function () {
+  if (this.m_gateOpen) {
+    this.m_gateOpen = false;
+    this.m_gate.y = 70;
   }
 }

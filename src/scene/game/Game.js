@@ -34,7 +34,9 @@ howlkraul.scene.Game = function () {
 
     this.moneyCounter = null;
 
-    console.log(this.m_room.borders)
+    this.m_roundTransition = false;
+
+    this.m_round = 1;
 };
 
 //------------------------------------------------------------------------------
@@ -70,7 +72,7 @@ howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
     this.m_initMoneyCounter();
     this.m_initPlayers();
-    this.m_initEnemies(5);
+    this.m_initEnemies(this.m_round);
     this.m_initSort();
 };
 
@@ -139,7 +141,8 @@ howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
 };
 
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
-    this.players.addMember(new howlkraul.entity.Wizard());
+    this.players.addMember(new howlkraul.entity.PlayerOne());
+    //this.players.addMember(new howlkraul.entity.PlayerTwo());
 };
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
@@ -156,7 +159,6 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
  */
 howlkraul.scene.Game.prototype.m_initSort = function () {
     var m_this = this;
-    console.log(m_this.m_background);
     this.stage.sort = function (a, b) {
         if (b == m_this.m_background) {
             return Number.POSITIVE_INFINITY;
@@ -176,5 +178,46 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
     if (this.enemies.numMembers <= 0 && !this.m_room.gateOpen) {
         this.m_room.openDoor();
     }
+
+
+    if (this.m_room.gateOpen) {
+        var playersReady = 0;
+
+        this.players.forEachMember(function (player) {
+            if (player.topLeft.x > this.application.width) {
+                playersReady += 1;
+            }
+        }, this);
+
+
+        if (this.players.numMembers <= playersReady && !this.m_roundTransition) {
+            this.cameras.getCameraAt(0).fade.out(100);
+            this.m_roundTransition = true;
+
+            this.m_transitionTimer = this.timers.create({
+                duration: 1000,
+                onComplete: function () {
+                    this.m_round++;
+                    this.m_room.closeDoor();
+                    this.m_loadNewRound();
+                },
+                scope: this
+            }, true);
+        }
+    }
 }
 
+howlkraul.scene.Game.prototype.m_loadNewRound = function () {
+    this.m_roundTransition = false;
+    this.cameras.getCameraAt(0).fade.in(100);
+
+    // move players
+    var spawnPoint = 30;
+    this.players.forEachMember(function (player) {
+        spawnPoint += 20;
+        player.moveTo(spawnPoint, 100);
+    }, this);
+
+    // spawn enemies
+    this.m_initEnemies(this.m_round);
+};
