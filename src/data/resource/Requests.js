@@ -52,6 +52,5 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("magic_27x27", "./../asset/png/magic_27x27.png");
 	this.add("room_400x225", "./../asset/png/room_400x225.png");
 	this.add("slime_19x19", "./../asset/png/slime_19x19.png");
-	this.add("wizard_27x32", "./../asset/png/wizard_27x32.png");
 	this.add("wizard_27x34", "./../asset/png/wizard_27x34.png");
 };

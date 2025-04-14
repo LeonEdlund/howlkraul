@@ -113,9 +113,8 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
     },
 
     set: function (spell) {
-        if (this.m_spells && this.m_spells.numMembers < 5) {
-            this.m_spells.addMember(spell);
-        }
+        this.m_spells.addMember(spell);
+        console.log(this.m_spells);
     }
 });
 

@@ -1,5 +1,5 @@
 howlkraul.entity.Goblin = function (x, y) {
-  howlkraul.entity.Enemy.call(this, x, y, 29, 27, "goblin_29x27");
+  howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29");
   this.hp = 100;
 }
 
