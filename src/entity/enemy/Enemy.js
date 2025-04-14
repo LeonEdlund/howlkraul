@@ -29,14 +29,15 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var tY = this.centerY;
   var pX = closestPlayer.centerX;
   var pY = closestPlayer.centerY;
+  var threshold = 5;
 
-  if (tX > pX) {
+  if (tX > pX + threshold) {
     this.moveLeft();
   } else if (tX < pX) {
     this.moveRight();
   }
 
-  if (tY > pY) {
+  if (tY > pY - threshold) {
     this.moveUp();
   } else if (tY < pY) {
     this.moveDown();
