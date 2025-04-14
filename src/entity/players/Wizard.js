@@ -1,8 +1,11 @@
 howlkraul.entity.Wizard = function () {
-  howlkraul.entity.Player.call(this, 50, 50, 27, 32, "Wizard_27x32");
+  howlkraul.entity.Player.call(this, 50, 50, 27, 34, "Wizard_27x34");
 
   this.facing = "down";
   this.power = 50;
+  this.mana = 100;
+  this.m_manabar = null;
+  this.m_manaEmpty = false;
 }
 
 howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.Player.prototype);
@@ -18,6 +21,7 @@ howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
 howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Player.prototype.init.call(this);
   this.m_initAnimations();
+  this.m_initManabar();
 };
 
 /**
@@ -25,7 +29,9 @@ howlkraul.entity.Wizard.prototype.init = function () {
  */
 howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Player.prototype.update.call(this, step);
-  //this.m_move();
+  this.m_manabarFollow();
+
+  this.m_regenMana();
 };
 
 //--------------------------------------------------------------------------
@@ -35,14 +41,21 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
 howlkraul.entity.Wizard.prototype.shoot = function () {
   var scene = this.application.scenes.selected;
 
-  if (scene.spells.numMembers >= 5) return;
+  if (this.mana <= 0) {
+    this.m_manaEmpty = true;
+    this.m_manabar.forgroundColor = "red";
+  }
 
-  var x = this.flippedX ? this.x - 12 : this.x + 12;
-  var y = this.flippedX ? this.y + 5 : this.y + 10;
-  var spell = new howlkraul.particle.Spell(x, y, this);
-  spell.emit(this.facing);
-  scene.spells = spell;
-  //console.trace("shot")
+  if (this.mana > 0 && !this.m_manaEmpty) {
+    this.mana -= 20;
+    this.m_manabar.progress = this.mana / 100;
+    var x = this.flippedX ? this.x - 12 : this.x + 12;
+    var y = this.flippedX ? this.y + 5 : this.y + 10;
+    var spell = new howlkraul.particle.Spell(x, y, this);
+    spell.emit(this.facing);
+    scene.spells = spell;
+  }
+
 };
 
 //--------------------------------------------------------------------------
@@ -64,6 +77,22 @@ howlkraul.entity.Wizard.prototype.m_initAnimations = function () {
   this.animation.create("r-down", [19, 20, 21, 22, 23, 24], 10, true);
   this.animation.create("running-hit", [26, 27, 26], 10, true);
 };
+
+/**
+ * Init manabar
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_initManabar = function () {
+  this.m_manabar = new rune.ui.Progressbar(this.width, 2, "#cad4de", "#6697c4");
+  this.m_manabar.progress = this.mana / 100;
+  this.stage.addChild(this.m_manabar);
+};
+
+howlkraul.entity.Wizard.prototype.m_manabarFollow = function () {
+  this.m_manabar.moveTo(this.bottomLeft.x, this.bottomLeft.y + 2);
+}
 
 howlkraul.entity.Wizard.prototype.m_getInput = function () {
   var gamepad = this.gamepads.get(0);
@@ -134,4 +163,22 @@ howlkraul.entity.Wizard.prototype.move = function (input) {
   if (input.shoot) { this.shoot() };
 
   this.m_setAnimation(input);
+};
+
+howlkraul.entity.Wizard.prototype.m_regenMana = function () {
+  if (this.mana === 100) {
+    this.m_manaEmpty = false;
+
+    if (this.m_manabar.forgroundColor !== "#6697c4") {
+      this.mana -= 1;
+      this.m_manabar.forgroundColor = "#6697c4";
+    }
+
+    return;
+  }
+
+  if (this.mana < 100) {
+    this.mana += 0.5;
+    this.m_manabar.progress = this.mana / 100;
+  }
 };
