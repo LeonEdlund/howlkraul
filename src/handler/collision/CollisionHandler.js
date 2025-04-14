@@ -38,7 +38,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function ()
 
 howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
   this.game.players.hitTest(this.game.coins, function (player, coin) {
-    this.game.addToMoneyCounter(1);
+    this.game.addToMoneyCounter(coin.worth);
     this.game.coins.removeMember(coin);
     coin.dispose();
   }, this);

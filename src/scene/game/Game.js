@@ -186,6 +186,10 @@ howlkraul.scene.Game.prototype.addCoin = function (coin) {
     this.coins.addMember(coin);
 };
 
+howlkraul.scene.Game.prototype.removeCoin = function (coin) {
+    this.coins.removeMember(coin);
+};
+
 howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
     var money = this.moneyCounter.value + amount;
     this.moneyCounter.setValue(money);
@@ -215,6 +219,19 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
         var y2 = rune.util.Math.randomInt(30, (this.application.height - 50));
 
         //this.enemies.addMember(new howlkraul.entity.Knight(x1, y1));
+        this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
+        this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
+    }
+}
+
+howlkraul.scene.Game.prototype.m_initBoss = function (amount) {
+    this.enemies.addMember(new howlkraul.entity.Knight(x1, y1));
+
+    for (var i = 0; i < amount; i++) {
+        var x1 = rune.util.Math.randomInt(30, (this.application.width - 50));
+        var x2 = rune.util.Math.randomInt(30, (this.application.width - 50));
+        var y1 = rune.util.Math.randomInt(30, (this.application.height - 50));
+        var y2 = rune.util.Math.randomInt(30, (this.application.height - 50));
         this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
         this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
     }
@@ -291,6 +308,10 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
         player.moveTo(spawnPoint, 100);
     }, this);
 
-    // spawn enemies
-    this.m_initEnemies(this.m_round);
+    if (this.m_round === 10) {
+        this.m_initBoss(5);
+    } else {
+
+        this.m_initEnemies(this.m_round);
+    }
 };

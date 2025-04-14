@@ -11,6 +11,7 @@ npx google-closure-compiler \
 --js "./../../src/data/resource/Requests.js" \
 --js "./../../src/handler/collison/CollisionHandler.js" \
 --js "./../../src/particle/spell/Spell.js" \
+--js "./../../src/drops/coin/Coin.js" \
 --js "./../../src/entity/Entity.js" \
 --js "./../../src/entity/players/Player.js" \
 --js "./../../src/entity/players/Wizard.js" \

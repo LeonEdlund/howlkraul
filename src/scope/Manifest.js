@@ -92,6 +92,15 @@ var howlkraul = function () {
     */
     m_this.room = {};
 
+    /**
+    * This package contains all drops
+    *
+    * @namespace room
+    * @memberof howlkraul
+    * @since 1.0
+    */
+    m_this.drops = {};
+
     //--------------------------------------------------------------------------
     // Return public scope object
     //--------------------------------------------------------------------------
