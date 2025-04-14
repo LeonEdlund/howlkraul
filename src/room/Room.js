@@ -70,7 +70,6 @@ howlkraul.room.Room.prototype.m_initBorders = function () {
 
 howlkraul.room.Room.prototype.openDoor = function () {
   if (!this.m_gateOpen) {
-    console.log(this.animation)
     this.animation.goto("open-door", 0);
     this.animation.play();
     this.m_gateOpen = true;
@@ -84,4 +83,14 @@ howlkraul.room.Room.prototype.closeDoor = function () {
     this.m_gateOpen = false;
     this.m_gate.y = 70;
   }
+}
+
+howlkraul.room.Room.prototype.randomizeColors = function () {
+  // var c1 = new rune.color.Color24(39, 41, 42);
+  // var c2 = new rune.color.Color24();
+  // var c3 = c2.random();
+  // console.log(this.texture["unique"]);
+
+  // console.log(c1, c2);
+  // this.texture.replaceColor(c1, c3);
 }

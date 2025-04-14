@@ -14,7 +14,8 @@ howlkraul.entity.Goblin.prototype.init = function () {
 
   this.setVelocity(0.1, 0.5);
   this.m_initAnimation();
-  this.hitbox.set(0, (this.height - 10), this.width, 9);
+  this.hitbox.set(10, (this.height - 10), (this.width - 20), 9);
+  //this.hitbox.debug = true;
 };
 
 /**
@@ -55,12 +56,24 @@ howlkraul.entity.Goblin.prototype.moveLeft = function () {
 howlkraul.entity.Goblin.prototype.moveUp = function () {
   howlkraul.entity.Entity.prototype.moveUp.call(this);
 
-  //this.animation.gotoAndPlay("r-up");
+  var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
+
+  if (horizontal) {
+    this.animation.gotoAndPlay("r-side");
+  } else {
+    this.animation.gotoAndPlay("r-up");
+  }
 }
 
 howlkraul.entity.Goblin.prototype.moveDown = function () {
   howlkraul.entity.Entity.prototype.moveDown.call(this);
 
-  //this.animation.gotoAndPlay("r");
+  var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
+
+  if (horizontal) {
+    //this.animation.gotoAndPlay("r");
+  } else {
+    this.animation.gotoAndPlay("r");
+  }
 }
 

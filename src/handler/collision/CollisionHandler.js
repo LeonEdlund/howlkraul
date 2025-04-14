@@ -12,7 +12,6 @@ howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function 
   this.game.borders.hitTestAndSeparate(this.game.players);
   this.game.borders.hitTestAndSeparate(this.game.enemies);
   this.game.enemies.hitTestAndSeparate(this.game.enemies);
-
   this.game.borders.hitTest(this.game.spells, function (border, spell) {
     this.game.removeSpell(spell);
     this.game.gamepads.get(0).vibrate(500);

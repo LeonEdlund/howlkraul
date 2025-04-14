@@ -37,10 +37,12 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
 
   if (scene.spells.numMembers >= 5) return;
 
-  var spell = new howlkraul.particle.Spell(this.centerX, this.centerY, this);
+  var x = this.flippedX ? this.x - 12 : this.x + 12;
+  var y = this.flippedX ? this.y + 5 : this.y + 10;
+  var spell = new howlkraul.particle.Spell(x, y, this);
   spell.emit(this.facing);
   scene.spells = spell;
-  console.trace("shot")
+  //console.trace("shot")
 };
 
 //--------------------------------------------------------------------------

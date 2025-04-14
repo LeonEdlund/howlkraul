@@ -24,24 +24,56 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var closestPlayer = players.getMembersCloseTo(this)[0];
 
-  console.log(players.getMembersCloseTo(this));
+  //console.log(players.getMembersCloseTo(this));
   var tX = this.centerX;
   var tY = this.centerY;
   var pX = closestPlayer.centerX;
   var pY = closestPlayer.centerY;
-  var threshold = 5;
+  var threshold = 0;
+  var distance = this.distance(closestPlayer.center);
 
-  if (tX > pX + threshold) {
-    this.moveLeft();
-  } else if (tX < pX) {
-    this.moveRight();
+  var distanceX = rune.util.Math.abs(tX - pX);
+  var distanceY = rune.util.Math.abs(tY - pY);
+
+  if (distance < 20) {
+    this.m_stop();
+    return;
   }
 
-  if (tY > pY - threshold) {
-    this.moveUp();
-  } else if (tY < pY) {
-    this.moveDown();
+  if (distanceX > distanceY * 2) {
+
+    if (tX > pX + threshold) {
+      this.moveLeft();
+    } else if (tX < pX) {
+      this.moveRight();
+    }
+
+    this.velocity.y = 0;
+
+  } else if (distanceY > distanceX * 2) {
+
+    if (tY > pY - threshold) {
+      this.moveUp();
+    } else if (tY < pY) {
+      this.moveDown();
+    }
+
+    this.velocity.x = 0;
+  } else {
+
+    if (tX > pX + threshold) {
+      this.moveLeft();
+    } else if (tX < pX) {
+      this.moveRight();
+    }
+
+    if (tY > pY - threshold) {
+      this.moveUp();
+    } else if (tY < pY) {
+      this.moveDown();
+    }
   }
+
 };
 
 /**

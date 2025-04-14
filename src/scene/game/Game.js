@@ -16,26 +16,84 @@
 howlkraul.scene.Game = function () {
     rune.scene.Scene.call(this);
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {howlkraul.room.Room}
+     */
     this.m_room = new howlkraul.room.Room(this);
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {rune.display.DisplayGroup}
+     */
     this.borders = this.m_room.borders;
 
-    //this.m_background = this.m_room.background;
-
+    /**
+     * ...
+     * 
+     * @private
+     * @type {rune.display.DisplayGroup}
+     */
     this.players = this.groups.create(this.stage);
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {rune.display.DisplayGroup}
+     */
     this.enemies = this.groups.create(this.stage);
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {rune.display.DisplayGroup}
+     */
     this.m_spells = this.groups.create(this.stage);
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {rune.display.DisplayGroup}
+     */
     this.coins = this.groups.create(this.stage);
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {howlkraul.handler.CollisionHandler}
+     */
     this.m_collisionHandler = new howlkraul.handler.CollisionHandler(this);
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {rune.ui.Counter}
+     */
     this.moneyCounter = null;
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {boolean}
+     */
     this.m_roundTransition = false;
 
+    /**
+     * ...
+     * 
+     * @private
+     * @type {number}
+     */
     this.m_round = 1;
 };
 
@@ -46,6 +104,9 @@ howlkraul.scene.Game = function () {
 howlkraul.scene.Game.prototype = Object.create(rune.scene.Scene.prototype);
 howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
 
+//--------------------------------------------------------------------------
+// Getter and Setters
+//--------------------------------------------------------------------------
 Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
     get: function () {
         return this.m_spells;
@@ -220,6 +281,8 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
 howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     this.m_roundTransition = false;
     this.cameras.getCameraAt(0).fade.in(100);
+
+    this.m_room.randomizeColors();
 
     // move players
     var spawnPoint = 30;
