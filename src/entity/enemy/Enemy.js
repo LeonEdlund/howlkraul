@@ -90,6 +90,8 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   if (this.hp <= 0) {
     this.die();
   }
+
+  this.flicker.start(200);
 };
 
 /**
@@ -113,9 +115,11 @@ howlkraul.entity.Enemy.prototype.die = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.dropCoin = function () {
-  var coin = new rune.display.Graphic(this.centerX, this.centerY, 10, 10);
-  coin.backgroundColor = "gold";
-  coin.hitbox.set(0, 0, coin.width, coin.height);
+  // var coin = new rune.display.Graphic(this.centerX, this.centerY, 10, 10);
+  // coin.backgroundColor = "gold";
+  // coin.hitbox.set(0, 0, coin.width, coin.height);
+
+  var coin = new howlkraul.drops.Coin(this.x, this.y);
   this.application.scenes.selected.addCoin(coin);
 };
 

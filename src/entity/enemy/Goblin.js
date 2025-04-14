@@ -14,7 +14,7 @@ howlkraul.entity.Goblin.prototype.init = function () {
 
   this.setVelocity(0.1, 0.5);
   this.m_initAnimation();
-  this.hitbox.set(10, (this.height - 10), (this.width - 20), 9);
+  this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
   //this.hitbox.debug = true;
 };
 
@@ -38,7 +38,7 @@ howlkraul.entity.Goblin.prototype.m_initAnimation = function () {
   this.animation.create("s", [7, 8, 9], 10, true);
   this.animation.create("s-side", [14, 15, 16], 10, true);
   this.animation.create("s-up", [24, 25, 26], 10, true);
-  this.animation.create("dead", [0], 0, false);
+  this.animation.create("dead", [10], 0, false);
   this.flippedX = true;
 };
 
