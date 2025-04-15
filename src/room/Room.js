@@ -5,6 +5,7 @@ howlkraul.room.Room = function (game) {
   this.m_background = this.graphics;
   this.m_gate = null;
   this.m_gateOpen = false;
+  this.m_lastColor = new rune.color.Color24(38, 41, 42);
   this.m_init();
 }
 
@@ -86,11 +87,12 @@ howlkraul.room.Room.prototype.closeDoor = function () {
 }
 
 howlkraul.room.Room.prototype.randomizeColors = function () {
-  // var c1 = new rune.color.Color24(39, 41, 42);
-  // var c2 = new rune.color.Color24();
-  // var c3 = c2.random();
-  // console.log(this.texture["unique"]);
+  //var c1 = new rune.color.Color24(38, 41, 42);
+  console.log(this.m_lastColor, c2);
+  var c2 = new rune.color.Color24();
+  c2.random();
+  this.texture.replaceColor(this.m_lastColor, c2);
+  this.m_lastColor = c2;
 
-  // console.log(c1, c2);
-  // this.texture.replaceColor(c1, c3);
+
 }
