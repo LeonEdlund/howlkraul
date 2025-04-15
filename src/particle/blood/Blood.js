@@ -11,7 +11,6 @@ howlkraul.particle.Blood = function () {
   ]
 
   var i = rune.util.Math.randomInt(0, this.textures.length - 1);
-  console.log(i)
 
   rune.display.Sprite.call(this, 50, 100, 6, 6, this.textures[i]);
 }

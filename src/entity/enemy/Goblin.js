@@ -1,11 +1,15 @@
 howlkraul.entity.Goblin = function (x, y) {
-  howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29");
-
   this.hp = 100;
   this.facing = "down";
 
   this.m_lastShot = 0;
   this.m_shootCooldown = 2000;
+  this.m_bodyparts = [
+    howlkraul.particle.GoblinHead,
+    howlkraul.particle.GoblinChunk,
+  ]
+
+  howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29", this.m_bodyparts);
 }
 
 howlkraul.entity.Goblin.prototype = Object.create(howlkraul.entity.Enemy.prototype);

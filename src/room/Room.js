@@ -87,12 +87,8 @@ howlkraul.room.Room.prototype.closeDoor = function () {
 }
 
 howlkraul.room.Room.prototype.randomizeColors = function () {
-  //var c1 = new rune.color.Color24(38, 41, 42);
-  console.log(this.m_lastColor, c2);
   var c2 = new rune.color.Color24();
   c2.random();
   this.texture.replaceColor(this.m_lastColor, c2);
   this.m_lastColor = c2;
-
-
 }

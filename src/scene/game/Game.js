@@ -186,7 +186,6 @@ howlkraul.scene.Game.prototype.dispose = function () {
 howlkraul.scene.Game.prototype.removeProjectile = function (group, projectile) {
     if (group && projectile) {
         group.removeMember(projectile, true);
-        console.log(group);
     }
 }
 

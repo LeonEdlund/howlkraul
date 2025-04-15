@@ -1,9 +1,12 @@
-howlkraul.entity.Enemy = function (x, y, width, height, texture) {
+howlkraul.entity.Enemy = function (x, y, width, height, texture, particles) {
   howlkraul.entity.Entity.call(this, x, y, width, height, texture);
 
   this.hp = 100;
-  this.m_deathEmiter = null;
+
+  this.m_bloodEmitter = null;
+  this.m_bodypartEmitter = null;
   this.m_horizontalMovement = false;
+  this.m_particles = particles;
 }
 
 //--------------------------------------------------------------------------
@@ -24,7 +27,10 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.init = function () {
-  this.m_initDeathEmiter();
+  this.m_initBloodEmitter();
+  if (this.m_particles && this.m_particles.length > 0) {
+    this.m_initBodypartEmitter();
+  }
 };
 
 /**
@@ -36,7 +42,7 @@ howlkraul.entity.Enemy.prototype.init = function () {
  */
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
-  this.m_moveEmitterWithCharacter();
+  this.m_moveEmittersWithCharacter();
 };
 
 
@@ -47,11 +53,8 @@ howlkraul.entity.Enemy.prototype.update = function (step) {
  * @protected
  * @returns {undefined}
  */
-howlkraul.entity.Enemy.prototype.m_initDeathEmiter = function () {
-  //OVERRIDE IN CHILD CLASS
-
-  console.log(howlkraul.particle.Blood);
-  this.m_deathEmiter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
+howlkraul.entity.Enemy.prototype.m_initBloodEmitter = function () {
+  this.m_bloodEmitter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
     capacity: 92,
     accelerationY: 0.05,
     maxVelocityX: 1.25,
@@ -60,10 +63,30 @@ howlkraul.entity.Enemy.prototype.m_initDeathEmiter = function () {
     minVelocityY: -0.85,
     minRotation: -2,
     maxRotation: 2,
+    minLifespan: 300,
+    maxLifespan: 1000,
     particles: [howlkraul.particle.Blood]
   });
 
-  this.stage.addChild(this.m_deathEmiter)
+  this.stage.addChild(this.m_bloodEmitter)
+};
+
+howlkraul.entity.Enemy.prototype.m_initBodypartEmitter = function () {
+  this.m_bodypartEmitter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
+    capacity: 4,
+    accelerationY: 0.05,
+    maxVelocityX: 1.25,
+    minVelocityX: -1.25,
+    maxVelocityY: -1.25,
+    minVelocityY: -0.85,
+    minRotation: -2,
+    maxRotation: 2,
+    minLifespan: 300,
+    maxLifespan: 1000,
+    particles: this.m_particles
+  });
+
+  this.stage.addChild(this.m_bodypartEmitter)
 };
 
 /**
@@ -73,9 +96,12 @@ howlkraul.entity.Enemy.prototype.m_initDeathEmiter = function () {
  * @protected
  * @returns {undefined}
  */
-howlkraul.entity.Enemy.prototype.m_moveEmitterWithCharacter = function () {
-  //console.log(this.m_deathEmiter.x);
-  this.m_deathEmiter.moveTo(this.x, this.y);
+howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
+  this.m_bloodEmitter.moveTo(this.x, this.y);
+
+  if (this.m_bodypartEmitter) {
+    this.m_bodypartEmitter.moveTo(this.x, this.y);
+  }
 };
 
 /**
@@ -179,10 +205,6 @@ howlkraul.entity.Enemy.prototype.die = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.dropCoin = function () {
-  // var coin = new rune.display.Graphic(this.centerX, this.centerY, 10, 10);
-  // coin.backgroundColor = "gold";
-  // coin.hitbox.set(0, 0, coin.width, coin.height);
-
   var coin = new howlkraul.drops.Coin(this.x, this.y);
   this.application.scenes.selected.addCoin(coin);
 };
@@ -194,6 +216,9 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.explode = function () {
-  console.log(this.m_deathEmiter)
-  this.m_deathEmiter.emit(50);
+  this.m_bloodEmitter.emit(50);
+  if (this.m_bodypartEmitter) {
+    this.m_bodypartEmitter.emit(1);
+
+  }
 };
