@@ -19,6 +19,7 @@ npx google-closure-compiler \
 --js "./../../src/entity/enemy/Knight.js" \
 --js "./../../src/scene/menu/Menu.js" \
 --js "./../../src/scene/game/Game.js" \
+--js "./../../src/scene/gameover/GameOver.js" \
 --js "./../../src/system/Main.js" \
 --js "./../../src/scope/Alias.js" \
 --js_output_file "./../../dist/howlkraul.js";

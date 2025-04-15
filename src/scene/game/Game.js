@@ -149,6 +149,7 @@ howlkraul.scene.Game.prototype.update = function (step) {
     this.m_handlePause();
     this.m_collisionHandler.update();
     this.m_handleRoundWin();
+    this.m_checkGameOver();
 
     // follow player
     this.enemies.forEachMember(function (enemy) {
@@ -311,5 +312,19 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     } else {
 
         this.m_initEnemies(this.m_round);
+    }
+};
+
+howlkraul.scene.Game.prototype.m_checkGameOver = function () {
+    var deadPlayers = 0;
+
+    this.players.forEachMember(function (player) {
+        if (player.hp === 0) {
+            deadPlayers += 1;
+        }
+    }, this);
+
+    if (deadPlayers >= this.players.numMembers) {
+        this.application.scenes.load([new howlkraul.scene.GameOver()])
     }
 };
