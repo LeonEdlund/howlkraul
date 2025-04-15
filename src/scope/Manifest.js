@@ -75,6 +75,15 @@ var howlkraul = function () {
     m_this.particle = {};
 
     /**
+    * This package contains all projectiles
+    *
+    * @namespace particle
+    * @memberof howlkraul
+    * @since 1.0
+    */
+    m_this.projectile = {};
+
+    /**
     * This package contains all handlers
     *
     * @namespace handler
