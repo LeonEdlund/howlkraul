@@ -24,12 +24,10 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var closestPlayer = players.getMembersCloseTo(this)[0];
 
-  //console.log(players.getMembersCloseTo(this));
   var tX = this.centerX;
   var tY = this.centerY;
   var pX = closestPlayer.centerX;
   var pY = closestPlayer.centerY;
-  //var threshold = 0;
   var distance = this.distance(closestPlayer.center);
 
   var distanceX = rune.util.Math.abs(tX - pX);
@@ -75,7 +73,6 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
       this.moveDown();
     }
   }
-
 };
 
 /**

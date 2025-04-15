@@ -62,6 +62,14 @@ howlkraul.scene.Game = function () {
      * @private
      * @type {rune.display.DisplayGroup}
      */
+    this.enemyProjectiles = this.groups.create(this.stage);
+
+    /**
+     * ...
+     * 
+     * @private
+     * @type {rune.display.DisplayGroup}
+     */
     this.coins = this.groups.create(this.stage);
 
     /**
@@ -175,9 +183,10 @@ howlkraul.scene.Game.prototype.dispose = function () {
 // Public Methods
 //--------------------------------------------------------------------------
 
-howlkraul.scene.Game.prototype.removeSpell = function (spell) {
-    if (this.spells && spell) {
-        this.m_spells.removeMember(spell, true);
+howlkraul.scene.Game.prototype.removeProjectile = function (group, projectile) {
+    if (group && projectile) {
+        group.removeMember(projectile, true);
+        console.log(group);
     }
 }
 

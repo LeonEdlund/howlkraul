@@ -7,23 +7,30 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
   this.m_handleEnemySpellHit();
   this.m_handleCoinPickup();
   this.m_handleDamageHit()
+  this.m_handleEnemyProjectileHit()
 };
 
 howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function () {
+  // Set hidden walls
   this.game.borders.hitTestAndSeparate(this.game.players);
   this.game.borders.hitTestAndSeparate(this.game.enemies);
   this.game.enemies.hitTestAndSeparate(this.game.enemies);
 
+  // remove player projectiles when hiting borders
   this.game.borders.hitTest(this.game.spells, function (border, spell) {
-    this.game.removeSpell(spell);
-    this.game.gamepads.get(0).vibrate(500);
+    this.game.removeProjectile(this.game.spells, spell);
+  }, this);
+
+  // remove enemy projectiles when hiting borders
+  this.game.borders.hitTest(this.game.enemyProjectiles, function (border, projectile) {
+    this.game.removeProjectile(this.game.enemyProjectiles, projectile);
   }, this);
 }
 
 howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function () {
   this.game.enemies.hitTestAndSeparate(this.game.spells, function (enemy, spell) {
     enemy.takeDamage(spell.castedBy.power);
-    this.game.removeSpell(spell);
+    this.game.removeProjectile(this.game.spells, spell);
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
     this.game.gamepads.get(0).vibrate(500);
 
@@ -35,6 +42,15 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function ()
       }, true);
     }
     return true;
+  }, this);
+}
+
+howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = function () {
+  this.game.players.hitTestAndSeparate(this.game.enemyProjectiles, function (player, projectile) {
+    player.takeDamage(projectile.castedBy.power);
+    this.game.removeProjectile(this.game.enemyProjectiles, projectile);
+    this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
+    this.game.gamepads.get(0).vibrate(500);
   }, this);
 }
 

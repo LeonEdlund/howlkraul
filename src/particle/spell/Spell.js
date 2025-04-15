@@ -1,6 +1,8 @@
 howlkraul.particle.Spell = function (x, y, castedBy) {
   rune.display.Sprite.call(this, x, y, 27, 32, "magic_27x27");
 
+  this.acceleration = 1;
+
   this.castedBy = castedBy;
 }
 
@@ -14,14 +16,6 @@ howlkraul.particle.Spell.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
   this.m_initAnimation();
   this.m_initHitbox();
-};
-
-/**
- * @override
- */
-howlkraul.particle.Spell.prototype.update = function (step) {
-  rune.display.Sprite.prototype.update.call(this, step);
-  //this.destroy();
 };
 
 /**
