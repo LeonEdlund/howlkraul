@@ -33,7 +33,7 @@ howlkraul.particle.Spell.prototype.dispose = function () {
 };
 
 howlkraul.particle.Spell.prototype.m_initAnimation = function () {
-  this.animation.create("spell", [0, 1, 2, 3], 12, true);
+  this.animation.create("spell", [0, 1, 2, 3, 4, 5, 6, 7], 20, true);
 };
 
 howlkraul.particle.Spell.prototype.m_initHitbox = function () {

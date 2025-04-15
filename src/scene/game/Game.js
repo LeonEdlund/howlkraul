@@ -301,10 +301,10 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     this.m_room.randomizeColors();
 
     // move players
-    var spawnPoint = 30;
+    var spawnPoint = 10;
     this.players.forEachMember(function (player) {
         spawnPoint += 20;
-        player.moveTo(spawnPoint, 100);
+        player.moveTo(spawnPoint, 130);
     }, this);
 
     if (this.m_round === 10) {

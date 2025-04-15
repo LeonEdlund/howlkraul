@@ -36,8 +36,8 @@ howlkraul.room.Room.prototype.m_init = function () {
 }
 
 howlkraul.room.Room.prototype.m_initAnimations = function () {
-  this.animation.create("closed-door", [0], 0, false);
-  this.animation.create("open-door", [0, 1, 2, 3, 4, 5], 10, false);
+  this.animation.create("closed-door", [13, 14, 15, 16, 17, 18, 19], 10, false);
+  this.animation.create("open-door", [0, 1, 2, 3, 4, 5, 6, 7], 10, false);
 }
 
 howlkraul.room.Room.prototype.m_initBorders = function () {
@@ -80,7 +80,7 @@ howlkraul.room.Room.prototype.openDoor = function () {
 
 howlkraul.room.Room.prototype.closeDoor = function () {
   if (this.m_gateOpen) {
-    this.animation.goto("closed-door", 0);
+    this.animation.gotoAndPlay("closed-door", 0);
     this.m_gateOpen = false;
     this.m_gate.y = 70;
   }
