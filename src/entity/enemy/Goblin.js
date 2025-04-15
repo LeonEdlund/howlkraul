@@ -46,19 +46,30 @@ howlkraul.entity.Goblin.prototype.m_initAnimation = function () {
   this.flippedX = true;
 };
 
+/**
+ * Take damage and lower hp. 
+ * If hp is lower then 0 die.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+// howlkraul.entity.Goblin.prototype.m_initDeathEmiter = function () {
+
+// };
+
 howlkraul.entity.Goblin.prototype.moveRight = function () {
-  howlkraul.entity.Entity.prototype.moveRight.call(this);
+  howlkraul.entity.Enemy.prototype.moveRight.call(this);
   this.animation.gotoAndPlay("r-side");
 }
 
 howlkraul.entity.Goblin.prototype.moveLeft = function () {
-  howlkraul.entity.Entity.prototype.moveLeft.call(this);
+  howlkraul.entity.Enemy.prototype.moveLeft.call(this);
 
   this.animation.gotoAndPlay("r-side");
 }
 
 howlkraul.entity.Goblin.prototype.moveUp = function () {
-  howlkraul.entity.Entity.prototype.moveUp.call(this);
+  howlkraul.entity.Enemy.prototype.moveUp.call(this);
 
   var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
 
@@ -70,7 +81,7 @@ howlkraul.entity.Goblin.prototype.moveUp = function () {
 }
 
 howlkraul.entity.Goblin.prototype.moveDown = function () {
-  howlkraul.entity.Entity.prototype.moveDown.call(this);
+  howlkraul.entity.Enemy.prototype.moveDown.call(this);
 
   var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
 
@@ -141,7 +152,6 @@ howlkraul.entity.Goblin.prototype.followPlayers = function (players) {
   }
 };
 
-
 // howlkraul.entity.Goblin.prototype.roam = function () {
 //   var directions = [
 //     this.moveUp.bind(this),
@@ -162,12 +172,20 @@ howlkraul.entity.Goblin.prototype.shoot = function (player) {
     var x = this.flippedX ? this.x - 12 : this.x + 12;
     var y = this.flippedX ? this.y + 5 : this.y + 10;
 
+    var arrow = new howlkraul.projectile.Arrow(x, y, this);
 
-
-
-    var spell = new howlkraul.projectile.Spell(x, y, this);
-
-    spell.shootAtPoint(player.center, scene.enemyProjectiles);
+    arrow.shootAtPoint(player.center, scene.enemyProjectiles);
     this.m_lastShot = now + this.m_shootCooldown;
   }
 }
+
+/**
+ * Play die animation and drop coin.
+ *
+ * @public
+ * @returns {undefined}
+ */
+// howlkraul.entity.Goblin.prototype.explode = function () {
+//   console.log("EXPLODE IN GOBLIN ")
+//   howlkraul.entity.Enemy.prototype.moveDown.call(this);
+// };

@@ -57,7 +57,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("goblin_gore_4", "./../asset/img/gore/goblin_gore_4.png");
 	this.add("background", "./../asset/img/jpg/background.jpg");
 	this.add("dwd", "./../asset/img/jpg/dwd.jpg");
-	this.add("arrow", "./../asset/img/png/arrow.png");
+	this.add("arrow_19x5", "./../asset/img/png/arrow_19x5.png");
 	this.add("coin_11x26", "./../asset/img/png/coin_11x26.png");
 	this.add("empty-heart_11x12", "./../asset/img/png/empty-heart_11x12.png");
 	this.add("full-heart_11x12", "./../asset/img/png/full-heart_11x12.png");
