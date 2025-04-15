@@ -49,13 +49,13 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
   if (this.mana > 0 && !this.m_manaEmpty) {
     this.mana -= 20;
     this.m_manabar.progress = this.mana / 100;
+
     var x = this.flippedX ? this.x - 12 : this.x + 12;
     var y = this.flippedX ? this.y + 5 : this.y + 10;
-    var spell = new howlkraul.particle.Spell(x, y, this);
-    spell.emit(this.facing);
-    scene.spells = spell;
+    var spell = new howlkraul.projectile.Spell(x, y, this);
+    spell.shootInDirection(this.facing, scene.spells);
+    //scene.spells = spell;
   }
-
 };
 
 //--------------------------------------------------------------------------

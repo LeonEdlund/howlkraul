@@ -161,9 +161,13 @@ howlkraul.entity.Goblin.prototype.shoot = function (player) {
   if (now > this.m_lastShot) {
     var x = this.flippedX ? this.x - 12 : this.x + 12;
     var y = this.flippedX ? this.y + 5 : this.y + 10;
-    var spell = new howlkraul.particle.Spell(x, y, this);
-    spell.emit("left");
-    scene.enemyProjectiles.addMember(spell);
+
+
+
+
+    var spell = new howlkraul.projectile.Spell(x, y, this);
+
+    spell.shootAtPoint(player.center, scene.enemyProjectiles);
     this.m_lastShot = now + this.m_shootCooldown;
   }
 }

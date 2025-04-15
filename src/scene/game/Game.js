@@ -54,7 +54,7 @@ howlkraul.scene.Game = function () {
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.m_spells = this.groups.create(this.stage);
+    this.spells = this.groups.create(this.stage);
 
     /**
      * ...
@@ -115,15 +115,15 @@ howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
 //--------------------------------------------------------------------------
 // Getter and Setters
 //--------------------------------------------------------------------------
-Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
-    get: function () {
-        return this.m_spells;
-    },
+// Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
+//     get: function () {
+//         return this.m_spells;
+//     },
 
-    set: function (spell) {
-        this.m_spells.addMember(spell);
-    }
-});
+//     set: function (spell) {
+//         this.m_spells.addMember(spell);
+//     }
+// });
 
 //------------------------------------------------------------------------------
 // Override public prototype methods (ENGINE)
