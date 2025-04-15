@@ -29,20 +29,22 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var tY = this.centerY;
   var pX = closestPlayer.centerX;
   var pY = closestPlayer.centerY;
-  var threshold = 0;
+  //var threshold = 0;
   var distance = this.distance(closestPlayer.center);
 
   var distanceX = rune.util.Math.abs(tX - pX);
   var distanceY = rune.util.Math.abs(tY - pY);
 
   if (distance < 20) {
-    this.m_stop();
+    this.allowMovement = false;
     return;
+  } else {
+    this.allowMovement = true;
   }
 
   if (distanceX > distanceY * 2) {
 
-    if (tX > pX + threshold) {
+    if (tX > pX) {
       this.moveLeft();
     } else if (tX < pX) {
       this.moveRight();
@@ -52,7 +54,7 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
 
   } else if (distanceY > distanceX * 2) {
 
-    if (tY > pY - threshold) {
+    if (tY > pY) {
       this.moveUp();
     } else if (tY < pY) {
       this.moveDown();
@@ -61,13 +63,13 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
     this.velocity.x = 0;
   } else {
 
-    if (tX > pX + threshold) {
+    if (tX > pX) {
       this.moveLeft();
     } else if (tX < pX) {
       this.moveRight();
     }
 
-    if (tY > pY - threshold) {
+    if (tY > pY) {
       this.moveUp();
     } else if (tY < pY) {
       this.moveDown();
@@ -121,9 +123,4 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
 
   var coin = new howlkraul.drops.Coin(this.x, this.y);
   this.application.scenes.selected.addCoin(coin);
-};
-
-howlkraul.entity.Enemy.prototype.m_stop = function () {
-  this.velocity.x = 0;
-  this.velocity.y = 0;
 };

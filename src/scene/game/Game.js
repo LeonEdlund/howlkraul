@@ -114,7 +114,6 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
 
     set: function (spell) {
         this.m_spells.addMember(spell);
-        console.log(this.m_spells);
     }
 });
 

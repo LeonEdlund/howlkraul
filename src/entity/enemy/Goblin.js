@@ -15,7 +15,6 @@ howlkraul.entity.Goblin.prototype.init = function () {
   this.setVelocity(0.1, 0.5);
   this.m_initAnimation();
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
-  //this.hitbox.debug = true;
 };
 
 /**

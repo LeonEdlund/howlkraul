@@ -6,13 +6,14 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
   this.m_handleBorderCollision();
   this.m_handleEnemySpellHit();
   this.m_handleCoinPickup();
+  this.m_handleDamageHit()
 };
 
 howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function () {
   this.game.borders.hitTestAndSeparate(this.game.players);
   this.game.borders.hitTestAndSeparate(this.game.enemies);
   this.game.enemies.hitTestAndSeparate(this.game.enemies);
-  
+
   this.game.borders.hitTest(this.game.spells, function (border, spell) {
     this.game.removeSpell(spell);
     this.game.gamepads.get(0).vibrate(500);
@@ -42,5 +43,11 @@ howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
     this.game.addToMoneyCounter(coin.worth);
     this.game.coins.removeMember(coin);
     coin.dispose();
+  }, this);
+}
+
+howlkraul.handler.CollisionHandler.prototype.m_handleDamageHit = function () {
+  this.game.players.hitTest(this.game.enemies, function (player, enemy) {
+    player.takeDamage();
   }, this);
 }
