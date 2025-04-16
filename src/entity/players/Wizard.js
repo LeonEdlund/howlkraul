@@ -29,8 +29,8 @@ howlkraul.entity.Wizard.prototype.init = function () {
  */
 howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Player.prototype.update.call(this, step);
-  this.m_manabarFollow();
 
+  this.m_manabarFollow();
   this.m_regenMana();
 };
 
@@ -49,12 +49,20 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
   if (this.mana > 0 && !this.m_manaEmpty) {
     this.mana -= 20;
     this.m_manabar.progress = this.mana / 100;
+    var x = 0;
+    var y = 0;
 
-    var x = this.flippedX ? this.x - 12 : this.x + 12;
-    var y = this.flippedX ? this.y + 5 : this.y + 10;
+    if (this.facing === "up" || this.facing === "down") {
+      x = this.topLeft.x;
+      y = this.topLeft.y;
+    } else {
+      x = this.flippedX ? this.x - 12 : this.x + 12;
+      y = this.flippedX ? this.y + 5 : this.y + 10;
+
+    }
+
     var spell = new howlkraul.projectile.Spell(x, y, this);
     spell.shootInDirection(this.facing, scene.spells);
-    //scene.spells = spell;
   }
 };
 
