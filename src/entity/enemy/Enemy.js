@@ -176,11 +176,10 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
 howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   this.hp -= amount;
 
+  console.log(this.hp)
   if (this.hp <= 0) {
     this.die();
   }
-
-  this.flicker.start(200);
 };
 
 /**

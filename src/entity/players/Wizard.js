@@ -127,9 +127,6 @@ howlkraul.entity.Wizard.prototype.m_getInput = function () {
   }
 }
 
-
-
-
 howlkraul.entity.Wizard.prototype.move = function (input) {
   this.m_setFacingDirection(input);
   this.m_setAnimation(input);
@@ -159,15 +156,6 @@ howlkraul.entity.Wizard.prototype.m_regenMana = function () {
     this.m_manabar.progress = this.mana / 100;
   }
 };
-
-howlkraul.entity.Wizard.prototype.m_checkIfIdle = function () {
-  if (!this.velocity.x && !this.velocity.y) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 
 //--------------------------------------------------------------------------
 // Animations
