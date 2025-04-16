@@ -31,7 +31,7 @@ howlkraul.entity.PlayerOne.prototype.m_getInput = function () {
     right: this.keyboard.pressed("d") || gamepad.stickLeftRight,
     up: this.keyboard.pressed("w") || gamepad.stickLeftUp,
     down: this.keyboard.pressed("s") || gamepad.stickLeftDown,
-    shoot: this.keyboard.justPressed("q") || gamepad.justPressed(0),
+    shoot: this.keyboard.justPressed("space") || gamepad.justPressed(0),
   }
 }
 

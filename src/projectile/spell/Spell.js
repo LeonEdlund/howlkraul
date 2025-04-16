@@ -32,4 +32,5 @@ howlkraul.projectile.Spell.prototype.m_initAnimation = function () {
 
 howlkraul.projectile.Spell.prototype.m_initHitbox = function () {
   this.hitbox.set(10, 10, 10, 10);
+  this.hitbox.debug = true;
 };

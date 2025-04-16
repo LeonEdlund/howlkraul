@@ -18,6 +18,11 @@ howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function 
 
   // remove player projectiles when hiting borders
   this.game.borders.hitTest(this.game.spells, function (border, spell) {
+    // Stop spell from being removed when beeing at the top of the room
+    if ((spell.castedBy.facing === "right" || spell.castedBy.facing === "left") && border.center.x === 200) {
+      return;
+    }
+
     this.game.removeProjectile(this.game.spells, spell);
   }, this);
 
