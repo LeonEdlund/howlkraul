@@ -143,6 +143,7 @@ howlkraul.scene.Game.prototype.init = function () {
  */
 howlkraul.scene.Game.prototype.update = function (step) {
     rune.scene.Scene.prototype.update.call(this, step);
+
     this.m_handlePause();
     this.m_collisionHandler.update();
     this.m_handleRoundWin();
@@ -192,7 +193,7 @@ howlkraul.scene.Game.prototype.addCoin = function (coin) {
 };
 
 howlkraul.scene.Game.prototype.removeCoin = function (coin) {
-    this.coins.removeMember(coin, true);
+    this.coins.removeMember(coin);
 };
 
 howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
