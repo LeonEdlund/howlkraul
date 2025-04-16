@@ -51,7 +51,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function ()
 }
 
 howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = function () {
-  this.game.players.hitTestAndSeparate(this.game.enemyProjectiles, function (player, projectile) {
+  this.game.players.hitTest(this.game.enemyProjectiles, function (player, projectile) {
     player.takeDamage(projectile.castedBy.power);
     this.game.removeProjectile(this.game.enemyProjectiles, projectile);
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
@@ -62,8 +62,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
 howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
   this.game.players.hitTest(this.game.coins, function (player, coin) {
     this.game.addToMoneyCounter(coin.worth);
-    this.game.coins.removeMember(coin);
-    coin.dispose();
+    this.game.coins.removeMember(coin, true);
   }, this);
 }
 

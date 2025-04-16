@@ -34,5 +34,3 @@ howlkraul.entity.PlayerOne.prototype.m_getInput = function () {
     shoot: this.keyboard.justPressed("space") || gamepad.justPressed(0),
   }
 }
-
-
