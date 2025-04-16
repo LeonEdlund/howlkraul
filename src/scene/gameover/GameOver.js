@@ -13,7 +13,9 @@
  * 
  * Menu scene.
  */
-howlkraul.scene.GameOver = function () {
+howlkraul.scene.GameOver = function (score) {
+
+  this.score = score;
 
   //--------------------------------------------------------------------------
   // Super call
@@ -44,12 +46,18 @@ howlkraul.scene.GameOver.prototype.constructor = howlkraul.scene.GameOver;
  */
 howlkraul.scene.GameOver.prototype.init = function () {
   rune.scene.Scene.prototype.init.call(this);
-
+  var scoreText = "SCORE: " + this.score;
   var text = new rune.text.BitmapField("GAME OVER");
+  var score = new rune.text.BitmapField(scoreText);
+
   text.autoSize = true;
+  score.autoSize = true;
   text.center = this.application.screen.center;
+  score.center = this.application.screen.center;
+  score.y += 20;
 
   this.stage.addChild(text);
+  this.stage.addChild(score);
 };
 
 /**

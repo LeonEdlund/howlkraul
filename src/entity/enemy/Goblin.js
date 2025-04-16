@@ -35,6 +35,14 @@ howlkraul.entity.Goblin.prototype.update = function (step) {
 };
 
 /**
+ * @override
+ */
+howlkraul.entity.Goblin.prototype.dispose = function () {
+  howlkraul.entity.Enemy.prototype.dispose.call(this);
+  this.m_bodyparts = null;
+};
+
+/**
  * Configures the animation sequence.
  * 
  * @returns {undefined}

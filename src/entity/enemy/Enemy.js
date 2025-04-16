@@ -45,6 +45,12 @@ howlkraul.entity.Enemy.prototype.update = function (step) {
   this.m_moveEmittersWithCharacter();
 };
 
+howlkraul.entity.Enemy.prototype.dispose = function () {
+  howlkraul.entity.Entity.prototype.dispose.call(this);
+  this.m_bloodEmitter = null;
+  this.m_bodypartEmitter = null;
+  this.m_particles = null;
+};
 
 /**
  * Take damage and lower hp. 
@@ -176,7 +182,6 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
 howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   this.hp -= amount;
 
-  console.log(this.hp)
   if (this.hp <= 0) {
     this.die();
   }
@@ -189,10 +194,6 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.die = function () {
-  this.animation.gotoAndPlay("dead");
-  this.y += 10;
-  this.rotation = -90;
-  this.allowCollisions = rune.physics.Space.NONE;
   this.dropCoin();
   this.explode();
 };

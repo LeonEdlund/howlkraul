@@ -103,6 +103,8 @@ howlkraul.scene.Game = function () {
      * @type {number}
      */
     this.m_round = 1;
+
+    this.money = 0;
 };
 
 //------------------------------------------------------------------------------
@@ -111,19 +113,6 @@ howlkraul.scene.Game = function () {
 
 howlkraul.scene.Game.prototype = Object.create(rune.scene.Scene.prototype);
 howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
-
-//--------------------------------------------------------------------------
-// Getter and Setters
-//--------------------------------------------------------------------------
-// Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
-//     get: function () {
-//         return this.m_spells;
-//     },
-
-//     set: function (spell) {
-//         this.m_spells.addMember(spell);
-//     }
-// });
 
 //------------------------------------------------------------------------------
 // Override public prototype methods (ENGINE)
@@ -177,6 +166,15 @@ howlkraul.scene.Game.prototype.update = function (step) {
  */
 howlkraul.scene.Game.prototype.dispose = function () {
     rune.scene.Scene.prototype.dispose.call(this);
+    this.m_room = null;
+    this.borders = null;
+    this.players = null;
+    this.enemies = null;
+    this.spells = null;
+    this.enemyProjectiles = null;
+    this.coins = null;
+    this.m_collisionHandler = null;
+    this.moneyCounter = null;
 };
 
 //--------------------------------------------------------------------------
@@ -194,12 +192,12 @@ howlkraul.scene.Game.prototype.addCoin = function (coin) {
 };
 
 howlkraul.scene.Game.prototype.removeCoin = function (coin) {
-    this.coins.removeMember(coin);
+    this.coins.removeMember(coin, true);
 };
 
 howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
-    var money = this.moneyCounter.value + amount;
-    this.moneyCounter.setValue(money);
+    this.money += amount;
+    this.moneyCounter.setValue(this.money);
 };
 
 //--------------------------------------------------------------------------
@@ -219,26 +217,14 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
 };
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
+    var minX = 200; // Determin min distance from left wall of room
+    var minY = 30;// Determin min distance from top wall of room
     for (var i = 0; i < amount; i++) {
-        var x1 = rune.util.Math.randomInt(30, (this.application.width - 50));
-        var x2 = rune.util.Math.randomInt(30, (this.application.width - 50));
-        var y1 = rune.util.Math.randomInt(30, (this.application.height - 50));
-        var y2 = rune.util.Math.randomInt(30, (this.application.height - 50));
+        var x1 = rune.util.Math.randomInt(minX, (this.application.width - 50));
+        var x2 = rune.util.Math.randomInt(minX, (this.application.width - 50));
+        var y1 = rune.util.Math.randomInt(minY, (this.application.height - 50));
+        var y2 = rune.util.Math.randomInt(minY, (this.application.height - 50));
 
-        //this.enemies.addMember(new howlkraul.entity.Knight(x1, y1));
-        this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
-        this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
-    }
-}
-
-howlkraul.scene.Game.prototype.m_initBoss = function (amount) {
-    this.enemies.addMember(new howlkraul.entity.Knight(x1, y1));
-
-    for (var i = 0; i < amount; i++) {
-        var x1 = rune.util.Math.randomInt(30, (this.application.width - 50));
-        var x2 = rune.util.Math.randomInt(30, (this.application.width - 50));
-        var y1 = rune.util.Math.randomInt(30, (this.application.height - 50));
-        var y2 = rune.util.Math.randomInt(30, (this.application.height - 50));
         this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
         this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
     }
@@ -305,8 +291,8 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
 howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     this.m_roundTransition = false;
     this.cameras.getCameraAt(0).fade.in(100);
-
     this.m_room.randomizeColors();
+    this.m_initEnemies(this.m_round);
 
     // move players
     var spawnPoint = 10;
@@ -315,12 +301,6 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
         player.moveTo(spawnPoint, 130);
     }, this);
 
-    if (this.m_round === 10) {
-        this.m_initBoss(5);
-    } else {
-
-        this.m_initEnemies(this.m_round);
-    }
 };
 
 howlkraul.scene.Game.prototype.m_checkGameOver = function () {
@@ -333,6 +313,6 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     }, this);
 
     if (deadPlayers >= this.players.numMembers) {
-        this.application.scenes.load([new howlkraul.scene.GameOver()])
+        this.application.scenes.load([new howlkraul.scene.GameOver(this.money)])
     }
 };
