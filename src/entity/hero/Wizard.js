@@ -1,7 +1,7 @@
 howlkraul.entity.Wizard = function (x, y) {
   howlkraul.entity.PlayableCharacter.call(this, x, y, 27, 34, "Wizard_27x34");
 
-  this.facing = "down";
+  //this.facing = "down";
   this.power = 50;
   this.mana = 100;
   this.m_manabar = null;
@@ -14,7 +14,7 @@ howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.PlayableChara
 howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
 
 //--------------------------------------------------------------------------
-// Overiding Public Methods
+// Overiding Methods
 //--------------------------------------------------------------------------
 
 /**
@@ -22,7 +22,8 @@ howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
  */
 howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.PlayableCharacter.prototype.init.call(this);
-  this.m_initAnimations();
+
+  this.setVelocity(0.08, 1.2);
   this.m_initManabar();
 };
 
@@ -34,6 +35,29 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
 
   this.m_manabarFollow();
   this.m_regenMana();
+};
+
+/**
+ * @overide
+*/
+howlkraul.entity.Wizard.prototype.initAnimations = function () {
+  // IDLE
+  this.animation.create("idle-down", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 0, 0, 0, 17, 18, 17, 18, 17, 18, 0, 0, 0, 0], 13, true);
+  this.animation.create("idle-sideways", [29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43], 10, true);
+  this.animation.create("idle-up", [62, 62, 62, 62, 62, 62, 62, 62, 62, 71, 72, 71, 72, 71], 10, true);
+
+  // RUNNING
+  this.animation.create("r-down", [19, 20, 21, 22, 23, 24], 10, true);
+  this.animation.create("r-up", [63, 64, 65, 66, 67, 68, 69], 10, true);
+  this.animation.create("r-up-side", [73, 74, 75, 76, 77, 78], 10, true);
+  this.animation.create("r-down-side", [57, 58, 59, 60], 10, true);
+  this.animation.create("r-sideways", [46, 47, 48, 49, 50, 51, 52], 10, true);
+
+  // HIT
+  this.animation.create("s-up", [71, 72], 8, true);
+  this.animation.create("s-down", [26, 27], 8, true);
+  this.animation.create("s-side", [54, 55], 8, true);
+  this.animation.create("s-up-side", [82, 83], 8, true);
 };
 
 //--------------------------------------------------------------------------
@@ -73,31 +97,7 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
 // Private Methods
 //--------------------------------------------------------------------------
 
-/**
- * Configures the wizards animation sequences.
- * 
- * @returns {undefined}
- * @private
-*/
-howlkraul.entity.Wizard.prototype.m_initAnimations = function () {
-  // IDLE
-  this.animation.create("idle-down", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 0, 0, 0, 17, 18, 17, 18, 17, 18, 0, 0, 0, 0], 13, true);
-  this.animation.create("idle-sideways", [29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43], 10, true);
-  this.animation.create("idle-up", [62, 62, 62, 62, 62, 62, 62, 62, 62, 71, 72, 71, 72, 71], 10, true);
 
-  // RUNNING
-  this.animation.create("r-down", [19, 20, 21, 22, 23, 24], 10, true);
-  this.animation.create("r-up", [63, 64, 65, 66, 67, 68, 69], 10, true);
-  this.animation.create("r-up-side", [73, 74, 75, 76, 77, 78], 10, true);
-  this.animation.create("r-down-side", [57, 58, 59, 60], 10, true);
-  this.animation.create("r-sideways", [46, 47, 48, 49, 50, 51, 52], 10, true);
-
-  // HIT
-  this.animation.create("s-up", [71, 72], 8, true);
-  this.animation.create("s-down", [26, 27], 8, true);
-  this.animation.create("s-side", [54, 55], 8, true);
-  this.animation.create("s-up-side", [82, 83], 8, true);
-};
 
 /**
  * Init manabar

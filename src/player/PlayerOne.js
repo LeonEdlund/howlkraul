@@ -10,7 +10,7 @@ howlkraul.player.PlayerOne.prototype.constructor = howlkraul.player.PlayerOne;
 //--------------------------------------------------------------------------
 
 howlkraul.player.PlayerOne.prototype.m_getInput = function () {
-  var gamepad = this.gamepads.get(0);
+  var gamepad = this.gamepads ? this.gamepads.get(0) : {};
 
   return {
     left: this.keyboard.pressed("a") || gamepad.stickLeftLeft,

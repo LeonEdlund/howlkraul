@@ -1,6 +1,5 @@
 howlkraul.entity.Knight = function (x, y) {
-  howlkraul.entity.Enemy.call(this, x, y, 28, 42, "knight_walk");
-  this.hp = 100;
+  howlkraul.entity.Enemy.call(this, x, y, 28, 42, "knight_walk", 100);
 }
 
 howlkraul.entity.Knight.prototype = Object.create(howlkraul.entity.Enemy.prototype);

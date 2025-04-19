@@ -17,9 +17,9 @@
  * The PlayableCharacter class represents an animated PlayableCharacter sprite.
  */
 howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
-  howlkraul.entity.Entity.call(this, x || 0, y || 0, height, width, texture);
+  howlkraul.entity.Entity.call(this, x || 0, y || 0, height, width, texture, 6);
 
-  this.hp = 6;
+  //this.hp = 6;
   this.m_hpbar = null;
   this.m_lastDamageHit = 0;
   this.m_damageHitCoolDown = 1000;
@@ -40,8 +40,8 @@ howlkraul.entity.PlayableCharacter.prototype.constructor = howlkraul.entity.Play
  * @override
  */
 howlkraul.entity.PlayableCharacter.prototype.init = function () {
-  rune.display.Sprite.prototype.init.call(this);
-  this.setVelocity(0.08, 1.2);
+  howlkraul.entity.Entity.prototype.init.call(this);
+
   this.hitbox.set(0, (this.height - 10), this.width, 9);
   this.m_inithpbar();
 };
@@ -50,15 +50,15 @@ howlkraul.entity.PlayableCharacter.prototype.init = function () {
  * @override
  */
 howlkraul.entity.PlayableCharacter.prototype.update = function (step) {
-  rune.display.Sprite.prototype.update.call(this, step);
+  howlkraul.entity.Entity.prototype.update.call(this, step);
   this.m_updateHpbar();
 
-  if (this.hp === 0) {
-    this.die();
-  }
+  // if (this.hp === 0) {
+  //   this.die();
+  // }
 };
 
-howlkraul.entity.PlayableCharacter.prototype.takeDamage = function () {
+howlkraul.entity.PlayableCharacter.prototype.m_handleDamage = function () {
   var now = Date.now();
 
   if (now > this.m_lastDamageHit && this.hp > 0) {

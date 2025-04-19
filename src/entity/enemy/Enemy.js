@@ -1,8 +1,7 @@
 howlkraul.entity.Enemy = function (x, y, width, height, texture, particles) {
-  howlkraul.entity.Entity.call(this, x, y, width, height, texture);
+  howlkraul.entity.Entity.call(this, x, y, width, height, texture, 100);
 
   this.hp = 100;
-
   this.m_bloodEmitter = null;
   this.m_bodypartEmitter = null;
   this.m_horizontalMovement = false;
@@ -27,6 +26,8 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.init = function () {
+  howlkraul.entity.Entity.prototype.init.call(this);
+
   this.m_initBloodEmitter();
   if (this.m_particles && this.m_particles.length > 0) {
     this.m_initBodypartEmitter();
@@ -118,7 +119,7 @@ howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
-  var closestPlayer = players.getMembersCloseTo(this)[0];
+  var closestPlayer = this.m_getClosestPlayer(players);
 
   var tX = this.centerX;
   var tY = this.centerY;
@@ -171,6 +172,51 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   }
 };
 
+howlkraul.entity.Enemy.prototype.runAwayFromPlayer = function (player) {
+  var closestPlayer = player;
+
+  var tX = this.centerX;
+  var tY = this.centerY;
+  var pX = closestPlayer.centerX;
+  var pY = closestPlayer.centerY;
+
+  var distanceX = rune.util.Math.abs(tX - pX);
+  var distanceY = rune.util.Math.abs(tY - pY);
+  if (distanceX > distanceY * 2) {
+
+    if (tX < pX) {
+      this.moveLeft();
+    } else if (tX > pX) {
+      this.moveRight();
+    }
+
+    this.velocity.y = 0;
+
+  } else if (distanceY > distanceX * 2) {
+
+    if (tY < pY) {
+      this.moveUp();
+    } else if (tY > pY) {
+      this.moveDown();
+    }
+
+    this.velocity.x = 0;
+  } else {
+
+    if (tX < pX) {
+      this.moveLeft();
+    } else if (tX > pX) {
+      this.moveRight();
+    }
+
+    if (tY < pY) {
+      this.moveUp();
+    } else if (tY > pY) {
+      this.moveDown();
+    }
+  }
+};
+
 /**
  * Take damage and lower hp. 
  * If hp is lower then 0 die.
@@ -179,12 +225,8 @@ howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
  * @param {number} amount - Amount of damage. 
  * @returns {undefined}
  */
-howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
+howlkraul.entity.Enemy.prototype.m_handleDamage = function (amount) {
   this.hp -= amount;
-
-  if (this.hp <= 0) {
-    this.die();
-  }
 };
 
 /**
@@ -207,6 +249,23 @@ howlkraul.entity.Enemy.prototype.die = function () {
 howlkraul.entity.Enemy.prototype.dropCoin = function () {
   var coin = new howlkraul.drops.Coin(this.x, this.y);
   this.application.scenes.selected.addCoin(coin);
+};
+
+/**
+ * Gets the closest player
+ * 
+ * @protected
+ * @returns {howlkraul.entity.PlayableCharacter}
+ */
+howlkraul.entity.Enemy.prototype.m_getClosestPlayer = function (players) {
+  var m_this = this;
+
+  var allPlayers = players.getMembers().slice();
+  allPlayers.sort(function (a, b) {
+    return m_this.distance(a) - m_this.distance(b);
+  });
+
+  return allPlayers[0];
 };
 
 /**
