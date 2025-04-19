@@ -1,16 +1,15 @@
-howlkraul.player.Player = function (character) {
-  this.characterChoice = "";
+howlkraul.player.Player = function (character, spawnX, spawnY) {
+  this.characterChoice = character || "";
   this.characterInstance = null;
-  this.controllers = controllers;
+  this.gamepads = null;
+  this.keyboard = null;
 
-  // DEFAULT SPAWN VALUES - can be overritten
-  this.spawnX = 50;
-  this.spawnY = 50;
-
+  this.spawnX = spawnX;
+  this.spawnY = spawnY;
   this.init();
 }
 
-Object.defineProperty(howlkraul.player.Player, "character", {
+Object.defineProperty(howlkraul.player.Player.prototype, "character", {
   get: function () {
     if (this.characterInstance) {
       return this.characterInstance;
@@ -31,6 +30,15 @@ howlkraul.player.Player.prototype.update = function () {
   }
 };
 
+howlkraul.player.Player.prototype.dispose = function () {
+  this.characterChoice = null;
+  this.characterInstance = null;
+  this.gamepads = null;
+  this.keyboard = null;
+  this.spawnX = null;
+  this.spawnY = null;
+};
+
 
 howlkraul.player.Player.prototype.m_getInput = function () {
   // OVERIDE IN CHILD CLASS
@@ -47,7 +55,8 @@ howlkraul.player.Player.prototype.m_createCharacter = function () {
 
 howlkraul.player.Player.prototype.m_getControllers = function () {
   if (this.characterInstance) {
-    this.controllers = this.characterInstance.application.scene.selected.gamepads;
+    this.gamepads = this.characterInstance.application.scenes.selected.gamepads;
+    this.keyboard = this.characterInstance.application.scenes.selected.keyboard;
   }
 }
 

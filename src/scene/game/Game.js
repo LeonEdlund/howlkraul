@@ -20,6 +20,14 @@ howlkraul.scene.Game = function () {
      * ...
      * 
      * @private
+     * @type {array}
+     */
+    this.playerControllers = [];
+
+    /**
+     * ...
+     * 
+     * @private
      * @type {howlkraul.room.Room}
      */
     this.m_room = new howlkraul.room.Room(this);
@@ -149,10 +157,15 @@ howlkraul.scene.Game.prototype.update = function (step) {
     this.m_handleRoundWin();
     this.m_checkGameOver();
 
+
+    this.playerControllers.forEach(function (player) {
+        player.update();
+    });
+
     // follow player
     this.enemies.forEachMember(function (enemy) {
         enemy.followPlayers(this.players);
-    }, this)
+    }, this);
 };
 
 /**
@@ -165,6 +178,12 @@ howlkraul.scene.Game.prototype.update = function (step) {
  */
 howlkraul.scene.Game.prototype.dispose = function () {
     rune.scene.Scene.prototype.dispose.call(this);
+
+    this.playerControllers.forEach(function (player) {
+        player.dispose();
+    });
+
+    this.playerControllers = null;
     this.m_room = null;
     this.borders = null;
     this.players = null;
@@ -211,8 +230,15 @@ howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
 };
 
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
-    this.players.addMember(new howlkraul.entity.PlayerOne());
-    //this.players.addMember(new howlkraul.entity.PlayerTwo());
+    // PLAYER ONE
+    var playerOne = new howlkraul.player.PlayerOne("wizard");
+    this.playerControllers.push(playerOne);
+    this.players.addMember(playerOne.character);
+
+    // PLAYER two
+    var PlayerTwo = new howlkraul.player.PlayerTwo("wizard");
+    this.playerControllers.push(PlayerTwo);
+    this.players.addMember(PlayerTwo.character);
 };
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {

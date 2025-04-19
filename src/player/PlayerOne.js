@@ -1,29 +1,15 @@
-howlkraul.entity.PlayerOne = function () {
-  howlkraul.entity.Wizard.call(this);
+howlkraul.player.PlayerOne = function (characterChoice) {
+  howlkraul.player.Player.call(this, characterChoice, 50, 50);
 }
 
-howlkraul.entity.PlayerOne.prototype = Object.create(howlkraul.entity.Wizard.prototype);
-howlkraul.entity.PlayerOne.prototype.constructor = howlkraul.entity.PlayerOne;
-
-//--------------------------------------------------------------------------
-// Overiding Public Methods
-//--------------------------------------------------------------------------
-
-/**
- * @override
- */
-howlkraul.entity.PlayerOne.prototype.update = function (step) {
-  howlkraul.entity.Wizard.prototype.update.call(this, step);
-
-  var input = this.m_getInput();
-  this.move(input);
-};
+howlkraul.player.PlayerOne.prototype = Object.create(howlkraul.player.Player.prototype);
+howlkraul.player.PlayerOne.prototype.constructor = howlkraul.player.PlayerOne;
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
 
-howlkraul.entity.PlayerOne.prototype.m_getInput = function () {
+howlkraul.player.PlayerOne.prototype.m_getInput = function () {
   var gamepad = this.gamepads.get(0);
 
   return {
