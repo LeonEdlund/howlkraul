@@ -151,9 +151,7 @@ howlkraul.scene.Game.prototype.update = function (step) {
 
     // follow player
     this.enemies.forEachMember(function (enemy) {
-        if (enemy.hp > 0) {
-            enemy.followPlayers(this.players);
-        }
+        enemy.followPlayers(this.players);
     }, this)
 };
 

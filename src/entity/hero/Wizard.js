@@ -1,5 +1,5 @@
-howlkraul.entity.Wizard = function () {
-  howlkraul.entity.Player.call(this, 50, 50, 27, 34, "Wizard_27x34");
+howlkraul.entity.Wizard = function (x, y) {
+  howlkraul.entity.PlayableCharacter.call(this, x, y, 27, 34, "Wizard_27x34");
 
   this.facing = "down";
   this.power = 50;
@@ -10,7 +10,7 @@ howlkraul.entity.Wizard = function () {
   this.m_isShooting = false;
 }
 
-howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.Player.prototype);
+howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.PlayableCharacter.prototype);
 howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
 
 //--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
  * @override
  */
 howlkraul.entity.Wizard.prototype.init = function () {
-  howlkraul.entity.Player.prototype.init.call(this);
+  howlkraul.entity.PlayableCharacter.prototype.init.call(this);
   this.m_initAnimations();
   this.m_initManabar();
 };
@@ -30,7 +30,7 @@ howlkraul.entity.Wizard.prototype.init = function () {
  * @override
  */
 howlkraul.entity.Wizard.prototype.update = function (step) {
-  howlkraul.entity.Player.prototype.update.call(this, step);
+  howlkraul.entity.PlayableCharacter.prototype.update.call(this, step);
 
   this.m_manabarFollow();
   this.m_regenMana();
