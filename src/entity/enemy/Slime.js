@@ -13,26 +13,12 @@ howlkraul.entity.Slime.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
   this.setVelocity(0.1, 0.2);
-  this.m_initAnimation();
   this.hitbox.set(0, 0, this.height, this.width);
 };
 
 /**
  * @override
  */
-howlkraul.entity.Slime.prototype.update = function (step) {
-  howlkraul.entity.Enemy.prototype.update.call(this, step);
-};
-
-/**
- * Configures the animation sequence.
- * 
- * @returns {undefined}
- * @private
-*/
-howlkraul.entity.Slime.prototype.m_initAnimation = function () {
+howlkraul.entity.Slime.prototype.initAnimations = function () {
   this.animation.create("r", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
-  this.animation.create("dead", [0], 0, false);
-  this.flippedX = false;
 };
-

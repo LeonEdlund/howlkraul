@@ -110,6 +110,24 @@ var howlkraul = function () {
     */
     m_this.drops = {};
 
+    /**
+    * This package contains all players
+    *
+    * @namespace player
+    * @memberof howlkraul
+    * @since 1.0
+    */
+    m_this.player = {};
+
+    /**
+    * This package contains all ui elements
+    *
+    * @namespace ui
+    * @memberof howlkraul
+    * @since 1.0
+    */
+    m_this.ui = {};
+
     //--------------------------------------------------------------------------
     // Return public scope object
     //--------------------------------------------------------------------------
