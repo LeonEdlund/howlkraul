@@ -20,7 +20,7 @@ howlkraul.entity.Enemy.prototype = Object.create(howlkraul.entity.Entity.prototy
 howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 
 //--------------------------------------------------------------------------
-// Overide
+// Overide Rune Methods
 //--------------------------------------------------------------------------
 
 /**
@@ -57,6 +57,49 @@ howlkraul.entity.Enemy.prototype.dispose = function () {
   this.m_bodypartEmitter = null;
   this.m_particles = null;
 };
+
+//--------------------------------------------------------------------------
+// Overide Entity Methods
+//--------------------------------------------------------------------------
+
+howlkraul.entity.Enemy.prototype.moveRight = function () {
+  howlkraul.entity.Entity.prototype.moveRight.call(this);
+
+  this.facing = "side";
+  this.m_setRunningAnimation();
+}
+
+howlkraul.entity.Enemy.prototype.moveLeft = function () {
+  howlkraul.entity.Entity.prototype.moveLeft.call(this);
+
+  this.facing = "side";
+  this.m_setRunningAnimation();
+}
+
+howlkraul.entity.Enemy.prototype.moveUp = function () {
+  howlkraul.entity.Entity.prototype.moveUp.call(this);
+
+  var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
+
+  if (horizontal) {
+    this.facing = "side";
+    this.m_setRunningAnimation();
+    return;
+  }
+
+  this.facing = "up";
+  this.m_setRunningAnimation();
+}
+
+howlkraul.entity.Enemy.prototype.moveDown = function () {
+  howlkraul.entity.Entity.prototype.moveDown.call(this);
+
+  var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
+
+  if (!horizontal) {
+    this.m_setRunningAnimation();
+  }
+}
 
 //--------------------------------------------------------------------------
 // Public Methods (API)
@@ -302,4 +345,30 @@ howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
   if (this.m_bodypartEmitter) {
     this.m_bodypartEmitter.moveTo(this.x, this.y);
   }
+};
+
+//--------------------------------------------------------------------------
+// Abstract Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Sets the running animation.
+ * Overide in sub class to set specific animations.
+ * 
+ * @protected
+ * @returns {undefined}
+*/
+howlkraul.entity.Enemy.prototype.m_setRunningAnimation = function () {
+  // OVERIDE IN CHILD CLASS
+};
+
+/**
+ * Attack player.
+ * Overide in sub class to specific logic for attacking.
+ * 
+ * @public
+ * @returns {undefined}
+*/
+howlkraul.entity.Enemy.prototype.attack = function () {
+  // OVERIDE IN CHILD CLASS
 };

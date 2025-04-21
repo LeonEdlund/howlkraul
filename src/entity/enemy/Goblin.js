@@ -2,7 +2,7 @@ howlkraul.entity.Goblin = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29", [
     howlkraul.particle.GoblinHead,
     howlkraul.particle.GoblinChunk,
-  ], 100);
+  ]);
 
   this.m_lastShot = 0;
   this.m_shootCooldown = 2000;
@@ -11,6 +11,10 @@ howlkraul.entity.Goblin = function (x, y) {
 
 howlkraul.entity.Goblin.prototype = Object.create(howlkraul.entity.Enemy.prototype);
 howlkraul.entity.Goblin.prototype.constructor = howlkraul.entity.Goblin;
+
+//--------------------------------------------------------------------------
+// Overide Rune methods
+//--------------------------------------------------------------------------
 
 /**
  * @override
@@ -34,8 +38,11 @@ howlkraul.entity.Goblin.prototype.update = function (step) {
  */
 howlkraul.entity.Goblin.prototype.dispose = function () {
   howlkraul.entity.Enemy.prototype.dispose.call(this);
-  this.m_bodyparts = null;
 };
+
+//--------------------------------------------------------------------------
+// Overide Protected Methods
+//--------------------------------------------------------------------------
 
 /**
  * Configures the animation sequence.
@@ -60,45 +67,6 @@ howlkraul.entity.Goblin.prototype.initAnimations = function () {
   this.flippedX = true;
 };
 
-howlkraul.entity.Goblin.prototype.moveRight = function () {
-  howlkraul.entity.Enemy.prototype.moveRight.call(this);
-
-  this.facing = "side";
-  this.m_setRunningAnimation();
-}
-
-howlkraul.entity.Goblin.prototype.moveLeft = function () {
-  howlkraul.entity.Enemy.prototype.moveLeft.call(this);
-
-  this.facing = "side";
-  this.m_setRunningAnimation();
-}
-
-howlkraul.entity.Goblin.prototype.moveUp = function () {
-  howlkraul.entity.Enemy.prototype.moveUp.call(this);
-
-  var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
-
-  if (horizontal) {
-    this.facing = "side";
-    this.m_setRunningAnimation();
-    return;
-  }
-
-  this.facing = "up";
-  this.m_setRunningAnimation();
-}
-
-howlkraul.entity.Goblin.prototype.moveDown = function () {
-  howlkraul.entity.Enemy.prototype.moveDown.call(this);
-
-  var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
-
-  if (!horizontal) {
-    this.m_setRunningAnimation();
-  }
-}
-
 howlkraul.entity.Goblin.prototype.followPlayers = function (players) {
   var closestPlayer = this.m_getClosestPlayer(players);
   if (!closestPlayer) return;
@@ -114,10 +82,10 @@ howlkraul.entity.Goblin.prototype.followPlayers = function (players) {
     this.runAwayFromPlayer(closestPlayer);
   }
 
-  this.shoot(closestPlayer);
+  this.attack(closestPlayer);
 };
 
-howlkraul.entity.Goblin.prototype.shoot = function (player) {
+howlkraul.entity.Goblin.prototype.attack = function (player) {
   var scene = this.application.scenes.selected;
   var now = Date.now();
 
