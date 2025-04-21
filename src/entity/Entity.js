@@ -1,7 +1,6 @@
-howlkraul.entity.Entity = function (x, y, height, width, texture, hp) {
+howlkraul.entity.Entity = function (x, y, height, width, texture) {
   rune.display.Sprite.call(this, x || 0, y || 0, height, width, texture);
 
-  this.hp = hp;
   this.facing = "down";
   this.acceleration = 1;
   this.m_movementAllowed = true;
@@ -78,17 +77,6 @@ howlkraul.entity.Entity.prototype.moveDown = function () {
 }
 
 /**
- * @public
- */
-howlkraul.entity.Entity.prototype.takeDamage = function (amount) {
-  this.m_handleDamage(amount);
-
-  if (this.hp <= 0) {
-    this.die();
-  }
-}
-
-/**
  * 
  * @protected
  * @param {number} drag 
@@ -110,21 +98,5 @@ howlkraul.entity.Entity.prototype.setVelocity = function (drag, speed) {
  * @protected
  */
 howlkraul.entity.Entity.prototype.initAnimations = function () {
-  // OVERIDE
-};
-
-/**
- * @abstract
- * @public
- */
-howlkraul.entity.Entity.prototype.die = function () {
-  // OVERIDE
-};
-
-/**
- * @abstract
- * @protected
- */
-howlkraul.entity.Entity.prototype.m_handleDamage = function () {
   // OVERIDE
 };

@@ -236,9 +236,9 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
     this.players.addMember(playerOne.character);
 
     // PLAYER two
-    var PlayerTwo = new howlkraul.player.PlayerTwo("wizard");
-    this.playerControllers.push(PlayerTwo);
-    this.players.addMember(PlayerTwo.character);
+    // var PlayerTwo = new howlkraul.player.PlayerTwo("wizard");
+    // this.playerControllers.push(PlayerTwo);
+    // this.players.addMember(PlayerTwo.character);
 };
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
@@ -330,7 +330,6 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
 
 howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     var deadPlayers = 0;
-
     this.players.forEachMember(function (player) {
         if (player.hp === 0) {
             deadPlayers += 1;

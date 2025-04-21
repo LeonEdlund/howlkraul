@@ -1,11 +1,16 @@
 howlkraul.entity.Enemy = function (x, y, width, height, texture, particles) {
-  howlkraul.entity.Entity.call(this, x, y, width, height, texture, 100);
+  howlkraul.entity.Entity.call(this, x, y, width, height, texture);
 
+  // Default stats
   this.hp = 100;
+
+  // Emitters and particles
   this.m_bloodEmitter = null;
   this.m_bodypartEmitter = null;
-  this.m_horizontalMovement = false;
   this.m_particles = particles;
+
+  // Flags 
+  this.m_horizontalMovement = false;
 }
 
 //--------------------------------------------------------------------------
@@ -53,63 +58,9 @@ howlkraul.entity.Enemy.prototype.dispose = function () {
   this.m_particles = null;
 };
 
-/**
- * Take damage and lower hp. 
- * If hp is lower then 0 die.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.m_initBloodEmitter = function () {
-  this.m_bloodEmitter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
-    capacity: 92,
-    accelerationY: 0.05,
-    maxVelocityX: 1.25,
-    minVelocityX: -1.25,
-    maxVelocityY: -1.25,
-    minVelocityY: -0.85,
-    minRotation: -2,
-    maxRotation: 2,
-    minLifespan: 300,
-    maxLifespan: 1000,
-    particles: [howlkraul.particle.Blood]
-  });
-
-  this.stage.addChild(this.m_bloodEmitter)
-};
-
-howlkraul.entity.Enemy.prototype.m_initBodypartEmitter = function () {
-  this.m_bodypartEmitter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
-    capacity: 4,
-    accelerationY: 0.05,
-    maxVelocityX: 1.25,
-    minVelocityX: -1.25,
-    maxVelocityY: -1.25,
-    minVelocityY: -0.85,
-    minRotation: -2,
-    maxRotation: 2,
-    minLifespan: 300,
-    maxLifespan: 1000,
-    particles: this.m_particles
-  });
-
-  this.stage.addChild(this.m_bodypartEmitter)
-};
-
-/**
- * Take damage and lower hp. 
- * If hp is lower then 0 die.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
-  this.m_bloodEmitter.moveTo(this.x, this.y);
-
-  if (this.m_bodypartEmitter) {
-    this.m_bodypartEmitter.moveTo(this.x, this.y);
-  }
-};
+//--------------------------------------------------------------------------
+// Public Methods (API)
+//--------------------------------------------------------------------------
 
 /**
  * Follow the players in the display group. 
@@ -120,6 +71,7 @@ howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
  */
 howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
   var closestPlayer = this.m_getClosestPlayer(players);
+  if (!closestPlayer) return;
 
   var tX = this.centerX;
   var tY = this.centerY;
@@ -225,8 +177,10 @@ howlkraul.entity.Enemy.prototype.runAwayFromPlayer = function (player) {
  * @param {number} amount - Amount of damage. 
  * @returns {undefined}
  */
-howlkraul.entity.Enemy.prototype.m_handleDamage = function (amount) {
+howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   this.hp -= amount;
+
+  if (this.hp <= 0) this.die();
 };
 
 /**
@@ -252,23 +206,6 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
 };
 
 /**
- * Gets the closest player
- * 
- * @protected
- * @returns {howlkraul.entity.PlayableCharacter}
- */
-howlkraul.entity.Enemy.prototype.m_getClosestPlayer = function (players) {
-  var m_this = this;
-
-  var allPlayers = players.getMembers().slice();
-  allPlayers.sort(function (a, b) {
-    return m_this.distance(a) - m_this.distance(b);
-  });
-
-  return allPlayers[0];
-};
-
-/**
  * Play die animation and drop coin.
  * 
  * @public
@@ -278,6 +215,91 @@ howlkraul.entity.Enemy.prototype.explode = function () {
   this.m_bloodEmitter.emit(50);
   if (this.m_bodypartEmitter) {
     this.m_bodypartEmitter.emit(1);
+  }
+};
 
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Gets the closest player
+ * 
+ * @protected
+ * @returns {howlkraul.entity.PlayableCharacter}
+ */
+howlkraul.entity.Enemy.prototype.m_getClosestPlayer = function (players) {
+  if (players.numMembers === 0) return;
+
+  var m_this = this;
+
+  // Filter out dead players
+  var allPlayers = players.getMembers().filter(function (player) {
+    return player.hp > 0;
+  });
+
+  // Sort by the closest player
+  allPlayers.sort(function (a, b) {
+    return m_this.distance(a) - m_this.distance(b);
+  });
+
+  return allPlayers[0];
+};
+
+/**
+ * Take damage and lower hp. 
+ * If hp is lower then 0 die.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Enemy.prototype.m_initBloodEmitter = function () {
+  this.m_bloodEmitter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
+    capacity: 92,
+    accelerationY: 0.05,
+    maxVelocityX: 1.25,
+    minVelocityX: -1.25,
+    maxVelocityY: -1.25,
+    minVelocityY: -0.85,
+    minRotation: -2,
+    maxRotation: 2,
+    minLifespan: 300,
+    maxLifespan: 1000,
+    particles: [howlkraul.particle.Blood]
+  });
+
+  this.stage.addChild(this.m_bloodEmitter)
+};
+
+howlkraul.entity.Enemy.prototype.m_initBodypartEmitter = function () {
+  this.m_bodypartEmitter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
+    capacity: 4,
+    accelerationY: 0.05,
+    maxVelocityX: 1.25,
+    minVelocityX: -1.25,
+    maxVelocityY: -1.25,
+    minVelocityY: -0.85,
+    minRotation: -2,
+    maxRotation: 2,
+    minLifespan: 300,
+    maxLifespan: 1000,
+    particles: this.m_particles
+  });
+
+  this.stage.addChild(this.m_bodypartEmitter)
+};
+
+/**
+ * Take damage and lower hp. 
+ * If hp is lower then 0 die.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
+  this.m_bloodEmitter.moveTo(this.x, this.y);
+
+  if (this.m_bodypartEmitter) {
+    this.m_bodypartEmitter.moveTo(this.x, this.y);
   }
 };

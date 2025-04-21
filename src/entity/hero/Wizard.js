@@ -1,13 +1,8 @@
 howlkraul.entity.Wizard = function (x, y) {
   howlkraul.entity.PlayableCharacter.call(this, x, y, 27, 34, "Wizard_27x34");
 
-  //this.facing = "down";
   this.power = 50;
-  this.mana = 100;
-  this.m_manabar = null;
-  this.m_manaEmpty = false;
-  this.m_lastShot = 0;
-  this.m_isShooting = false;
+  this.energyCost = 20;
 }
 
 howlkraul.entity.Wizard.prototype = Object.create(howlkraul.entity.PlayableCharacter.prototype);
@@ -22,19 +17,7 @@ howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
  */
 howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.PlayableCharacter.prototype.init.call(this);
-
   this.setVelocity(0.08, 1.2);
-  this.m_initManabar();
-};
-
-/**
- * @override
- */
-howlkraul.entity.Wizard.prototype.update = function (step) {
-  howlkraul.entity.PlayableCharacter.prototype.update.call(this, step);
-
-  this.m_manabarFollow();
-  this.m_regenMana();
 };
 
 /**
@@ -64,229 +47,23 @@ howlkraul.entity.Wizard.prototype.initAnimations = function () {
 // Public Methods
 //--------------------------------------------------------------------------
 
-howlkraul.entity.Wizard.prototype.shoot = function () {
-  var scene = this.application.scenes.selected;
-
-  if (this.mana <= 0) {
-    this.m_manaEmpty = true;
-    this.m_manabar.forgroundColor = "red";
-  }
-
-  if (!this.m_manaEmpty) {
-    this.mana -= 20;
-    this.m_manabar.progress = this.mana / 100;
-    var x = 0;
-    var y = 0;
-
-    if (this.facing === "up" || this.facing === "down") {
-      x = this.topLeft.x;
-      y = this.topLeft.y;
-    } else {
-      x = this.flippedX ? this.x - 12 : this.x + 12;
-      y = this.flippedX ? this.y + 5 : this.y + 10;
-
-    }
-
-    this.m_setShootingAnimation();
-    var spell = new howlkraul.projectile.Spell(x, y, this);
-    spell.shootInDirection(this.facing, scene.spells);
-  }
-};
-
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
-
-
-
 /**
- * Init manabar
- * 
- * @returns {undefined}
- * @private
-*/
-howlkraul.entity.Wizard.prototype.m_initManabar = function () {
-  this.m_manabar = new rune.ui.Progressbar(this.width, 2, "#cad4de", "#6697c4");
-  this.m_manabar.progress = this.mana / 100;
-  this.stage.addChild(this.m_manabar);
-};
+ * @overide
+ */
+howlkraul.entity.Wizard.prototype.m_performAttack = function () {
+  var scene = this.application.scenes.selected;
+  var x = 0;
+  var y = 0;
 
-howlkraul.entity.Wizard.prototype.m_manabarFollow = function () {
-  this.m_manabar.moveTo(this.bottomLeft.x, this.bottomLeft.y + 2);
-}
-
-howlkraul.entity.Wizard.prototype.m_getInput = function () {
-  var gamepad = this.gamepads.get(0);
-
-  return {
-    left: this.keyboard.pressed("a") || gamepad.stickLeftLeft,
-    right: this.keyboard.pressed("d") || gamepad.stickLeftRight,
-    up: this.keyboard.pressed("w") || gamepad.stickLeftUp,
-    down: this.keyboard.pressed("s") || gamepad.stickLeftDown,
-    shoot: this.keyboard.justPressed("q") || gamepad.justPressed(0),
-  }
-}
-
-howlkraul.entity.Wizard.prototype.move = function (input) {
-  this.m_setFacingDirection(input);
-  this.m_setAnimation(input);
-
-  if (input.up) { this.moveUp(); };
-  if (input.down) { this.moveDown(); };
-  if (input.left) { this.moveLeft(); };
-  if (input.right) { this.moveRight(); };
-  if (input.shoot) { this.shoot() };
-
-};
-
-howlkraul.entity.Wizard.prototype.m_regenMana = function () {
-  if (this.mana === 100) {
-    this.m_manaEmpty = false;
-
-    if (this.m_manabar.forgroundColor !== "#6697c4") {
-      this.mana -= 1;
-      this.m_manabar.forgroundColor = "#6697c4";
-    }
-
-    return;
+  if (this.facing === "up" || this.facing === "down") {
+    x = this.topLeft.x;
+    y = this.topLeft.y;
+  } else {
+    x = this.flippedX ? this.x - 12 : this.x + 12;
+    y = this.flippedX ? this.y + 5 : this.y + 10;
   }
 
-  if (this.mana < 100) {
-    this.mana += 0.5;
-    this.m_manabar.progress = this.mana / 100;
-  }
-};
-
-//--------------------------------------------------------------------------
-// Animations
-//--------------------------------------------------------------------------
-
-howlkraul.entity.Wizard.prototype.m_setAnimation = function () {
-  var now = Date.now();
-
-  if (this.facing.includes("right")) {
-    this.flippedX = false;
-  }
-
-  if (this.facing === "left") {
-    this.flippedX = true;
-  }
-
-  if (now < this.m_lastShot) {
-    return;
-  }
-
-  if (!this.velocity.x && !this.velocity.y) {
-    this.m_setIdleAnimation();
-    return;
-  }
-
-  switch (this.facing) {
-    case "up":
-      this.animation.gotoAndPlay("r-up");
-      break;
-    case "up-left":
-    case "up-right":
-      this.animation.gotoAndPlay("r-up-side");
-      break;
-    case "down":
-      this.animation.gotoAndPlay("r-down");
-      break;
-    case "down-left":
-    case "down-right":
-      this.animation.gotoAndPlay("r-down-side");
-      break;
-    case "right":
-    case "left":
-      this.animation.gotoAndPlay("r-sideways");
-      break;
-    default:
-      this.animation.gotoAndPlay("r-down");
-  }
-}
-
-howlkraul.entity.Wizard.prototype.m_setIdleAnimation = function () {
-  switch (this.facing) {
-    case "up":
-    case "up-left":
-    case "up-right":
-      this.animation.gotoAndPlay("idle-up");
-      break;
-    case "down":
-    case "down-left":
-    case "down-right":
-      this.animation.gotoAndPlay("idle-down");
-      break;
-    case "right":
-    case "left":
-      this.animation.gotoAndPlay("idle-sideways");
-      break;
-    default:
-      this.animation.gotoAndPlay("idle-down");
-  }
-}
-
-howlkraul.entity.Wizard.prototype.m_setFacingDirection = function (input) {
-  if (input.up) {
-    if (input.left) {
-      this.facing = "up-left";
-      return;
-    }
-
-    if (input.right) {
-      this.facing = "up-right";
-      return;
-    }
-
-    this.facing = "up";
-
-  } else if (input.down) {
-
-    if (input.left) {
-      this.facing = "down-left";
-      return;
-    }
-
-    if (input.right) {
-      this.facing = "down-right";
-      return;
-    }
-
-    this.facing = "down";
-  } else if (input.right) {
-    this.facing = "right";
-    return;
-  } else if (input.left) {
-    this.facing = "left";
-    return;
-  }
-}
-
-howlkraul.entity.Wizard.prototype.m_setShootingAnimation = function () {
-  var now = Date.now();
-
-
-  this.m_lastShot = now + 300;
-
-
-  switch (this.facing) {
-    case "up":
-      this.animation.gotoAndPlay("s-up");
-      break;
-    case "up-left":
-    case "up-right":
-      this.animation.gotoAndPlay("s-up-side");
-      break;
-    case "down":
-    case "down-left":
-    case "down-right":
-      this.animation.gotoAndPlay("s-down");
-      break;
-    case "right":
-    case "left":
-      this.animation.gotoAndPlay("s-side");
-      break;
-    default:
-      this.animation.gotoAndPlay("r-down");
-  }
+  this.takeEnergy();
+  var spell = new howlkraul.projectile.Spell(x, y, this);
+  spell.shootInDirection(this.facing, scene.spells);
 }

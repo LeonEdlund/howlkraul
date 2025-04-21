@@ -18,5 +18,6 @@ howlkraul.player.PlayerOne.prototype.m_getInput = function () {
     up: this.keyboard.pressed("w") || gamepad.stickLeftUp,
     down: this.keyboard.pressed("s") || gamepad.stickLeftDown,
     shoot: this.keyboard.justPressed("space") || gamepad.justPressed(0),
+    hold: this.keyboard.justPressed("space") || gamepad.justPressed(1),
   }
 }

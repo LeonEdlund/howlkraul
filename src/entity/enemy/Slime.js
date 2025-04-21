@@ -1,5 +1,6 @@
 howlkraul.entity.Slime = function (x, y) {
-  howlkraul.entity.Enemy.call(this, x, y, 19, 19, "slime_19x19", 50);
+  howlkraul.entity.Enemy.call(this, x, y, 19, 19, "slime_19x19");
+  this.hp = 50;
 }
 
 howlkraul.entity.Slime.prototype = Object.create(howlkraul.entity.Enemy.prototype);

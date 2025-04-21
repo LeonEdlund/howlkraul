@@ -4,8 +4,6 @@ howlkraul.entity.Goblin = function (x, y) {
     howlkraul.particle.GoblinChunk,
   ], 100);
 
-
-  this.facing = "down";
   this.m_lastShot = 0;
   this.m_shootCooldown = 2000;
   this.m_lastShotAnimation = 0;
@@ -103,8 +101,9 @@ howlkraul.entity.Goblin.prototype.moveDown = function () {
 
 howlkraul.entity.Goblin.prototype.followPlayers = function (players) {
   var closestPlayer = this.m_getClosestPlayer(players);
-  var distance = Math.round(this.distance(closestPlayer.center));
+  if (!closestPlayer) return;
 
+  var distance = Math.round(this.distance(closestPlayer.center));
   if (distance > 150) {
     howlkraul.entity.Enemy.prototype.followPlayers.call(this, players);
     this.allowMovement = true;
