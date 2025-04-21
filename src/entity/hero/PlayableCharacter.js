@@ -27,7 +27,6 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
   this.energyCost = 20;
 
   // Ui
-  this.m_hpbar = null;
   this.m_energybar = null;
 
   // Timers
@@ -35,6 +34,7 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
   this.m_damageHitCoolDown = 1000;
 
   // Flags
+  this.m_isDead = false;
   this.m_isAttacking = false;
   this.m_energyEmpty = false;
 };
@@ -57,7 +57,6 @@ howlkraul.entity.PlayableCharacter.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
   this.hitbox.set(0, (this.height - 10), this.width, 9);
-  this.m_inithpbar();
   this.m_initEnergybar();
 };
 
@@ -66,7 +65,6 @@ howlkraul.entity.PlayableCharacter.prototype.init = function () {
  */
 howlkraul.entity.PlayableCharacter.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
-  this.m_updateHpbar();
   this.m_energybarFollow();
   this.m_regenEnergy();
 };
@@ -88,6 +86,8 @@ howlkraul.entity.PlayableCharacter.prototype.move = function (input) {
 };
 
 howlkraul.entity.PlayableCharacter.prototype.attack = function () {
+  if (this.m_isDead) return;
+
   this.m_handleEmptyEnergy();
 
   if (!this.m_energyEmpty) {
@@ -104,11 +104,15 @@ howlkraul.entity.PlayableCharacter.prototype.takeDamage = function () {
     this.flicker.start(this.m_damageHitCoolDown);
     this.m_lastDamageHit = now + this.m_damageHitCoolDown;
   }
+
+  if (this.hp <= 0) this.die();
 };
 
 howlkraul.entity.PlayableCharacter.prototype.die = function () {
   this.movementAllowed = false;
   this.rotation = -90;
+  this.animation.goto("run", [0])
+  this.m_energybar.visible = false;
 };
 
 howlkraul.entity.PlayableCharacter.prototype.takeEnergy = function () {
@@ -120,12 +124,6 @@ howlkraul.entity.PlayableCharacter.prototype.takeEnergy = function () {
 // Private Methods
 //--------------------------------------------------------------------------
 
-howlkraul.entity.PlayableCharacter.prototype.m_inithpbar = function () {
-  this.m_hpbar = new rune.ui.Progressbar(this.width, 2, "white", "red");
-  this.m_hpbar.progress = (this.hp * 17 - 2) / 100;
-  this.addChild(this.m_hpbar);
-};
-
 /**
  * Init manabar
  * 
@@ -136,10 +134,6 @@ howlkraul.entity.PlayableCharacter.prototype.m_initEnergybar = function () {
   this.m_energybar = new rune.ui.Progressbar(this.width, 2, "#cad4de", "#6697c4");
   this.m_energybar.progress = this.energy / 100;
   this.stage.addChild(this.m_energybar);
-};
-
-howlkraul.entity.PlayableCharacter.prototype.m_updateHpbar = function () {
-  this.m_hpbar.progress = (this.hp * 17 - 2) / 100;
 };
 
 howlkraul.entity.PlayableCharacter.prototype.m_energybarFollow = function () {

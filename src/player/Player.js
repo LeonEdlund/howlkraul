@@ -1,11 +1,16 @@
 howlkraul.player.Player = function (character, spawnX, spawnY) {
   this.characterChoice = character || "";
   this.characterInstance = null;
+  this.m_lastHp = null;
+
   this.gamepads = null;
   this.keyboard = null;
 
   this.spawnX = spawnX;
   this.spawnY = spawnY;
+
+  this.m_hud = null;
+
   this.init();
 }
 
@@ -17,17 +22,30 @@ Object.defineProperty(howlkraul.player.Player.prototype, "character", {
   }
 })
 
+Object.defineProperty(howlkraul.player.Player.prototype, "hud", {
+  get: function () {
+    return this.m_hud;
+  }
+})
+
 howlkraul.player.Player.prototype.init = function () {
   this.m_createCharacter();
   this.m_getControllers();
+  this.m_initHud();
 };
 
 howlkraul.player.Player.prototype.update = function () {
   var input = this.m_getInput();
 
-  if (this.character) {
-    this.character.move(input);
+  if (this.characterInstance) {
+    this.characterInstance.move(input);
   }
+
+  if (this.characterInstance.hp !== this.m_lastHp) {
+    this.m_hud.updateHealth();
+    this.m_lastHp = this.characterInstance.hp;
+  }
+
 };
 
 howlkraul.player.Player.prototype.dispose = function () {
@@ -38,7 +56,6 @@ howlkraul.player.Player.prototype.dispose = function () {
   this.spawnX = null;
   this.spawnY = null;
 };
-
 
 howlkraul.player.Player.prototype.m_getInput = function () {
   // OVERIDE IN CHILD CLASS
@@ -51,6 +68,8 @@ howlkraul.player.Player.prototype.m_createCharacter = function () {
       this.characterInstance = new howlkraul.entity.Wizard(this.spawnX, this.spawnY);
       break;
   }
+
+  this.m_lastHp = this.characterInstance.hp;
 }
 
 howlkraul.player.Player.prototype.m_getControllers = function () {
@@ -60,3 +79,7 @@ howlkraul.player.Player.prototype.m_getControllers = function () {
   }
 }
 
+
+howlkraul.player.Player.prototype.m_initHud = function () {
+  //OVERIDE IN CHILD CLASS
+}
