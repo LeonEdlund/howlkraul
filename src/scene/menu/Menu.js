@@ -62,7 +62,7 @@ howlkraul.scene.Menu.prototype.init = function () {
  */
 howlkraul.scene.Menu.prototype.update = function (step) {
     rune.scene.Scene.prototype.update.call(this, step);
-    if (this.keyboard.justPressed("space")) {
+    if (this.keyboard.justPressed("space") || this.gamepads.get(0).justPressed(0)) {
         this.m_startGame();
     }
 };

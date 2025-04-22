@@ -70,7 +70,7 @@ howlkraul.scene.GameOver.prototype.init = function () {
  */
 howlkraul.scene.GameOver.prototype.update = function (step) {
   rune.scene.Scene.prototype.update.call(this, step);
-  if (this.keyboard.justPressed("space")) {
+  if (this.keyboard.justPressed("space") || this.gamepads.get(0).justPressed(0)) {
     this.m_startGame();
   }
 };
