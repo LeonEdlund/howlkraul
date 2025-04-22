@@ -42,7 +42,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function ()
     this.game.removeProjectile(this.game.spells, spell);
 
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
-    this.game.gamepads.get(0).vibrate(500);
+    this.game.gamepads.get(0).vibrate(100, 0.3, 0.6);
 
     if (enemy.hp <= 0) {
       deadEnemies.push(enemy);
