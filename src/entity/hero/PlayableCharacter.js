@@ -46,6 +46,21 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
 howlkraul.entity.PlayableCharacter.prototype = Object.create(howlkraul.entity.Entity.prototype);
 howlkraul.entity.PlayableCharacter.prototype.constructor = howlkraul.entity.PlayableCharacter;
 
+//------------------------------------------------------------------------------
+// Getters and Setters
+//------------------------------------------------------------------------------
+
+Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "isAlive", {
+  /**
+   * Check if charecter is alive.
+   * 
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_isAlive;
+  }
+})
+
 //--------------------------------------------------------------------------
 // Override public prototype methods
 //--------------------------------------------------------------------------

@@ -1,7 +1,11 @@
 howlkraul.entity.Enemy = function (x, y, width, height, texture, particles) {
   howlkraul.entity.Entity.call(this, x, y, width, height, texture);
 
-  // Default stats
+  /**
+   * Character health.
+   * 
+   * @protected
+   */
   this.hp = 100;
 
   // Emitters and particles
@@ -33,10 +37,7 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 howlkraul.entity.Enemy.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
-  this.m_initBloodEmitter();
-  if (this.m_particles && this.m_particles.length > 0) {
-    this.m_initBodypartEmitter();
-  }
+  this.m_initEmitters();
 };
 
 /**
@@ -63,9 +64,21 @@ howlkraul.entity.Enemy.prototype.dispose = function () {
 // Overide Entity Methods
 //--------------------------------------------------------------------------
 
+/**
+ * @inheritdoc
+ */
+howlkraul.entity.Enemy.prototype.initStates = function () {
+  howlkraul.entity.Entity.prototype.initStates.call(this);
+
+  this.states.load([
+    new howlkraul.entity.FollowPlayerState(),
+    new howlkraul.entity.RunAwayState(),
+    new howlkraul.entity.RoamState(),
+  ]);
+}
+
 howlkraul.entity.Enemy.prototype.moveRight = function () {
   howlkraul.entity.Entity.prototype.moveRight.call(this);
-
   this.facing = "side";
   this.m_setRunningAnimation();
 }
@@ -97,122 +110,19 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
 
   var horizontal = rune.util.Math.abs(this.velocity.x) >= 0.1;
 
-  if (!horizontal) {
+  if (horizontal) {
+    this.facing = "side";
     this.m_setRunningAnimation();
+    return;
   }
+
+  this.facing = "down";
+  this.m_setRunningAnimation();
 }
 
 //--------------------------------------------------------------------------
 // Public Methods (API)
 //--------------------------------------------------------------------------
-
-/**
- * Follow the players in the display group. 
- * 
- * @public
- * @param {rune.display.DisplayGroup} players - The display group with the players to follow.
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.followPlayers = function () {
-  var players = this.application.scenes.selected.players;
-  var closestPlayer = this.m_getClosestPlayer(players);
-  if (!closestPlayer) return;
-
-  var tX = this.centerX;
-  var tY = this.centerY;
-  var pX = closestPlayer.centerX;
-  var pY = closestPlayer.centerY;
-  var distance = this.distance(closestPlayer.center);
-
-  var distanceX = rune.util.Math.abs(tX - pX);
-  var distanceY = rune.util.Math.abs(tY - pY);
-
-  if (distance < 20) {
-    this.allowMovement = false;
-    return;
-  } else {
-    this.allowMovement = true;
-  }
-
-  if (distanceX > distanceY * 2) {
-
-    if (tX > pX) {
-      this.moveLeft();
-    } else if (tX < pX) {
-      this.moveRight();
-    }
-
-    this.velocity.y = 0;
-
-  } else if (distanceY > distanceX * 2) {
-
-    if (tY > pY) {
-      this.moveUp();
-    } else if (tY < pY) {
-      this.moveDown();
-    }
-
-    this.velocity.x = 0;
-  } else {
-
-    if (tX > pX) {
-      this.moveLeft();
-    } else if (tX < pX) {
-      this.moveRight();
-    }
-
-    if (tY > pY) {
-      this.moveUp();
-    } else if (tY < pY) {
-      this.moveDown();
-    }
-  }
-};
-
-howlkraul.entity.Enemy.prototype.runAwayFromPlayer = function (player) {
-  var closestPlayer = player;
-
-  var tX = this.centerX;
-  var tY = this.centerY;
-  var pX = closestPlayer.centerX;
-  var pY = closestPlayer.centerY;
-
-  var distanceX = rune.util.Math.abs(tX - pX);
-  var distanceY = rune.util.Math.abs(tY - pY);
-  if (distanceX > distanceY * 2) {
-
-    if (tX < pX) {
-      this.moveLeft();
-    } else if (tX > pX) {
-      this.moveRight();
-    }
-
-    this.velocity.y = 0;
-
-  } else if (distanceY > distanceX * 2) {
-
-    if (tY < pY) {
-      this.moveUp();
-    } else if (tY > pY) {
-      this.moveDown();
-    }
-
-    this.velocity.x = 0;
-  } else {
-
-    if (tX < pX) {
-      this.moveLeft();
-    } else if (tX > pX) {
-      this.moveRight();
-    }
-
-    if (tY < pY) {
-      this.moveUp();
-    } else if (tY > pY) {
-      this.moveDown();
-    }
-  }
-};
 
 /**
  * Take damage and lower hp. 
@@ -263,17 +173,13 @@ howlkraul.entity.Enemy.prototype.explode = function () {
   }
 };
 
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
-
 /**
  * Gets the closest player
  * 
- * @protected
+ * @public
  * @returns {howlkraul.entity.PlayableCharacter}
  */
-howlkraul.entity.Enemy.prototype.m_getClosestPlayer = function (players) {
+howlkraul.entity.Enemy.prototype.getClosestPlayer = function (players) {
   if (players.numMembers === 0) return;
 
   var m_this = this;
@@ -289,6 +195,25 @@ howlkraul.entity.Enemy.prototype.m_getClosestPlayer = function (players) {
   });
 
   return allPlayers[0];
+};
+
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Take damage and lower hp. 
+ * If hp is lower then 0 die.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Enemy.prototype.m_initEmitters = function () {
+  this.m_initBloodEmitter();
+
+  if (this.m_particles && this.m_particles.length > 0) {
+    this.m_initBodypartEmitter();
+  }
 };
 
 /**
@@ -362,6 +287,20 @@ howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
 */
 howlkraul.entity.Enemy.prototype.m_setRunningAnimation = function () {
   // OVERIDE IN CHILD CLASS
+};
+
+/**
+ * Sets the running animation.
+ * Overide in sub class to set specific movement behaviors.
+ * 
+ * @protected
+ * @returns {undefined}
+*/
+howlkraul.entity.Enemy.prototype.followPlayers = function () {
+  if (!this.velocity.x && !this.velocity.y) {
+    // this.animation.gotoAndStop(0);
+    // this.animation.stop()
+  }
 };
 
 /**

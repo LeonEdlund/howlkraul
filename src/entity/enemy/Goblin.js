@@ -45,10 +45,7 @@ howlkraul.entity.Goblin.prototype.dispose = function () {
 //--------------------------------------------------------------------------
 
 /**
- * Configures the animation sequence.
- * 
- * @returns {undefined}
- * @private
+ * @inheritdoc
 */
 howlkraul.entity.Goblin.prototype.initAnimations = function () {
   // IDLE
@@ -68,21 +65,21 @@ howlkraul.entity.Goblin.prototype.initAnimations = function () {
 };
 
 howlkraul.entity.Goblin.prototype.followPlayers = function () {
+  howlkraul.entity.Enemy.prototype.followPlayers.call(this);
+
   var players = this.application.scenes.selected.players;
-  var closestPlayer = this.m_getClosestPlayer(players);
+  var closestPlayer = this.getClosestPlayer(players);
   if (!closestPlayer) return;
 
   var distance = Math.round(this.distance(closestPlayer.center));
-  if (distance > 150) {
-    howlkraul.entity.Enemy.prototype.followPlayers.call(this, players);
-    this.allowMovement = true;
-  } else if (distance > 120 && distance < 170) {
-    this.velocity.x = 0;
-    this.velocity.y = 0;
-  } else {
-    this.runAwayFromPlayer(closestPlayer);
+
+  if (distance < 110) {
+    this.states.select("runAway");
+    this.attack(closestPlayer);
+    return;
   }
 
+  this.states.select("Roam");
   this.attack(closestPlayer);
 };
 
@@ -122,7 +119,7 @@ howlkraul.entity.Goblin.prototype.m_setShootingAnimation = function () {
       this.animation.play();
       break;
     case "down":
-      this.animation.goto("s-down", [0]);
+      this.animation.goto("s", [0]);
       this.animation.play();
       break;
   }

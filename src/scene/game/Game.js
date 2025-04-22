@@ -232,10 +232,10 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
     this.stage.addChild(playerOne.hud)
 
     // PLAYER two
-    var playerTwo = new howlkraul.player.PlayerTwo("wizard");
-    this.playerControllers.push(playerTwo);
-    this.players.addMember(playerTwo.character);
-    this.stage.addChild(playerTwo.hud)
+    // var playerTwo = new howlkraul.player.PlayerTwo("wizard");
+    // this.playerControllers.push(playerTwo);
+    // this.players.addMember(playerTwo.character);
+    // this.stage.addChild(playerTwo.hud)
 };
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
@@ -282,7 +282,6 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
         this.m_room.openDoor();
     }
 
-
     if (this.m_room.gateOpen) {
         var playersReady = 0;
 
@@ -291,7 +290,6 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
                 playersReady += 1;
             }
         }, this);
-
 
         if (this.players.numMembers <= playersReady && !this.m_roundTransition) {
             this.cameras.getCameraAt(0).fade.out(100);
@@ -322,7 +320,6 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
         spawnPoint += 20;
         player.moveTo(spawnPoint, 130);
     }, this);
-
 };
 
 howlkraul.scene.Game.prototype.m_checkGameOver = function () {
