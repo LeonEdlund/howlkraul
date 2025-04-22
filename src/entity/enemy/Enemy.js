@@ -49,6 +49,7 @@ howlkraul.entity.Enemy.prototype.init = function () {
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
   this.m_moveEmittersWithCharacter();
+  this.followPlayers();
 };
 
 howlkraul.entity.Enemy.prototype.dispose = function () {
@@ -112,7 +113,8 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
  * @param {rune.display.DisplayGroup} players - The display group with the players to follow.
  * @returns {undefined}
  */
-howlkraul.entity.Enemy.prototype.followPlayers = function (players) {
+howlkraul.entity.Enemy.prototype.followPlayers = function () {
+  var players = this.application.scenes.selected.players;
   var closestPlayer = this.m_getClosestPlayer(players);
   if (!closestPlayer) return;
 

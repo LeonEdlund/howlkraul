@@ -34,7 +34,7 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
   this.m_damageHitCoolDown = 1000;
 
   // Flags
-  this.m_isDead = false;
+  this.m_isAlive = false;
   this.m_isAttacking = false;
   this.m_energyEmpty = false;
 };
@@ -91,7 +91,7 @@ howlkraul.entity.PlayableCharacter.prototype.move = function (input) {
 };
 
 howlkraul.entity.PlayableCharacter.prototype.attack = function () {
-  if (this.m_isDead) return;
+  if (this.m_isAlive) return;
 
   this.m_handleEmptyEnergy();
 
