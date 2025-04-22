@@ -14,6 +14,9 @@ howlkraul.entity.RunAwayState.prototype.update = function () {
   this.m_runAwayFromPlayer();
 };
 
+/**
+ * @override
+*/
 howlkraul.entity.RunAwayState.prototype.onEnter = function () {
   rune.state.State.prototype.onEnter.call(this);
   this.owner.setVelocity(0.08, 1.05);
@@ -52,5 +55,4 @@ howlkraul.entity.RunAwayState.prototype.m_runAwayFromPlayer = function () {
 
     this.owner.velocity.x = 0;
   }
-
 };

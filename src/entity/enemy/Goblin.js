@@ -4,9 +4,10 @@ howlkraul.entity.Goblin = function (x, y) {
     howlkraul.particle.GoblinChunk,
   ]);
 
+  // FLAGS
   this.m_lastShot = 0;
-  this.m_shootCooldown = 2000;
   this.m_lastShotAnimation = 0;
+  this.m_shootCooldown = rune.util.Math.randomInt(2000, 4000);
 }
 
 howlkraul.entity.Goblin.prototype = Object.create(howlkraul.entity.Enemy.prototype);

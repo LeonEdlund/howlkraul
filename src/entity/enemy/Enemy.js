@@ -298,10 +298,7 @@ howlkraul.entity.Enemy.prototype.m_setRunningAnimation = function () {
  * @returns {undefined}
 */
 howlkraul.entity.Enemy.prototype.followPlayers = function () {
-  if (!this.velocity.x && !this.velocity.y) {
-    // this.animation.gotoAndStop(0);
-    // this.animation.stop()
-  }
+  // OVERIDE IN CHILD CLASS
 };
 
 /**
