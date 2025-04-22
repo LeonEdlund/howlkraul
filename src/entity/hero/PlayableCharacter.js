@@ -82,7 +82,12 @@ howlkraul.entity.PlayableCharacter.prototype.move = function (input) {
   if (input.left) { this.moveLeft(); };
   if (input.right) { this.moveRight(); };
   if (input.shoot) { this.attack() };
-
+  if (input.hold) {
+    this.velocity.x = 0;
+    this.velocity.y = 0;
+    console.log("HOLD")
+    return;
+  }
 };
 
 howlkraul.entity.PlayableCharacter.prototype.attack = function () {

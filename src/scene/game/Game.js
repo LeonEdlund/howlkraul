@@ -237,10 +237,10 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
     this.stage.addChild(playerOne.hud)
 
     // PLAYER two
-    var playerTwo = new howlkraul.player.PlayerTwo("wizard");
-    this.playerControllers.push(playerTwo);
-    this.players.addMember(playerTwo.character);
-    this.stage.addChild(playerTwo.hud)
+    // var playerTwo = new howlkraul.player.PlayerTwo("wizard");
+    // this.playerControllers.push(playerTwo);
+    // this.players.addMember(playerTwo.character);
+    // this.stage.addChild(playerTwo.hud)
 };
 
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {

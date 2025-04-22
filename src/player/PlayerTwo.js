@@ -22,6 +22,7 @@ howlkraul.player.PlayerTwo.prototype.m_getInput = function () {
     up: this.keyboard.pressed("up") || gamepad.stickLeftUp,
     down: this.keyboard.pressed("down") || gamepad.stickLeftDown,
     shoot: this.keyboard.justPressed("m") || gamepad.justPressed(0),
+    hold: this.keyboard.pressed("n") || gamepad.pressed(7),
   }
 }
 
