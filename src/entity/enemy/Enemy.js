@@ -168,6 +168,7 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
  */
 howlkraul.entity.Enemy.prototype.explode = function () {
   this.m_bloodEmitter.emit(50);
+
   if (this.m_bodypartEmitter) {
     this.m_bodypartEmitter.emit(1);
   }

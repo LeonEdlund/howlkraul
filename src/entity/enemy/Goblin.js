@@ -74,12 +74,13 @@ howlkraul.entity.Goblin.prototype.followPlayers = function () {
   var distance = Math.round(this.distance(closestPlayer.center));
 
   if (distance < 110) {
-    this.states.select("runAway");
+    this.states.select("RunAway");
     this.attack(closestPlayer);
     return;
+  } else if (distance > 130) {
+    this.states.select("Roam");
   }
 
-  this.states.select("Roam");
   this.attack(closestPlayer);
 };
 

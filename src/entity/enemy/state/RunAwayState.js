@@ -31,7 +31,8 @@ howlkraul.entity.RunAwayState.prototype.m_runAwayFromPlayer = function () {
 
   var distanceX = rune.util.Math.abs(tX - pX);
   var distanceY = rune.util.Math.abs(tY - pY);
-  if (distanceX > distanceY * 2) {
+
+  if (distanceX > distanceY) {
 
     if (tX < pX) {
       this.owner.moveLeft();
@@ -41,7 +42,7 @@ howlkraul.entity.RunAwayState.prototype.m_runAwayFromPlayer = function () {
 
     this.owner.velocity.y = 0;
 
-  } else if (distanceY > distanceX * 2) {
+  } else if (distanceY > distanceX) {
 
     if (tY < pY) {
       this.owner.moveUp();
@@ -50,18 +51,6 @@ howlkraul.entity.RunAwayState.prototype.m_runAwayFromPlayer = function () {
     }
 
     this.owner.velocity.x = 0;
-  } else {
-
-    if (tX < pX) {
-      this.owner.moveLeft();
-    } else if (tX > pX) {
-      this.owner.moveRight();
-    }
-
-    if (tY < pY) {
-      this.owner.moveUp();
-    } else if (tY > pY) {
-      this.owner.moveDown();
-    }
   }
+
 };
