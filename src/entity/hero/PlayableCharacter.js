@@ -34,7 +34,7 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
   this.m_damageHitCoolDown = 1000;
 
   // Flags
-  this.m_isDead = false;
+  this.m_isAlive = false;
   this.m_isAttacking = false;
   this.m_energyEmpty = false;
 };
@@ -45,6 +45,21 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
 
 howlkraul.entity.PlayableCharacter.prototype = Object.create(howlkraul.entity.Entity.prototype);
 howlkraul.entity.PlayableCharacter.prototype.constructor = howlkraul.entity.PlayableCharacter;
+
+//------------------------------------------------------------------------------
+// Getters and Setters
+//------------------------------------------------------------------------------
+
+Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "isAlive", {
+  /**
+   * Check if charecter is alive.
+   * 
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_isAlive;
+  }
+})
 
 //--------------------------------------------------------------------------
 // Override public prototype methods
@@ -82,11 +97,16 @@ howlkraul.entity.PlayableCharacter.prototype.move = function (input) {
   if (input.left) { this.moveLeft(); };
   if (input.right) { this.moveRight(); };
   if (input.shoot) { this.attack() };
-
+  if (input.hold) {
+    this.velocity.x = 0;
+    this.velocity.y = 0;
+    console.log("HOLD")
+    return;
+  }
 };
 
 howlkraul.entity.PlayableCharacter.prototype.attack = function () {
-  if (this.m_isDead) return;
+  if (this.m_isAlive) return;
 
   this.m_handleEmptyEnergy();
 

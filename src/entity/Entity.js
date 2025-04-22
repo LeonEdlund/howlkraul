@@ -36,6 +36,7 @@ howlkraul.entity.Entity.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
 
   this.initAnimations();
+  this.initStates();
 }
 
 //--------------------------------------------------------------------------
@@ -94,9 +95,25 @@ howlkraul.entity.Entity.prototype.setVelocity = function (drag, speed) {
 //--------------------------------------------------------------------------
 
 /**
+ * Runs when a entity is instasiated. 
+ * Override to add animations to entity.
+ * 
  * @abstract
  * @protected
+ * @returns {undefined}
  */
 howlkraul.entity.Entity.prototype.initAnimations = function () {
+  // OVERIDE
+};
+
+/**
+ * Runs when a entity is instasiated. 
+ * Override to add states to entity.
+ * 
+ * @abstract
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Entity.prototype.initStates = function () {
   // OVERIDE
 };
