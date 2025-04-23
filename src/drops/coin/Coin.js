@@ -61,7 +61,7 @@ howlkraul.drops.Coin.prototype.m_expire = function () {
   this.m_flickerTimer = this.m_timers.create({
     duration: this.m_flickerTime,
     onComplete: function () {
-      this.m_scene.removeCoin(this);
+      this.m_scene.coins.removeMember(this);
     },
     scope: this
   }, true)

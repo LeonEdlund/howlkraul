@@ -157,7 +157,7 @@ howlkraul.entity.Enemy.prototype.die = function () {
  */
 howlkraul.entity.Enemy.prototype.dropCoin = function () {
   var coin = new howlkraul.drops.Coin(this.x, this.y);
-  this.application.scenes.selected.addCoin(coin);
+  this.application.scenes.selected.coins.addMember(coin);
 };
 
 /**

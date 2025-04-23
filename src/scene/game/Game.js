@@ -1,9 +1,5 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
- * Creates a new object.
+ * Creates a new scene for the game.
  *
  * @constructor
  * @extends rune.scene.Scene
@@ -184,20 +180,27 @@ howlkraul.scene.Game.prototype.dispose = function () {
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Remove a projectile from a display group.
+ * 
+ * @public
+ * @param {rune.display.DisplayGroup} group - The group where the projectile is added.
+ * @param {howlkraul.projectile.Projectile} projectile - The projectile to remove.
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.removeProjectile = function (group, projectile) {
     if (group && projectile) {
         group.removeMember(projectile, true);
     }
 }
 
-howlkraul.scene.Game.prototype.addCoin = function (coin) {
-    this.coins.addMember(coin);
-};
-
-howlkraul.scene.Game.prototype.removeCoin = function (coin) {
-    this.coins.removeMember(coin);
-};
-
+/**
+ * Add money to the total money counter.
+ * 
+ * @public
+ * @param {number} amount - How much should be added.
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
     this.money += amount;
     this.moneyCounter.setValue(this.money);
@@ -207,6 +210,12 @@ howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
 // Private Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Initializes the money counter.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
     this.moneyCounter = new rune.ui.Counter(5, undefined, undefined, undefined, 5);
     this.moneyCounter.moveTo(320, 0);
@@ -214,6 +223,12 @@ howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
     this.stage.addChild(this.moneyCounter);
 };
 
+/**
+ * Initializes all players.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
     // PLAYER ONE
     var playerOne = new howlkraul.player.PlayerOne("wizard");
@@ -228,6 +243,12 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
     // this.stage.addChild(playerTwo.hud)
 };
 
+/**
+ * Initializes all Enemies.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
     var minX = 200; // Determin min distance from left wall of room
     var minY = 30;// Determin min distance from top wall of room
@@ -243,7 +264,10 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
 }
 
 /**
+ * Sort the visual objects on the stage. 
+ * 
  * @private
+ * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_initSort = function () {
     var room = this.m_room;
@@ -261,12 +285,24 @@ howlkraul.scene.Game.prototype.m_initSort = function () {
     };
 };
 
+/**
+ * Handle pause of the game.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.m_handlePause = function () {
     if (this.keyboard.justPressed("escape")) {
         this.application.scenes.load([new howlkraul.scene.Menu()]);
     }
 };
 
+/**
+ * Handle what happens when all enemies are dead and a round is won. 
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
     if (this.enemies.numMembers <= 0 && !this.m_room.gateOpen) {
         this.m_room.openDoor();
@@ -298,6 +334,12 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
     }
 }
 
+/**
+ * Load a new round.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     this.m_roundTransition = false;
     this.cameras.getCameraAt(0).fade.in(100);
@@ -312,6 +354,12 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     }, this);
 };
 
+/**
+ * Check if all characters are dead.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     var deadPlayers = 0;
     this.players.forEachMember(function (player) {
