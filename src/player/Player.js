@@ -63,6 +63,9 @@ howlkraul.player.Player.prototype.m_getInput = function () {
 
 howlkraul.player.Player.prototype.m_createCharacter = function () {
   switch (this.characterChoice) {
+    case "archer":
+      this.characterInstance = new howlkraul.entity.Archer(this.spawnX, this.spawnY);
+      break;
     case "wizard":
     default:
       this.characterInstance = new howlkraul.entity.Wizard(this.spawnX, this.spawnY);

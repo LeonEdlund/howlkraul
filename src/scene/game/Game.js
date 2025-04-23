@@ -127,10 +127,8 @@ howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
 //------------------------------------------------------------------------------
 
 /**
- * This method is automatically executed once after the scene is instantiated. 
- * The method is used to create objects to be used within the scene.
- *
- * @returns {undefined}
+ * @overide
+ * @inheritdoc
  */
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
@@ -142,12 +140,8 @@ howlkraul.scene.Game.prototype.init = function () {
 };
 
 /**
- * This method is automatically executed once per "tick". The method is used for 
- * calculations such as application logic.
- *
- * @param {number} step Fixed time step.
- *
- * @returns {undefined}
+ * @overide
+ * @inheritdoc
  */
 howlkraul.scene.Game.prototype.update = function (step) {
     rune.scene.Scene.prototype.update.call(this, step);
@@ -164,12 +158,8 @@ howlkraul.scene.Game.prototype.update = function (step) {
 };
 
 /**
- * This method is automatically called once just before the scene ends. Use 
- * the method to reset references and remove objects that no longer need to 
- * exist when the scene is destroyed. The process is performed in order to 
- * avoid memory leaks.
- *
- * @returns {undefined}
+ * @overide
+ * @inheritdoc
  */
 howlkraul.scene.Game.prototype.dispose = function () {
     rune.scene.Scene.prototype.dispose.call(this);
@@ -232,7 +222,7 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
     this.stage.addChild(playerOne.hud)
 
     // PLAYER two
-    // var playerTwo = new howlkraul.player.PlayerTwo("wizard");
+    // var playerTwo = new howlkraul.player.PlayerTwo("archer");
     // this.playerControllers.push(playerTwo);
     // this.players.addMember(playerTwo.character);
     // this.stage.addChild(playerTwo.hud)
