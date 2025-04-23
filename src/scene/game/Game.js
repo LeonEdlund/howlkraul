@@ -128,6 +128,7 @@ howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
  */
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
+
     this.stage.addChild(this.m_room);
     this.m_initMoneyCounter();
     this.m_initPlayers();
@@ -237,7 +238,7 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
     this.stage.addChild(playerOne.hud)
 
     // PLAYER two
-    // var playerTwo = new howlkraul.player.PlayerTwo("archer");
+    // var playerTwo = new howlkraul.player.PlayerTwo("wizard");
     // this.playerControllers.push(playerTwo);
     // this.players.addMember(playerTwo.character);
     // this.stage.addChild(playerTwo.hud)
@@ -252,14 +253,30 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
 howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
     var minX = 200; // Determin min distance from left wall of room
     var minY = 30;// Determin min distance from top wall of room
+
     for (var i = 0; i < amount; i++) {
         var x1 = rune.util.Math.randomInt(minX, (this.application.width - 50));
         var x2 = rune.util.Math.randomInt(minX, (this.application.width - 50));
+        var x3 = rune.util.Math.randomInt(minX, (this.application.width - 50));
+
         var y1 = rune.util.Math.randomInt(minY, (this.application.height - 50));
         var y2 = rune.util.Math.randomInt(minY, (this.application.height - 50));
+        var y3 = rune.util.Math.randomInt(minY, (this.application.height - 50));
 
-        this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
-        this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
+        // Goblin
+        if (rune.util.Math.chance(50)) {
+            this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
+        }
+
+        // Slimes
+        if (rune.util.Math.chance(80)) {
+            this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
+        }
+
+        // Troll
+        if (rune.util.Math.chance(65)) {
+            this.enemies.addMember(new howlkraul.entity.Troll(x3, y3));
+        }
     }
 }
 
@@ -308,29 +325,25 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
         this.m_room.openDoor();
     }
 
-    if (this.m_room.gateOpen) {
-        var playersReady = 0;
+    if (!this.m_room.gateOpen) return;
 
-        this.players.forEachMember(function (player) {
-            if (player.topLeft.x > this.application.width) {
-                playersReady += 1;
-            }
-        }, this);
-
-        if (this.players.numMembers <= playersReady && !this.m_roundTransition) {
-            this.cameras.getCameraAt(0).fade.out(100);
-            this.m_roundTransition = true;
-
-            this.m_transitionTimer = this.timers.create({
-                duration: 1000,
-                onComplete: function () {
-                    this.m_round++;
-                    this.m_room.closeDoor();
-                    this.m_loadNewRound();
-                },
-                scope: this
-            }, true);
+    // Check if a player walks through the door
+    var playersReady = 0;
+    this.players.forEachMember(function (player) {
+        if (player.topLeft.x > this.application.width) {
+            playersReady += 1;
         }
+    }, this);
+
+    if (playersReady === 1 && !this.m_roundTransition) {
+        this.cameras.getCameraAt(0).fade.out(100);
+        this.m_roundTransition = true;
+
+        this.m_transitionTimer = this.timers.create({
+            duration: 1000,
+            onComplete: this.m_loadNewRound,
+            scope: this
+        }, true);
     }
 }
 
@@ -342,6 +355,10 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
  */
 howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     this.m_roundTransition = false;
+    this.m_disposeBetweenRound();
+
+    this.m_round++;
+    this.m_room.closeDoor();
     this.cameras.getCameraAt(0).fade.in(100);
     this.m_room.randomizeColors();
     this.m_initEnemies(this.m_round);
@@ -371,4 +388,20 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     if (deadPlayers >= this.players.numMembers) {
         this.application.scenes.load([new howlkraul.scene.GameOver(this.money)])
     }
+};
+
+/**
+ * Clear up resources between rounds
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Game.prototype.m_disposeBetweenRound = function () {
+    this.coins.removeMembers(true);
+    this.enemies.removeMembers(true);
+    this.spells.removeMembers(true);
+    this.enemyProjectiles.removeMembers(true);
+
+    //TIMERS FOR COINS DONT GET REMOVED
+    //this.timers.clear();
 };

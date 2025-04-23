@@ -14,7 +14,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function 
   // Set hidden walls
   this.game.borders.hitTestAndSeparateGroup(this.game.players);
   this.game.borders.hitTestAndSeparateGroup(this.game.enemies);
-  this.game.enemies.hitTestAndSeparateGroup(this.game.enemies);
+  //this.game.enemies.hitTestAndSeparateGroup(this.game.enemies);
 
   // remove player projectiles when hiting borders
   this.game.borders.hitTestGroup(this.game.spells, function (border, spell) {
