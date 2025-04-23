@@ -74,11 +74,15 @@ howlkraul.entity.Goblin.prototype.followPlayers = function () {
 
   var distance = Math.round(this.distance(closestPlayer.center));
 
-  if (distance < 110) {
+  if (distance < 110 && distance > 70) {
     this.states.select("RunAway");
     this.attack(closestPlayer);
     return;
-  } else if (distance > 130) {
+  } else if (distance > 120) {
+    this.states.select("Roam");
+  } else if (distance < 70 && distance > 50) {
+    this.states.select("FollowPlayer");
+  } else {
     this.states.select("Roam");
   }
 
@@ -96,7 +100,7 @@ howlkraul.entity.Goblin.prototype.attack = function (player) {
     var arrow = new howlkraul.projectile.Arrow(x, y, this);
 
     this.m_setShootingAnimation();
-    arrow.shootAtPoint(player.center, scene.enemyProjectiles);
+    arrow.shootAtPoint(player.hitbox.center, scene.enemyProjectiles);
     this.m_lastShot = now + this.m_shootCooldown;
   }
 }

@@ -71,8 +71,9 @@ Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "isAlive", {
 howlkraul.entity.PlayableCharacter.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
-  this.hitbox.set(0, (this.height - 10), this.width, 9);
+  this.hitbox.set(5, (this.height - 10), (this.width - 10), 9);
   this.m_initEnergybar();
+
 };
 
 /**
