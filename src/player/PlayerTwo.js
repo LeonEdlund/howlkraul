@@ -1,5 +1,5 @@
-howlkraul.player.PlayerTwo = function (characterChoice) {
-  howlkraul.player.Player.call(this, characterChoice, 50, 70);
+howlkraul.player.PlayerTwo = function (characterChoice, color) {
+  howlkraul.player.Player.call(this, characterChoice, 50, 70, color);
 
   // DEFAULT SPAWN VALUES - can be overritten
   this.spawnX = 70;

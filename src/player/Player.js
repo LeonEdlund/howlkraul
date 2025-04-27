@@ -1,5 +1,6 @@
-howlkraul.player.Player = function (character, spawnX, spawnY) {
+howlkraul.player.Player = function (character, spawnX, spawnY, color) {
   this.characterChoice = character || "";
+  this.m_color = color || null;
   this.characterInstance = null;
   this.m_lastHp = null;
 
@@ -68,7 +69,7 @@ howlkraul.player.Player.prototype.m_createCharacter = function () {
       break;
     case "wizard":
     default:
-      this.characterInstance = new howlkraul.entity.Wizard(this.spawnX, this.spawnY);
+      this.characterInstance = new howlkraul.entity.Wizard(this.spawnX, this.spawnY, this.m_color);
       break;
   }
 

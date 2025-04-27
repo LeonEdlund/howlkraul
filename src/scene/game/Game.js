@@ -9,8 +9,17 @@
  * 
  * Game scene.
  */
-howlkraul.scene.Game = function () {
+howlkraul.scene.Game = function (numPlayers) {
     rune.scene.Scene.call(this);
+
+    /**
+     * Numbers of players.
+     * 
+     * @private
+     * @type {number}
+     */
+    this.m_numPlayers = numPlayers || 1;
+
 
     /**
      * ...
@@ -231,17 +240,28 @@ howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
-    // PLAYER ONE
-    var playerOne = new howlkraul.player.PlayerOne("wizard");
-    this.playerControllers.push(playerOne);
-    this.players.addMember(playerOne.character);
-    this.stage.addChild(playerOne.hud)
+    switch (this.m_numPlayers) {
+        case 1:
+            var playerOne = new howlkraul.player.PlayerOne("wizard");
+            this.playerControllers.push(playerOne);
+            this.players.addMember(playerOne.character);
+            this.stage.addChild(playerOne.hud)
+            break;
 
-    // PLAYER two
-    // var playerTwo = new howlkraul.player.PlayerTwo("wizard");
-    // this.playerControllers.push(playerTwo);
-    // this.players.addMember(playerTwo.character);
-    // this.stage.addChild(playerTwo.hud)
+        case 2:
+            // PLAYER ONE
+            var playerOne = new howlkraul.player.PlayerOne("wizard");
+            this.playerControllers.push(playerOne);
+            this.players.addMember(playerOne.character);
+            this.stage.addChild(playerOne.hud)
+
+            // PLAYER TWO
+            var playerTwo = new howlkraul.player.PlayerTwo("wizard", "green");
+            this.playerControllers.push(playerTwo);
+            this.players.addMember(playerTwo.character);
+            this.stage.addChild(playerTwo.hud)
+            break;
+    }
 };
 
 /**
@@ -368,6 +388,7 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     this.players.forEachMember(function (player) {
         spawnPoint += 20;
         player.moveTo(spawnPoint, 130);
+        if (player.hp === 0) player.raiseFromDead();
     }, this);
 };
 

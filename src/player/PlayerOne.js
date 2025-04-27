@@ -1,5 +1,5 @@
-howlkraul.player.PlayerOne = function (characterChoice) {
-  howlkraul.player.Player.call(this, characterChoice, 50, 50);
+howlkraul.player.PlayerOne = function (characterChoice, color) {
+  howlkraul.player.Player.call(this, characterChoice, 50, 50, color || null);
 
 }
 

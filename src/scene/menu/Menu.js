@@ -23,6 +23,19 @@ howlkraul.scene.Menu = function () {
      * Calls the constructor method of the super class.
      */
     rune.scene.Scene.call(this);
+
+    //--------------------------------------------------------------------------
+    // Private properties
+    //--------------------------------------------------------------------------
+
+    /**
+     * The menu. 
+     * 
+     * @private
+     * @type {rune.ui.VTMenu}
+     */
+
+    this.m_menu = null;
 };
 
 //------------------------------------------------------------------------------
@@ -45,11 +58,9 @@ howlkraul.scene.Menu.prototype.constructor = howlkraul.scene.Menu;
 howlkraul.scene.Menu.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
 
-    var text = new rune.text.BitmapField("Press SPACE!");
-    text.autoSize = true;
-    text.center = this.application.screen.center;
+    this.m_initMenu();
 
-    this.stage.addChild(text);
+
 };
 
 /**
@@ -62,9 +73,8 @@ howlkraul.scene.Menu.prototype.init = function () {
  */
 howlkraul.scene.Menu.prototype.update = function (step) {
     rune.scene.Scene.prototype.update.call(this, step);
-    if (this.keyboard.justPressed("space") || this.gamepads.get(0).justPressed(0)) {
-        this.m_startGame();
-    }
+
+    this.m_handleInput();
 };
 
 /**
@@ -77,10 +87,77 @@ howlkraul.scene.Menu.prototype.update = function (step) {
  */
 howlkraul.scene.Menu.prototype.dispose = function () {
     rune.scene.Scene.prototype.dispose.call(this);
+    this.m_menu = null;
 };
 
+/**
+ * Initializing menu with options and adds it to stage.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Menu.prototype.m_initMenu = function () {
+    this.m_menu = new rune.ui.VTMenu();
+    this.m_menu.onSelect(this.m_onMenuSelect, this);
+    this.m_menu.add("1 Player");
+    this.m_menu.add("2 Player");
+    // this.m_menu.add("3 Player");
+    // this.m_menu.add("4 Player");
+    this.m_menu.center = this.application.screen.center;
+    this.stage.addChild(this.m_menu);
+};
 
+/**
+ * Handle menu selection input. 
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Menu.prototype.m_handleInput = function () {
+    if (!this.m_menu) return;
 
-howlkraul.scene.Menu.prototype.m_startGame = function () {
-    this.application.scenes.load([new howlkraul.scene.Game()]);
+    var input = {}
+
+    for (var i = 0; i < this.gamepads.numGamepads; i++) {
+        input = {
+            up: this.gamepads.get(i).stickLeftJustUp,
+            down: this.gamepads.get(i).stickLeftJustDown,
+            select: this.gamepads.get(i).justPressed(0),
+        }
+    }
+
+    if (this.keyboard.justPressed("down") || input.down) {
+        this.m_menu.down();
+    }
+
+    if (this.keyboard.justPressed("up") || input.up) {
+        this.m_menu.up();
+    }
+
+    if (this.keyboard.justPressed("enter") || input.select) {
+        this.m_menu.select();
+    }
+};
+
+/**
+ * Callback function on menu selection
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Menu.prototype.m_onMenuSelect = function (menuOption) {
+    switch (menuOption.text) {
+        case "1 Player":
+            this.application.scenes.load([new howlkraul.scene.Game(1)]);
+            break;
+        case "2 Player":
+            this.application.scenes.load([new howlkraul.scene.Game(2)]);
+            break;
+        case "3 Player":
+            this.application.scenes.load([new howlkraul.scene.Game(3)]);
+            break;
+        case "4 Player":
+            this.application.scenes.load([new howlkraul.scene.Game(4)]);
+            break;
+    }
 };

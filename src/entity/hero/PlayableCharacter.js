@@ -16,11 +16,12 @@
  * 
  * The PlayableCharacter class represents an animated PlayableCharacter sprite.
  */
-howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
+howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture, color) {
   howlkraul.entity.Entity.call(this, x || 0, y || 0, height, width, texture);
 
   // Default Stats
   this.hp = 6;
+  this.maxHp = 6;
   this.power = 50;
   this.energy = 100;
   this.energyRegenSpeed = 0.5;
@@ -37,6 +38,9 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture) {
   this.m_isDead = false;
   this.m_isAttacking = false;
   this.m_energyEmpty = false;
+
+  // COLOR
+  this.m_color = color || null;
 };
 
 //------------------------------------------------------------------------------
@@ -73,7 +77,7 @@ howlkraul.entity.PlayableCharacter.prototype.init = function () {
 
   this.hitbox.set(5, (this.height - 10), (this.width - 10), 9);
   this.m_initEnergybar();
-
+  this.m_changeColor();
 };
 
 /**
@@ -90,6 +94,8 @@ howlkraul.entity.PlayableCharacter.prototype.update = function (step) {
 //--------------------------------------------------------------------------
 
 howlkraul.entity.PlayableCharacter.prototype.move = function (input) {
+  if (this.m_isDead) return;
+
   this.m_setFacingDirection(input);
   this.m_setAnimation(input);
 
@@ -101,7 +107,6 @@ howlkraul.entity.PlayableCharacter.prototype.move = function (input) {
   if (input.hold) {
     this.velocity.x = 0;
     this.velocity.y = 0;
-    console.log("HOLD")
     return;
   }
 };
@@ -131,15 +136,25 @@ howlkraul.entity.PlayableCharacter.prototype.takeDamage = function () {
 
 howlkraul.entity.PlayableCharacter.prototype.die = function () {
   this.m_isDead = true;
+  this.animation.gotoAndPlay("dead");
   this.movementAllowed = false;
   this.rotation = -90;
-  this.animation.goto("run", [0])
   this.m_energybar.visible = false;
 };
 
 howlkraul.entity.PlayableCharacter.prototype.takeEnergy = function () {
   this.energy -= this.energyCost;
   this.m_energybar.progress = this.energy / 100;
+}
+
+howlkraul.entity.PlayableCharacter.prototype.raiseFromDead = function () {
+  if (this.hp !== 0 || this.hp === this.maxHp) return;
+
+  this.m_isDead = false;
+  this.movementAllowed = true;
+  this.hp = 1;
+  this.rotation = 0;
+  this.m_energybar.visible = true;
 }
 
 //--------------------------------------------------------------------------
@@ -305,4 +320,22 @@ howlkraul.entity.PlayableCharacter.prototype.m_setShootingAnimation = function (
     default:
       this.animation.gotoAndPlay("r-down");
   }
+}
+
+//--------------------------------------------------------------------------
+// Abstract Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Change color of character.
+ * Overide this method if you wanna implement color changing.
+ * 
+ * @abstract
+ * @protected
+ * @param {string} color - The color to make the character as a string. 
+ * @returns {undefined}
+ */
+howlkraul.entity.PlayableCharacter.prototype.m_changeColor = function (color) {
+  //OVERIDE IN SUBCLASS
+
 }
