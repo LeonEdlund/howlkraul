@@ -6,7 +6,6 @@ howlkraul.room.Room = function (game) {
   this.m_gate = null;
   this.m_gateOpen = false;
   this.m_lastColor = new rune.color.Color24(38, 41, 42);
-  this.m_init();
 }
 
 howlkraul.room.Room.prototype = Object.create(rune.display.Sprite.prototype);
@@ -30,9 +29,11 @@ Object.defineProperty(howlkraul.room.Room.prototype, "gateOpen", {
   }
 });
 
-howlkraul.room.Room.prototype.m_init = function () {
+howlkraul.room.Room.prototype.init = function () {
+  rune.display.Sprite.prototype.init.call(this);
   this.m_initAnimations();
   this.m_initBorders();
+  this.placeFurniture();
 }
 
 howlkraul.room.Room.prototype.m_initAnimations = function () {
@@ -91,4 +92,11 @@ howlkraul.room.Room.prototype.randomizeColors = function () {
   c2.random();
   this.texture.replaceColor(this.m_lastColor, c2);
   this.m_lastColor = c2;
+}
+
+howlkraul.room.Room.prototype.placeFurniture = function () {
+  this.game.furniture.addMember(new howlkraul.room.Table(100, 100))
+
+
+
 }

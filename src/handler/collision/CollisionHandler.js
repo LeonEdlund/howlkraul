@@ -6,15 +6,16 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
   this.m_handleBorderCollision();
   this.m_handleEnemySpellHit();
   this.m_handleCoinPickup();
-  this.m_handleDamageHit()
-  this.m_handleEnemyProjectileHit()
+  this.m_handleDamageHit();
+  this.m_handleEnemyProjectileHit();
+  this.m_handleFurnitureHit();
 };
 
 howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function () {
   // Set hidden walls
   this.game.borders.hitTestAndSeparateGroup(this.game.players);
   this.game.borders.hitTestAndSeparateGroup(this.game.enemies);
-  //this.game.enemies.hitTestAndSeparateGroup(this.game.enemies);
+  this.game.borders.hitTestAndSeparateGroup(this.game.furniture);
 
   // remove player projectiles when hiting borders
   this.game.borders.hitTestGroup(this.game.spells, function (border, spell) {
@@ -73,5 +74,11 @@ howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
 howlkraul.handler.CollisionHandler.prototype.m_handleDamageHit = function () {
   this.game.players.hitTestGroup(this.game.enemies, function (player, enemy) {
     player.takeDamage();
+  }, this);
+}
+
+howlkraul.handler.CollisionHandler.prototype.m_handleFurnitureHit = function () {
+  this.game.furniture.hitTestAndSeparateGroup(this.game.players, function (player, furniture) {
+    //player.takeDamage();
   }, this);
 }

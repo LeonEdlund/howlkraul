@@ -1,6 +1,35 @@
+/**
+ * Represents a state where the enemy follows the closest player on the scene. 
+ * 
+ * @class
+ * @classdesc - Creates a instance of a FollowPlayerState.
+ */
 howlkraul.entity.FollowPlayerState = function () {
+  //--------------------------------------------------------------------------
+  // Super call
+  //--------------------------------------------------------------------------
   rune.state.State.call(this, "FollowPlayer");
+
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * The enemies default max X velocity.
+   * Get´s set in init. 
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_defaultMaxVelocityX = 0;
+
+ /**
+ * The enemies default max X velocity.
+ * Get´s set in init. 
+ * 
+ * @private
+ * @type {number}
+ */
   this.m_defaultMaxVelocityY = 0;
 
   this.m_maxDiagonalVelocityX = 0;

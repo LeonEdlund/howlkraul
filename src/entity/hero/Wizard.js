@@ -20,7 +20,6 @@ howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.PlayableCharacter.prototype.init.call(this);
 
   this.setVelocity(0.08, 1.2);
-
 };
 
 /**
@@ -53,12 +52,43 @@ howlkraul.entity.Wizard.prototype.initAnimations = function () {
  * @overide
 */
 howlkraul.entity.Wizard.prototype.m_changeColor = function () {
+  // LIGHTEST
+  var originalC1 = new rune.color.Color24(178, 206, 219);
+  var newC1 = null;
+
+  // LIGHT
+  var originalC2 = new rune.color.Color24(0, 152, 220);
+  var newC2 = null;
+
+  // MEDIUM
+  var originalC3 = new rune.color.Color24(0, 105, 170);
+  var newC3 = null;
+
+  // MEDIUM DARK
+  var originalC4 = new rune.color.Color24(0, 57, 109);
+  var newC4 = null;
+
+  // DARK
+  var originalC5 = new rune.color.Color24(3, 25, 63);
+  var newC5 = null;
+
   if (!this.m_color) return;
 
   switch (this.m_color) {
     case "green":
-      this.texture.replaceColor(new rune.color.Color24(0, 152, 220), new rune.color.Color24(99, 152, 220))
+      newC1 = new rune.color.Color24(194, 167, 138);
+      newC2 = new rune.color.Color24(196, 118, 69);
+      newC3 = new rune.color.Color24(181, 104, 60);
+      newC4 = new rune.color.Color24(115, 55, 28);
+      newC5 = new rune.color.Color24(46, 19, 5);
   }
+
+
+  this.texture.replaceColor(originalC1, newC1);
+  this.texture.replaceColor(originalC2, newC2);
+  this.texture.replaceColor(originalC3, newC3);
+  this.texture.replaceColor(originalC4, newC4);
+  this.texture.replaceColor(originalC5, newC5);
 };
 
 //--------------------------------------------------------------------------

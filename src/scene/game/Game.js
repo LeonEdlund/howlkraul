@@ -89,6 +89,14 @@ howlkraul.scene.Game = function (numPlayers) {
      * ...
      * 
      * @private
+     * @type {rune.display.DisplayGroup}
+     */
+    this.furniture = this.groups.create(this.stage);
+
+    /**
+     * ...
+     * 
+     * @private
      * @type {howlkraul.handler.CollisionHandler}
      */
     this.m_collisionHandler = new howlkraul.handler.CollisionHandler(this);
@@ -156,7 +164,6 @@ howlkraul.scene.Game.prototype.update = function (step) {
     this.m_collisionHandler.update();
     this.m_handleRoundWin();
     this.m_checkGameOver();
-
 
     this.playerControllers.forEach(function (player) {
         player.update();
