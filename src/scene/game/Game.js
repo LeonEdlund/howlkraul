@@ -43,14 +43,6 @@ howlkraul.scene.Game = function (numPlayers) {
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.borders = this.m_room.borders;
-
-    /**
-     * ...
-     * 
-     * @private
-     * @type {rune.display.DisplayGroup}
-     */
     this.players = this.groups.create(this.stage);
 
     /**
@@ -205,11 +197,11 @@ howlkraul.scene.Game.prototype.dispose = function () {
  * @param {howlkraul.projectile.Projectile} projectile - The projectile to remove.
  * @returns {undefined}
  */
-howlkraul.scene.Game.prototype.removeProjectile = function (group, projectile) {
-    if (group && projectile) {
-        group.removeMember(projectile, true);
-    }
-}
+// howlkraul.scene.Game.prototype.removeProjectile = function (group, projectile) {
+//     if (group && projectile) {
+//         group.removeMember(projectile, true);
+//     }
+// }
 
 /**
  * Add money to the total money counter.
