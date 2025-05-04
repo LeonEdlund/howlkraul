@@ -72,7 +72,6 @@ howlkraul.entity.Enemy.prototype.dispose = function () {
  */
 howlkraul.entity.Enemy.prototype.initStates = function () {
   howlkraul.entity.Entity.prototype.initStates.call(this);
-  console.log(this.states)
   this.states.load([
     new howlkraul.entity.FollowPlayerState(),
     new howlkraul.entity.RunAwayState(),
@@ -137,6 +136,7 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
  */
 howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   this.hp -= amount;
+  this.m_bloodEmitter.emit(5);
   if (this.hp <= 0) this.die();
 };
 
@@ -148,9 +148,6 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
  */
 howlkraul.entity.Enemy.prototype.die = function () {
   this.dropCoin();
-  // if (rune.util.Math.chance(m_potionDropChance)) {
-  //   //this.dropPotion();
-  // }
   this.explode();
 };
 
@@ -163,17 +160,6 @@ howlkraul.entity.Enemy.prototype.die = function () {
 howlkraul.entity.Enemy.prototype.dropCoin = function () {
   var coin = new howlkraul.drops.Coin(this.x, this.y);
   this.application.scenes.selected.coins.addMember(coin);
-};
-
-/**
- * Drops a healtPotion. 
- * 
- * @public
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.dropPotion = function () {
-  var potion = new howlkraul.drops.hpPotion(this.x, this.y);
-  this.application.scenes.selected.drops.addMember(coin);
 };
 
 /**

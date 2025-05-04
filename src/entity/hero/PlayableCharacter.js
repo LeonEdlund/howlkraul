@@ -20,11 +20,11 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture, col
   howlkraul.entity.Entity.call(this, x || 0, y || 0, height, width, texture);
 
   // Default Stats
-  this.hp = 6;
+  this.m_hp = 6;
   this.maxHp = 6;
   this.power = 50;
   this.energy = 100;
-  this.energyRegenSpeed = 0.5;
+  this.energyRegenSpeed = 0.7;
   this.energyCost = 20;
 
   // Ui
@@ -62,6 +62,34 @@ Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "isAlive", {
    */
   get: function () {
     return !this.m_isAlive;
+  }
+})
+
+Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "hp", {
+  /**
+   * gets players hp
+   * 
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_hp;
+  },
+
+  /**
+   * sets players health
+   * 
+   * @param {number} value
+   * @returns {boolean}
+   */
+  set: function (value) {
+    if (this.m_hp === this.maxHp) return;
+
+    if (this.m_hp === this.maxHp - 1) {
+      this.m_hp = this.maxHp;
+    } else {
+      this.m_hp = value;
+    }
+
   }
 })
 
@@ -125,13 +153,13 @@ howlkraul.entity.PlayableCharacter.prototype.attack = function () {
 howlkraul.entity.PlayableCharacter.prototype.takeDamage = function () {
   var now = Date.now();
 
-  if (now > this.m_lastDamageHit && this.hp > 0) {
-    this.hp -= 1;
+  if (now > this.m_lastDamageHit && this.m_hp > 0) {
+    this.m_hp -= 1;
     this.flicker.start(this.m_damageHitCoolDown);
     this.m_lastDamageHit = now + this.m_damageHitCoolDown;
   }
 
-  if (this.hp <= 0) this.die();
+  if (this.m_hp <= 0) this.die();
 };
 
 howlkraul.entity.PlayableCharacter.prototype.die = function () {
@@ -148,11 +176,11 @@ howlkraul.entity.PlayableCharacter.prototype.takeEnergy = function () {
 }
 
 howlkraul.entity.PlayableCharacter.prototype.raiseFromDead = function () {
-  if (this.hp !== 0 || this.hp === this.maxHp) return;
+  if (this.m_hp !== 0 || this.m_hp === this.maxHp) return;
 
   this.m_isDead = false;
   this.movementAllowed = true;
-  this.hp = 1;
+  this.m_hp = 1;
   this.rotation = 0;
   this.m_energybar.visible = true;
 }
@@ -185,11 +213,12 @@ howlkraul.entity.PlayableCharacter.prototype.m_handleEmptyEnergy = function () {
 }
 
 howlkraul.entity.PlayableCharacter.prototype.m_regenEnergy = function () {
-  if (this.energy === 100) {
+  this.m_energybar.progress = this.energy / 100;
+
+  if (this.energy >= 100) {
     this.m_energyEmpty = false;
 
     if (this.m_energybar.forgroundColor !== "#6697c4") {
-      this.energy -= 1;
       this.m_energybar.forgroundColor = "#6697c4";
     }
 
@@ -197,7 +226,10 @@ howlkraul.entity.PlayableCharacter.prototype.m_regenEnergy = function () {
   }
 
   this.energy += this.energyRegenSpeed;
-  this.m_energybar.progress = this.energy / 100;
+
+  if (this.energy > 100) {
+    this.energy = 100;
+  }
 };
 
 //--------------------------------------------------------------------------

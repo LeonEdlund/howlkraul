@@ -83,7 +83,7 @@ howlkraul.scene.Game = function (numPlayers) {
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.furniture = this.groups.create(this.stage);
+    this.potions = this.groups.create(this.stage);
 
     /**
      * ...
@@ -126,6 +126,16 @@ howlkraul.scene.Game = function (numPlayers) {
 
 howlkraul.scene.Game.prototype = Object.create(rune.scene.Scene.prototype);
 howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
+
+//--------------------------------------------------------------------------
+// Getters And Setters
+//--------------------------------------------------------------------------
+
+Object.defineProperty(howlkraul.scene.Game.prototype, "room", {
+    get: function () {
+        return this.m_room;
+    }
+});
 
 //------------------------------------------------------------------------------
 // Override public prototype methods (ENGINE)
@@ -188,20 +198,6 @@ howlkraul.scene.Game.prototype.dispose = function () {
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
-
-/**
- * Remove a projectile from a display group.
- * 
- * @public
- * @param {rune.display.DisplayGroup} group - The group where the projectile is added.
- * @param {howlkraul.projectile.Projectile} projectile - The projectile to remove.
- * @returns {undefined}
- */
-// howlkraul.scene.Game.prototype.removeProjectile = function (group, projectile) {
-//     if (group && projectile) {
-//         group.removeMember(projectile, true);
-//     }
-// }
 
 /**
  * Add money to the total money counter.
@@ -379,7 +375,9 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
     this.m_round++;
     this.m_room.closeDoor();
     this.cameras.getCameraAt(0).fade.in(100);
+
     this.m_room.randomizeColors();
+    this.m_room.placeFurniture();
     this.m_initEnemies(this.m_round);
 
     // move players
@@ -418,6 +416,7 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
  */
 howlkraul.scene.Game.prototype.m_disposeBetweenRound = function () {
     this.coins.removeMembers(true);
+    this.potions.removeMembers(true);
     this.enemies.removeMembers(true);
     this.spells.removeMembers(true);
     this.enemyProjectiles.removeMembers(true);

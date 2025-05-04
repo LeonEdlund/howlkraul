@@ -76,6 +76,18 @@ howlkraul.room.Room.prototype.constructor = howlkraul.room.Room;
 // Getter and setters
 //--------------------------------------------------------------------------
 
+Object.defineProperty(howlkraul.room.Room.prototype, "walls", {
+  get: function () {
+    return this.m_borders;
+  }
+});
+
+Object.defineProperty(howlkraul.room.Room.prototype, "furniture", {
+  get: function () {
+    return this.m_furniture;
+  }
+});
+
 Object.defineProperty(howlkraul.room.Room.prototype, "gateOpen", {
   get: function () {
     return this.m_gateOpen;
@@ -100,18 +112,9 @@ howlkraul.room.Room.prototype.init = function () {
 /**
  * @inheritdoc
  */
-howlkraul.room.Room.prototype.update = function (step) {
-  rune.display.Sprite.prototype.update.call(this, step);
-  this.m_handleBorderCollision();
-}
-
-/**
- * @inheritdoc
- */
 howlkraul.room.Room.prototype.dispose = function () {
   rune.display.Sprite.prototype.dispose.call(this);
 
-  this.game.groups.remove(this.m_borders);
   this.m_borders = null;
 }
 
@@ -143,10 +146,15 @@ howlkraul.room.Room.prototype.randomizeColors = function () {
   this.m_lastColor = c2;
 }
 
+/**
+ * Places random furniture in room.
+ * If there is already furniture in the room they are removed.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.room.Room.prototype.placeFurniture = function () {
   this.m_furniture.spawnRandomFurniture();
-
-  //this.game.furniture.addMember(new howlkraul.room.Table(100, 100))
 }
 
 
@@ -166,13 +174,13 @@ howlkraul.room.Room.prototype.m_initAnimations = function () {
 }
 
 /**
- * Inititiates animations for door.
+ * Inititiates the furnitureDisplayGroup.
  * 
  * @private 
  * @returns {undefined}
  */
 howlkraul.room.Room.prototype.m_initFurnitureGroup = function () {
-  this.m_furniture = new howlkraul.room.FurnitureGroup(this.game.stage);
+  this.m_furniture = this.game.groups.add(new howlkraul.room.FurnitureGroup(this.game.stage))
 }
 
 /**
@@ -208,30 +216,8 @@ howlkraul.room.Room.prototype.m_initBorders = function () {
 
     this.m_borders.forEachMember(function (wall) {
       wall.immovable = true;
-      wall.backgroundColor = "red";
-      wall.alpha = 0.5;
+      // wall.backgroundColor = "red";
+      // wall.alpha = 0.5;
     }, this);
   }
-}
-
-howlkraul.room.Room.prototype.m_handleBorderCollision = function () {
-  // Set hidden walls
-  this.m_borders.hitTestAndSeparateGroup(this.game.players);
-  this.m_borders.hitTestAndSeparateGroup(this.game.enemies);
-  this.m_borders.hitTestAndSeparateGroup(this.game.furniture);
-
-  // remove player projectiles when hiting borders
-  this.m_borders.hitTestGroup(this.game.spells, function (border, spell) {
-    // Stop spell from being removed when beeing at the top of the room
-    if ((spell.castedBy.facing === "right" || spell.castedBy.facing === "left") && border.center.x === 200) {
-      return;
-    }
-
-    this.game.spells.removeMember(spell);
-  }, this);
-
-  // remove enemy projectiles when hiting borders
-  this.m_borders.hitTestGroup(this.game.enemyProjectiles, function (border, projectile) {
-    this.game.enemyProjectiles.removeMember(projectile);
-  }, this);
 }

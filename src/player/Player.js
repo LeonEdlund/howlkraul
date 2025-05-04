@@ -83,7 +83,6 @@ howlkraul.player.Player.prototype.m_getControllers = function () {
   }
 }
 
-
 howlkraul.player.Player.prototype.m_initHud = function () {
   //OVERIDE IN CHILD CLASS
 }

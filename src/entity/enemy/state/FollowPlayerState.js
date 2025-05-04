@@ -23,13 +23,13 @@ howlkraul.entity.FollowPlayerState = function () {
    */
   this.m_defaultMaxVelocityX = 0;
 
- /**
- * The enemies default max X velocity.
- * Get´s set in init. 
- * 
- * @private
- * @type {number}
- */
+  /**
+  * The enemies default max X velocity.
+  * Get´s set in init. 
+  * 
+  * @private
+  * @type {number}
+  */
   this.m_defaultMaxVelocityY = 0;
 
   this.m_maxDiagonalVelocityX = 0;
@@ -72,19 +72,12 @@ howlkraul.entity.FollowPlayerState.prototype.m_followPlayer = function () {
   var tY = this.owner.centerY;
   var pX = closestPlayer.centerX;
   var pY = closestPlayer.centerY;
-  var distance = this.owner.distance(closestPlayer.center);
 
   var distanceX = rune.util.Math.abs(tX - pX);
   var distanceY = rune.util.Math.abs(tY - pY);
 
   this.owner.velocity.max.x = this.m_defaultMaxVelocityX;
   this.owner.velocity.max.y = this.m_defaultMaxVelocityY;
-  // if (distance < 20) {
-  //   this.owner.allowMovement = false;
-  //   return;
-  // } else {
-  //   this.owner.allowMovement = true;
-  // }
 
   if (distanceX > distanceY * 2) {
 

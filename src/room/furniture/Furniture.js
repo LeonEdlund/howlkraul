@@ -1,16 +1,16 @@
-howlkraul.room.Furniture = function (x, y, width, height, texture) {
+howlkraul.room.Furniture = function (x, y, width, height, texture, health) {
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
   rune.display.Sprite.call(this, x || 0, y || 0, width, height, texture);
 
   /**
-   * The health.
+   * The health of the furniture.
    * 
    * @protected
    * @type {number}
    */
-  this.m_health = 8;
+  this.m_health = health;
 }
 
 //--------------------------------------------------------------------------
@@ -24,9 +24,13 @@ howlkraul.room.Furniture.prototype.constructor = howlkraul.room.Furniture;
 // Getters and Setters
 //--------------------------------------------------------------------------
 
-Object.defineProperty(howlkraul.room.Furniture.prototype, "health", {
+Object.defineProperty(howlkraul.room.Furniture.prototype, "destroyed", {
   get: function () {
-    return this.m_health;
+    if (this.m_health > 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 });
 
@@ -34,32 +38,45 @@ Object.defineProperty(howlkraul.room.Furniture.prototype, "health", {
 // Overide Methods
 //--------------------------------------------------------------------------
 
+/**
+ * @inheritdoc
+*/
 howlkraul.room.Furniture.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
   this.m_initAnimations();
 }
 
+/**
+ * @inheritdoc
+*/
 howlkraul.room.Furniture.prototype.update = function () {
   rune.display.Sprite.prototype.update.call(this);
-  this.m_checkDamage()
 }
 
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Give damage to furniture and change frame.
+ * 
+ * @public
+ * @returns {undefined} 
+ */
 howlkraul.room.Furniture.prototype.takeDamage = function () {
   this.m_health -= 1;
   this.m_changeFrame();
 }
 
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
-
-howlkraul.room.Furniture.prototype.m_checkDamage = function () {
-  if (this.m_health <= 0) {
-    //this.group.removeMember(true);
+/**
+ * Randomly drop health Potion.
+ * 
+ * @public
+ * @returns {undefined} 
+ */
+howlkraul.room.Furniture.prototype.dropHpPotion = function () {
+  if (rune.util.Math.chance(20)) {
+    this.application.scenes.selected.potions.addMember(new howlkraul.drops.HealthPotion(this.center.x, this.center.y));
   }
 }
 

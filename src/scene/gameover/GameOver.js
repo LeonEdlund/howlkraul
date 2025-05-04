@@ -90,5 +90,5 @@ howlkraul.scene.GameOver.prototype.dispose = function () {
 
 
 howlkraul.scene.GameOver.prototype.m_startGame = function () {
-  this.application.scenes.load([new howlkraul.scene.Game()]);
+  this.application.scenes.load([new howlkraul.scene.Menu()]);
 };

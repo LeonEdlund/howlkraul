@@ -1,6 +1,6 @@
 howlkraul.entity.Troll = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "troll_29x29");
-  this.hp = 100;
+  this.hp = 150;
 }
 
 howlkraul.entity.Troll.prototype = Object.create(howlkraul.entity.Enemy.prototype);
