@@ -1,7 +1,24 @@
+/**
+ * 
+ * 
+ * @class
+ * @classdesc - creates an instance of CollisionHandler.
+ * 
+ * @param {rune.display.scene} game 
+ */
 howlkraul.handler.CollisionHandler = function (game) {
   this.game = game;
 }
 
+//--------------------------------------------------------------------------
+// Public methods
+//--------------------------------------------------------------------------
+/**
+ * Gets called every frame.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.handler.CollisionHandler.prototype.update = function () {
   this.m_handleBorderCollision();
 
@@ -28,8 +45,15 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
   }
 };
 
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
 /**
- * Handles collisions with walls.
+ * Handles all collisions with walls.
+ * 
+ * @private
+ * @returns {undefined}
  */
 howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function () {
   // Set hidden walls
@@ -53,10 +77,27 @@ howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function 
   }, this);
 }
 
-// ENEMY HIT BY SPELL
+/**
+ * Handles player getting hit by enemy.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.handler.CollisionHandler.prototype.m_handleDamageHit = function () {
+  this.game.players.hitTestGroup(this.game.enemies, function (player, enemy) {
+    player.takeDamage();
+  }, this);
+}
+
+/**
+ * Handles enemies getting hit by projectiles.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function () {
-  var deadEnemies = [];
   var m_this = this;
+  var enemiesToRemove = [];
 
   this.game.enemies.hitTestAndSeparateGroup(this.game.spells, function (enemy, spell) {
     enemy.takeDamage(spell.castedBy.power);
@@ -66,15 +107,23 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function ()
     this.game.gamepads.get(0).vibrate(100, 0.3, 0.6);
 
     if (enemy.hp <= 0) {
-      deadEnemies.push(enemy);
+      enemiesToRemove.push(enemy);
     }
   }, this);
 
-  deadEnemies.forEach(function (enemy) {
-    m_this.game.enemies.removeMember(enemy, true);
-  });
+  if (enemiesToRemove.length > 0) {
+    enemiesToRemove.forEach(function (enemy) {
+      m_this.game.enemies.removeMember(enemy, true);
+    });
+  }
 }
 
+/**
+ * Handles player getting hit by projectiles.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = function () {
   this.game.players.hitTestGroup(this.game.enemyProjectiles, function (player, projectile) {
     player.takeDamage(projectile.castedBy.power);
@@ -84,6 +133,12 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
   }, this);
 }
 
+/**
+ * Handles player picking up coin.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
   this.game.players.hitTestGroup(this.game.coins, function (player, coin) {
     this.game.addToMoneyCounter(coin.worth);
@@ -91,15 +146,15 @@ howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
   }, this);
 }
 
+/**
+ * Handles player picking up potions.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.handler.CollisionHandler.prototype.m_handlePotionPickup = function () {
   this.game.players.hitTestGroup(this.game.potions, function (player, potion) {
     player.hp += potion.healingPower;
     this.game.potions.removeMember(potion, true);
-  }, this);
-}
-
-howlkraul.handler.CollisionHandler.prototype.m_handleDamageHit = function () {
-  this.game.players.hitTestGroup(this.game.enemies, function (player, enemy) {
-    player.takeDamage();
   }, this);
 }

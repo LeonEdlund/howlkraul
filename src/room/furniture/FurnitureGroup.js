@@ -19,6 +19,22 @@ howlkraul.room.FurnitureGroup = function (scene) {
    * @type {array <howlkraul.room.Furniture>}
   */
   this.m_furniture = [];
+
+  /**
+   * Emitter for vase.
+   * 
+   * @private
+   * @type {rune.particle.Emitter}
+   */
+  this.m_vaseEmitter = null;
+
+  /**
+ * Emitter for table.
+ * 
+ * @private
+ * @type {rune.particle.Emitter}
+ */
+  this.m_tableEmitter = null;
 }
 
 //--------------------------------------------------------------------------
@@ -29,30 +45,15 @@ howlkraul.room.FurnitureGroup.prototype = Object.create(rune.display.DisplayGrou
 howlkraul.room.FurnitureGroup.prototype.constructor = howlkraul.room.FurnitureGroup;
 
 //--------------------------------------------------------------------------
-// Overide Methods
-//--------------------------------------------------------------------------
-
-howlkraul.room.FurnitureGroup.prototype.init = function () {
-  rune.display.DisplayGroup.prototype.init.call(this);
-}
-
-howlkraul.room.FurnitureGroup.prototype.update = function (step) {
-  rune.display.DisplayGroup.prototype.update.call(this, step);
-  this.m_handleProjectileHit();
-}
-
-howlkraul.room.FurnitureGroup.prototype.dispose = function () {
-  rune.display.DisplayGroup.prototype.dispose.call(this);
-  this.m_furniture = null;
-}
-
-//--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
 /**
  * Spawns random furniture to the scene.
  * If furniture is already placed they are respawned.
+ * 
+ * @public
+ * @returns {undefined}
  */
 howlkraul.room.FurnitureGroup.prototype.spawnRandomFurniture = function () {
   this.removeMembers(true);
@@ -64,12 +65,69 @@ howlkraul.room.FurnitureGroup.prototype.spawnRandomFurniture = function () {
   for (var j = 0; j < this.m_furniture.length; j++) {
     this.addMember(this.m_furniture[j]);
   }
+}
 
+//--------------------------------------------------------------------------
+// Overide Methods
+//--------------------------------------------------------------------------
+
+howlkraul.room.FurnitureGroup.prototype.init = function () {
+  rune.display.DisplayGroup.prototype.init.call(this);
+
+  this.m_initEmmiters();
+}
+
+howlkraul.room.FurnitureGroup.prototype.update = function (step) {
+  rune.display.DisplayGroup.prototype.update.call(this, step);
+
+  this.m_handleProjectileHit();
+  this.m_handleCollisonHit();
+}
+
+howlkraul.room.FurnitureGroup.prototype.dispose = function () {
+  rune.display.DisplayGroup.prototype.dispose.call(this);
+
+  this.application.scenes.selected.stage.removeChild(this.m_vaseEmitter);
+  this.application.scenes.selected.stage.removeChild(this.m_tableEmitter);
+
+  this.m_scene = null;
+  this.m_furniture = null;
+  this.m_vaseEmitter = null;
+  this.m_tableEmitter = null;
 }
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
+
+howlkraul.room.FurnitureGroup.prototype.m_initEmmiters = function () {
+  this.m_vaseEmitter = new rune.particle.Emitter(0, 0, 5, 5, {
+    capacity: 5,
+    accelerationY: 0.5,
+    maxVelocityX: 0.45,
+    minVelocityX: -0.25,
+    maxVelocityY: -0.25,
+    minVelocityY: -0.85,
+    minRotation: -2,
+    maxRotation: 2,
+    particles: [howlkraul.particle.Blood]
+  });
+
+  this.m_tableEmitter = new rune.particle.Emitter(0, 0, 10, 10, {
+    capacity: 7,
+    accelerationY: 0.5,
+    maxVelocityX: 0.4,
+    minVelocityX: -0.3,
+    maxVelocityY: -0.2,
+    minVelocityY: -0.8,
+    minRotation: -1.5,
+    maxRotation: 1.5,
+    particles: [howlkraul.particle.Blood]
+  });
+
+  this.application.scenes.selected.stage.addChild(this.m_vaseEmitter);
+  this.application.scenes.selected.stage.addChild(this.m_tableEmitter);
+}
 
 /**
  * 
@@ -84,7 +142,6 @@ howlkraul.room.FurnitureGroup.prototype.m_generateFurniture = function (maxAmoun
 
   var lastTablePosition = new rune.geom.Point(0, 0);
 
-  // @note Spawn tables
   for (var i = 0; i < maxAmount; i++) {
     if (!rune.util.Math.chance(20)) continue;
 
@@ -99,17 +156,72 @@ howlkraul.room.FurnitureGroup.prototype.m_generateFurniture = function (maxAmoun
   }
 }
 
+/**
+ * Checks for collisions between spells/arrows and funiture in the group.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.room.FurnitureGroup.prototype.m_handleProjectileHit = function () {
   var spells = this.application.scenes.selected.spells;
+  var enemyProjectile = this.application.scenes.selected.enemyProjectiles;
 
-  this.hitTestGroup(spells, function (target, spell) {
-    spells.removeMember(spell);
+  this.hitTestAndSeparateGroup(spells, this.m_handleDamage, this);
+  this.hitTestAndSeparateGroup(enemyProjectile, this.m_handleDamage, this);
+}
 
-    target.takeDamage();
+/**
+ * Callback function for hits.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.room.FurnitureGroup.prototype.m_handleDamage = function (target, projectile) {
+  var spells = this.application.scenes.selected.spells;
+  var enemyProjectile = this.application.scenes.selected.enemyProjectiles;
 
-    if (target.destroyed) {
-      target.dropHpPotion();
-      this.removeMember(target, true);
-    }
-  }, this)
+  if (projectile instanceof howlkraul.projectile.Spell) {
+    spells.removeMember(projectile);
+  } else if (projectile instanceof howlkraul.projectile.Arrow) {
+    enemyProjectile.removeMember(projectile)
+  }
+
+  target.takeDamage();
+
+  if (target.destroyed) {
+    this.m_emitDebre(target)
+    target.dropLoot();
+    this.removeMember(target, true);
+  }
+}
+
+/**
+ * Handles coillision between player/enemy and furniture in the group.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.room.FurnitureGroup.prototype.m_handleCollisonHit = function () {
+  var players = this.application.scenes.selected.players;
+  var enemies = this.application.scenes.selected.enemies;
+
+  this.hitTestAndSeparateGroup(players);
+  this.hitTestAndSeparateGroup(enemies);
+}
+
+/**
+ * Emmits debree based on furniture type.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.room.FurnitureGroup.prototype.m_emitDebre = function (furniture) {
+
+  if (furniture instanceof howlkraul.room.Table) {
+    this.m_tableEmitter.moveTo(furniture.center.x, furniture.center.y);
+    this.m_tableEmitter.emit(5);
+  } else if (furniture instanceof howlkraul.room.Vase) {
+    this.m_vaseEmitter.moveTo(furniture.center.x, furniture.center.y);
+    this.m_vaseEmitter.emit(5);
+  }
 }
