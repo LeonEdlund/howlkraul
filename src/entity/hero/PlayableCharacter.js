@@ -180,7 +180,7 @@ howlkraul.entity.PlayableCharacter.prototype.raiseFromDead = function () {
 
   this.m_isDead = false;
   this.movementAllowed = true;
-  this.m_hp = 1;
+  this.m_hp = 2;
   this.rotation = 0;
   this.m_energybar.visible = true;
 }
