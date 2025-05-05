@@ -75,7 +75,7 @@ howlkraul.room.Furniture.prototype.takeDamage = function () {
  * @returns {undefined} 
  */
 howlkraul.room.Furniture.prototype.dropHpPotion = function () {
-  if (rune.util.Math.chance(20)) {
+  if (rune.util.Math.chance(30)) {
     this.application.scenes.selected.potions.addMember(new howlkraul.drops.HealthPotion(this.center.x, this.center.y));
   }
 }

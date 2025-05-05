@@ -90,7 +90,7 @@ howlkraul.room.FurnitureGroup.prototype.m_generateFurniture = function (maxAmoun
 
     randomPosition = new rune.geom.Point(rune.util.Math.randomInt(50, 300), rune.util.Math.randomInt(50, 180));
 
-    if (rune.geom.Point.distance(randomPosition.x, randomPosition.y, lastTablePosition.x, lastTablePosition.y) > 50) {
+    if (rune.geom.Point.distance(randomPosition.x, randomPosition.y, lastTablePosition.x, lastTablePosition.y) > 80) {
       this.m_furniture.push(new possibleFurniture[type](randomPosition.x, randomPosition.y));
     }
 
