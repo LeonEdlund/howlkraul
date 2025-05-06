@@ -74,13 +74,13 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("troll_gore3_19x18", "./../asset/img/gore/troll/troll_gore3_19x18.png");
 	this.add("troll_gore4_19x18", "./../asset/img/gore/troll/troll_gore4_19x18.png");
 	this.add("troll_gore5_19x18", "./../asset/img/gore/troll/troll_gore5_19x18.png");
-	this.add("empty-heart_11x12", "./../asset/img/hud/hearts/empty-heart_11x12.png");
-	this.add("full-heart_11x12", "./../asset/img/hud/hearts/full-heart_11x12.png");
-	this.add("half-heart_11x12", "./../asset/img/hud/hearts/half-heart_11x12.png");
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
 	this.add("player_hud_69x31", "./../asset/img/hud/hud components/player_hud_69x31.png");
+	this.add("empty-heart_11x12", "./../asset/img/not_in_use/empty-heart_11x12.png");
+	this.add("full-heart_11x12", "./../asset/img/not_in_use/full-heart_11x12.png");
 	this.add("goblin_29x27", "./../asset/img/not_in_use/goblin_29x27.png");
+	this.add("half-heart_11x12", "./../asset/img/not_in_use/half-heart_11x12.png");
 	this.add("knight_walk", "./../asset/img/not_in_use/knight_walk.png");
 	this.add("player_hud_72x35", "./../asset/img/not_in_use/player_hud_72x35.png");
 	this.add("arrow_19x5", "./../asset/img/projectiles/arrow_19x5.png");
