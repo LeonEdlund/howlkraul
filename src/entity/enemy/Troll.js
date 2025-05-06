@@ -12,7 +12,7 @@ howlkraul.entity.Troll.prototype.constructor = howlkraul.entity.Troll;
 howlkraul.entity.Troll.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
-  this.setVelocity(0.1, 0.4);
+  this.setVelocity(0.1, rune.util.Math.random(0.3, 0.4));
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
 };
 

@@ -1,12 +1,11 @@
-howlkraul.particle.TablePiece = function () {
+howlkraul.particle.VasePiece = function () {
 
   this.textures = [
-    "table_part1_18x18",
-    "table_part2_18x18",
-    "table_part3_18x18",
-    "table_part4_18x18",
-    "table_part5_18x18",
-    "table_part6_18x18",
+    "vase_part1_18x18",
+    "vase_part2_18x18",
+    "vase_part3_18x18",
+    "vase_part4_18x18",
+    "vase_part5_18x18",
   ]
 
   var i = rune.util.Math.randomInt(0, this.textures.length - 1);
@@ -21,5 +20,5 @@ howlkraul.particle.TablePiece = function () {
 // Inheritance 
 //--------------------------------------------------------------------------
 
-howlkraul.particle.TablePiece.prototype = Object.create(rune.display.Sprite.prototype);
-howlkraul.particle.TablePiece.prototype.constructor = howlkraul.particle.TablePiece;
+howlkraul.particle.VasePiece.prototype = Object.create(rune.display.Sprite.prototype);
+howlkraul.particle.VasePiece.prototype.constructor = howlkraul.particle.VasePiece;

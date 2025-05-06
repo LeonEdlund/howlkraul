@@ -59,8 +59,8 @@ howlkraul.room.FurnitureGroup.prototype.spawnRandomFurniture = function () {
   this.removeMembers(true);
   this.m_furniture = [];
 
-  this.m_generateFurniture(2, "table");
-  this.m_generateFurniture(8, "vase");
+  this.m_generateFurniture(1, "table");
+  this.m_generateFurniture(5, "vase");
 
   for (var j = 0; j < this.m_furniture.length; j++) {
     this.addMember(this.m_furniture[j]);
@@ -101,28 +101,28 @@ howlkraul.room.FurnitureGroup.prototype.dispose = function () {
 //--------------------------------------------------------------------------
 
 howlkraul.room.FurnitureGroup.prototype.m_initEmmiters = function () {
-  this.m_vaseEmitter = new rune.particle.Emitter(0, 0, 5, 5, {
+  this.m_vaseEmitter = new rune.particle.Emitter(0, 0, 19, 29, {
     capacity: 5,
-    accelerationY: 0.5,
-    maxVelocityX: 0.45,
-    minVelocityX: -0.25,
-    maxVelocityY: -0.25,
+    accelerationY: 0.05,
+    maxVelocityX: 1.25,
+    minVelocityX: -1.25,
+    maxVelocityY: -1.25,
     minVelocityY: -0.85,
     minRotation: -2,
     maxRotation: 2,
-    particles: [howlkraul.particle.Blood]
+    particles: [howlkraul.particle.VasePiece]
   });
 
-  this.m_tableEmitter = new rune.particle.Emitter(0, 0, 10, 10, {
+  this.m_tableEmitter = new rune.particle.Emitter(0, 0, 47, 35, {
     capacity: 7,
-    accelerationY: 0.5,
-    maxVelocityX: 0.4,
-    minVelocityX: -0.3,
-    maxVelocityY: -0.2,
-    minVelocityY: -0.8,
-    minRotation: -1.5,
-    maxRotation: 1.5,
-    particles: [howlkraul.particle.Blood]
+    accelerationY: 0.05,
+    maxVelocityX: 1.25,
+    minVelocityX: -1.25,
+    maxVelocityY: -1.25,
+    minVelocityY: -0.85,
+    minRotation: -2,
+    maxRotation: 2,
+    particles: [howlkraul.particle.TablePiece]
   });
 
   this.application.scenes.selected.stage.addChild(this.m_vaseEmitter);

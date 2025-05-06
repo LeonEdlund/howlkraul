@@ -1,5 +1,5 @@
 howlkraul.ui.PlayerHud = function (x, y, character) {
-  rune.display.Graphic.call(this, x, y, 60, 40);
+  rune.display.Graphic.call(this, x, y, 69, 40);
   this.m_character = character;
 }
 
@@ -11,13 +11,18 @@ howlkraul.ui.PlayerHud.prototype.constructor = howlkraul.ui.PlayerHud;
 
 howlkraul.ui.PlayerHud.prototype.init = function () {
   rune.display.Graphic.prototype.init.call(this);
+  this.initBackground();
   this.m_initHearts();
 };
 
+howlkraul.ui.PlayerHud.prototype.initBackground = function () {
+  this.addChild(new rune.display.Graphic(0, 0, 69, 31, "player_hud_69x31"));
+};
+
 howlkraul.ui.PlayerHud.prototype.m_initHearts = function () {
-  this.addChild(new rune.display.Graphic(0, 0, 11, 12, "full-heart_11x12"));
-  this.addChild(new rune.display.Graphic(15, 0, 11, 12, "full-heart_11x12"));
-  this.addChild(new rune.display.Graphic(30, 0, 11, 12, "full-heart_11x12"));
+  this.addChild(new rune.display.Graphic(25, 12, 11, 12, "full-heart_11x12"));
+  this.addChild(new rune.display.Graphic(40, 12, 11, 12, "full-heart_11x12"));
+  this.addChild(new rune.display.Graphic(55, 12, 11, 12, "full-heart_11x12"));
 };
 
 howlkraul.ui.PlayerHud.prototype.updateHealth = function () {

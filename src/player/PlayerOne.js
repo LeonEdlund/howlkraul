@@ -36,5 +36,5 @@ howlkraul.player.PlayerOne.prototype.m_getInput = function () {
 }
 
 howlkraul.player.PlayerOne.prototype.m_initHud = function () {
-  this.m_hud = new howlkraul.ui.PlayerHud(20, 20, this.character);
+  this.m_hud = new howlkraul.ui.PlayerHud(20, 10, this.character);
 }
