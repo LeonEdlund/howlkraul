@@ -83,6 +83,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("player_hud_72x35", "./../asset/img/not_in_use/player_hud_72x35.png");
 	this.add("arrow_19x5", "./../asset/img/projectiles/arrow_19x5.png");
 	this.add("magic_27x27", "./../asset/img/projectiles/magic_27x27.png");
+	this.add("slime_shot_6x6", "./../asset/img/projectiles/slime_shot_6x6.png");
 	this.add("bomb_19x22", "./../asset/img/room/furniture/bomb_19x22.png");
 	this.add("table_part1_18x18", "./../asset/img/room/furniture/furniture parts/table/table_part1_18x18.png");
 	this.add("table_part2_18x18", "./../asset/img/room/furniture/furniture parts/table/table_part2_18x18.png");
