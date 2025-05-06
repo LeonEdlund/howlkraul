@@ -25,7 +25,7 @@ howlkraul.system.Main = function () {
         developer: "se.lnu",
         app: "howlkraul",
         build: "0.0.0",
-        scene: howlkraul.scene.Menu,
+        scene: howlkraul.scene.Game,
         resources: howlkraul.data.Requests,
         useGamepads: true,
         useKeyboard: true,

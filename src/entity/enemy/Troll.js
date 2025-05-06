@@ -3,8 +3,16 @@ howlkraul.entity.Troll = function (x, y) {
   this.hp = 150;
 }
 
+//--------------------------------------------------------------------------
+// Inheritance
+//--------------------------------------------------------------------------
+
 howlkraul.entity.Troll.prototype = Object.create(howlkraul.entity.Enemy.prototype);
 howlkraul.entity.Troll.prototype.constructor = howlkraul.entity.Troll;
+
+//--------------------------------------------------------------------------
+// Overide Rune Methods
+//--------------------------------------------------------------------------
 
 /**
  * @override
@@ -14,7 +22,13 @@ howlkraul.entity.Troll.prototype.init = function () {
 
   this.setVelocity(0.1, rune.util.Math.random(0.3, 0.4));
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
+  // this.debug = true;
+  // this.hitbox.debug = true;
 };
+
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
 
 /**
  * @override
@@ -29,9 +43,9 @@ howlkraul.entity.Troll.prototype.initAnimations = function () {
   this.animation.create("r-up", [20, 21, 22, 23, 24, 25], 10, true);
 
   // SHOOTING
-  this.animation.create("s", [7, 8], 10, false);
-  this.animation.create("s-side", [17, 18], 10, false);
-  this.animation.create("s-up", [26, 27], 10, false);
+  this.animation.create("s", [7, 8, 6, 6, 6, 6], 5, true);
+  this.animation.create("s-side", [17, 18, 9, 9, 9, 9, 9], 8, true);
+  this.animation.create("s-up", [26, 27], 5, true);
 
   this.animation.create("dead", [10], 0, false);
 
@@ -44,10 +58,6 @@ howlkraul.entity.Troll.prototype.initAnimations = function () {
  * @private
 */
 howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
-  // var now = Date.now();
-
-  // if (now < this.m_lastShotAnimation) return;
-
   switch (this.facing) {
     case "up":
       this.animation.gotoAndPlay("r-up");
@@ -61,20 +71,26 @@ howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
   }
 };
 
-howlkraul.entity.Troll.prototype.followPlayers = function () {
-  howlkraul.entity.Enemy.prototype.followPlayers.call(this);
+howlkraul.entity.Troll.prototype.setState = function () {
+  howlkraul.entity.Enemy.prototype.setState.call(this);
 
   var players = this.application.scenes.selected.players;
   var closestPlayer = this.getClosestPlayer(players);
   if (!closestPlayer) return;
 
-  var distance = Math.round(this.distance(closestPlayer.center));
+  var distance = rune.util.Math.distance(this.centerX, this.centerY, closestPlayer.centerX, closestPlayer.centerY);
 
-  if (distance < 160) {
+  if (distance < 12) {
+
+    if (this.facing === "down") {
+      this.moveTo(this.x, (this.y + 1));
+    }
+
+    this.states.select("Attack");
+
+  } else if (distance < 160) {
     this.states.select("FollowPlayer");
   } else {
     this.states.select("Roam");
   }
-
-  //this.attack(closestPlayer);
 };

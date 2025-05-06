@@ -14,12 +14,12 @@ howlkraul.particle.TablePiece = function () {
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
-  rune.display.Sprite.call(this, 0, 0, 18, 18, this.textures[i]);
+  rune.particle.Particle.call(this, 0, 0, 18, 18, this.textures[i]);
 }
 
 //--------------------------------------------------------------------------
 // Inheritance 
 //--------------------------------------------------------------------------
 
-howlkraul.particle.TablePiece.prototype = Object.create(rune.display.Sprite.prototype);
+howlkraul.particle.TablePiece.prototype = Object.create(rune.particle.Particle.prototype);
 howlkraul.particle.TablePiece.prototype.constructor = howlkraul.particle.TablePiece;

@@ -53,7 +53,7 @@ howlkraul.entity.Enemy.prototype.init = function () {
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
   this.m_moveEmittersWithCharacter();
-  this.followPlayers();
+  this.setState();
 };
 
 howlkraul.entity.Enemy.prototype.dispose = function () {
@@ -74,6 +74,7 @@ howlkraul.entity.Enemy.prototype.initStates = function () {
   howlkraul.entity.Entity.prototype.initStates.call(this);
   this.states.load([
     new howlkraul.entity.FollowPlayerState(),
+    new howlkraul.entity.Attack(),
     new howlkraul.entity.RunAwayState(),
     new howlkraul.entity.RoamState(),
   ]);
@@ -228,17 +229,17 @@ howlkraul.entity.Enemy.prototype.m_initEmitters = function () {
  */
 howlkraul.entity.Enemy.prototype.m_initBloodEmitter = function () {
   this.m_bloodEmitter = new rune.particle.Emitter(this.x, this.y, 15, 15, {
+    particles: [howlkraul.particle.Blood],
+    minLifespan: 1000,
+    maxLifespan: 1200,
+    minRotation: -2,
+    maxRotation: 2,
     capacity: 92,
     accelerationY: 0.05,
     maxVelocityX: 1.25,
     minVelocityX: -1.25,
     maxVelocityY: -1.25,
     minVelocityY: -0.85,
-    minRotation: -2,
-    maxRotation: 2,
-    minLifespan: 300,
-    maxLifespan: 1000,
-    particles: [howlkraul.particle.Blood]
   });
 
   this.stage.addChild(this.m_bloodEmitter)
@@ -254,8 +255,8 @@ howlkraul.entity.Enemy.prototype.m_initBodypartEmitter = function () {
     minVelocityY: -0.85,
     minRotation: -2,
     maxRotation: 2,
-    minLifespan: 300,
-    maxLifespan: 1000,
+    minLifespan: 1000,
+    maxLifespan: 1200,
     particles: this.m_particles
   });
 
@@ -299,7 +300,7 @@ howlkraul.entity.Enemy.prototype.m_setRunningAnimation = function () {
  * @protected
  * @returns {undefined}
 */
-howlkraul.entity.Enemy.prototype.followPlayers = function () {
+howlkraul.entity.Enemy.prototype.setState = function () {
   // OVERIDE IN CHILD CLASS
 };
 

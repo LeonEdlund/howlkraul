@@ -110,6 +110,8 @@ howlkraul.room.FurnitureGroup.prototype.m_initEmmiters = function () {
     minVelocityY: -0.85,
     minRotation: -2,
     maxRotation: 2,
+    minLifespan: 1000,
+    maxLifespan: 1200,
     particles: [howlkraul.particle.VasePiece]
   });
 
@@ -122,6 +124,8 @@ howlkraul.room.FurnitureGroup.prototype.m_initEmmiters = function () {
     minVelocityY: -0.85,
     minRotation: -2,
     maxRotation: 2,
+    minLifespan: 1000,
+    maxLifespan: 1200,
     particles: [howlkraul.particle.TablePiece]
   });
 
@@ -166,8 +170,8 @@ howlkraul.room.FurnitureGroup.prototype.m_handleProjectileHit = function () {
   var spells = this.application.scenes.selected.spells;
   var enemyProjectile = this.application.scenes.selected.enemyProjectiles;
 
-  this.hitTestAndSeparateGroup(spells, this.m_handleDamage, this);
-  this.hitTestAndSeparateGroup(enemyProjectile, this.m_handleDamage, this);
+  this.hitTestGroup(spells, this.m_handleDamage, this);
+  this.hitTestGroup(enemyProjectile, this.m_handleDamage, this);
 }
 
 /**
