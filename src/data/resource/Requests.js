@@ -49,7 +49,9 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("troll_29x29", "./../asset/img/actors/enemies/troll/troll_29x29.png");
 	this.add("archer_27x34", "./../asset/img/actors/heros/archer_27x34.png");
 	this.add("wizard_27x34", "./../asset/img/actors/heros/wizard_27x34.png");
+	this.add("bomb_19x22", "./../asset/img/drops/bomb_19x22.png");
 	this.add("coin_11x26", "./../asset/img/drops/coin_11x26.png");
+	this.add("health_potion_14x20", "./../asset/img/drops/health_potion_14x20.png");
 	this.add("blood1", "./../asset/img/gore/blood1.png");
 	this.add("blood2", "./../asset/img/gore/blood2.png");
 	this.add("blood3", "./../asset/img/gore/blood3.png");
@@ -84,7 +86,6 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("arrow_19x5", "./../asset/img/projectiles/arrow_19x5.png");
 	this.add("magic_27x27", "./../asset/img/projectiles/magic_27x27.png");
 	this.add("slime_shot_6x6", "./../asset/img/projectiles/slime_shot_6x6.png");
-	this.add("bomb_19x22", "./../asset/img/room/furniture/bomb_19x22.png");
 	this.add("table_part1_18x18", "./../asset/img/room/furniture/furniture parts/table/table_part1_18x18.png");
 	this.add("table_part2_18x18", "./../asset/img/room/furniture/furniture parts/table/table_part2_18x18.png");
 	this.add("table_part3_18x18", "./../asset/img/room/furniture/furniture parts/table/table_part3_18x18.png");
