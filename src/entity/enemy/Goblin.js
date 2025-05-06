@@ -65,8 +65,8 @@ howlkraul.entity.Goblin.prototype.initAnimations = function () {
   this.flippedX = true;
 };
 
-howlkraul.entity.Goblin.prototype.followPlayers = function () {
-  howlkraul.entity.Enemy.prototype.followPlayers.call(this);
+howlkraul.entity.Goblin.prototype.setState = function () {
+  howlkraul.entity.Enemy.prototype.setState.call(this);
 
   var players = this.application.scenes.selected.players;
   var closestPlayer = this.getClosestPlayer(players);

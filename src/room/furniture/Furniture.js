@@ -120,12 +120,6 @@ howlkraul.room.Furniture.prototype.m_dropCoins = function () {
  */
 howlkraul.room.Furniture.prototype.m_initVelocity = function () {
   this.immovable = true;
-  // this.mass = 5;
-  // this.velocity.max.x = 0.5;
-  // this.velocity.max.y = 0.5;
-  // this.velocity.drag.x = 0.9;
-  // this.velocity.drag.y = 0.9;
-  // this.acceleration = 0.05;
 }
 
 //--------------------------------------------------------------------------

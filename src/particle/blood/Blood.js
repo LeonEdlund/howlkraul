@@ -12,8 +12,8 @@ howlkraul.particle.Blood = function () {
 
   var i = rune.util.Math.randomInt(0, this.textures.length - 1);
 
-  rune.display.Sprite.call(this, 50, 100, 6, 6, this.textures[i]);
+  rune.particle.Particle.call(this, 50, 100, 6, 6, this.textures[i]);
 }
 
-howlkraul.particle.Blood.prototype = Object.create(rune.display.Sprite.prototype);
+howlkraul.particle.Blood.prototype = Object.create(rune.particle.Particle.prototype);
 howlkraul.particle.Blood.prototype.constructor = howlkraul.particle.Blood;

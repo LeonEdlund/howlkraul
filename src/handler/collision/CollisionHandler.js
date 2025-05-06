@@ -96,26 +96,17 @@ howlkraul.handler.CollisionHandler.prototype.m_handleDamageHit = function () {
  * @returns {undefined}
  */
 howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function () {
-  var m_this = this;
-  var enemiesToRemove = [];
-
-  this.game.enemies.hitTestAndSeparateGroup(this.game.spells, function (enemy, spell) {
+  this.game.enemies.hitTestGroup(this.game.spells, function (enemy, spell) {
     enemy.takeDamage(spell.castedBy.power);
-    this.game.spells.removeMember(spell);
+    this.game.spells.removeMember(spell, true);
 
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
     this.game.gamepads.get(0).vibrate(100, 0.3, 0.6);
 
     if (enemy.hp <= 0) {
-      enemiesToRemove.push(enemy);
+      this.game.enemies.removeMember(enemy, true);
     }
   }, this);
-
-  if (enemiesToRemove.length > 0) {
-    enemiesToRemove.forEach(function (enemy) {
-      m_this.game.enemies.removeMember(enemy, true);
-    });
-  }
 }
 
 /**

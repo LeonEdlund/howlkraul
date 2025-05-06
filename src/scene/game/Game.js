@@ -142,7 +142,6 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "room", {
 //------------------------------------------------------------------------------
 
 /**
- * @overide
  * @inheritdoc
  */
 howlkraul.scene.Game.prototype.init = function () {
@@ -156,7 +155,6 @@ howlkraul.scene.Game.prototype.init = function () {
 };
 
 /**
- * @overide
  * @inheritdoc
  */
 howlkraul.scene.Game.prototype.update = function (step) {
@@ -173,7 +171,6 @@ howlkraul.scene.Game.prototype.update = function (step) {
 };
 
 /**
- * @overide
  * @inheritdoc
  */
 howlkraul.scene.Game.prototype.dispose = function () {
