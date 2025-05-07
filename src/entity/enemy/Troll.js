@@ -1,6 +1,10 @@
 howlkraul.entity.Troll = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "troll_29x29");
   this.hp = 150;
+
+  this.m_lastAttack = 0;
+  this.m_attackCoolDown = 500;
+  this.m_isAttacking = false;
 }
 
 //--------------------------------------------------------------------------
@@ -22,8 +26,19 @@ howlkraul.entity.Troll.prototype.init = function () {
 
   this.setVelocity(0.1, rune.util.Math.random(0.3, 0.4));
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
-  // this.debug = true;
-  // this.hitbox.debug = true;
+};
+
+//--------------------------------------------------------------------------
+// Public Methods
+//--------------------------------------------------------------------------
+
+howlkraul.entity.Troll.prototype.attack = function () {
+  var now = Date.now();
+
+  if (now > this.m_lastAttack) {
+    this.states.select("Attack");
+    this.m_lastAttack = now + this.m_attackCoolDown;
+  }
 };
 
 //--------------------------------------------------------------------------
@@ -42,13 +57,10 @@ howlkraul.entity.Troll.prototype.initAnimations = function () {
   this.animation.create("r-side", [9, 10, 11, 12, 13, 14, 15, 16], 10, true);
   this.animation.create("r-up", [20, 21, 22, 23, 24, 25], 10, true);
 
-  // SHOOTING
+  // ATTACKING
   this.animation.create("s", [7, 8, 6, 6, 6, 6], 5, true);
   this.animation.create("s-side", [17, 18, 9, 9, 9, 9, 9], 8, true);
   this.animation.create("s-up", [26, 27], 5, true);
-
-  this.animation.create("dead", [10], 0, false);
-
 };
 
 /**
@@ -81,16 +93,12 @@ howlkraul.entity.Troll.prototype.setState = function () {
   var distance = rune.util.Math.distance(this.centerX, this.centerY, closestPlayer.centerX, closestPlayer.centerY);
 
   if (distance < 12) {
-
-    if (this.facing === "down") {
-      this.moveTo(this.x, (this.y + 1));
-    }
-
-    this.states.select("Attack");
-
+    if (this.facing === "down") this.moveTo(this.x, (this.y + 1));
+    this.attack();
   } else if (distance < 160) {
     this.states.select("FollowPlayer");
   } else {
     this.states.select("Roam");
   }
 };
+

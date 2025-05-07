@@ -1,10 +1,16 @@
 /**
- * Represents a Coin. 
- * 
- * @class
- * @classdesc - Creates a instance of a coin.
+ * Creates a new Coin object.
+ *
+ * @constructor
+ * @extends rune.display.Sprite
+ *
  * @param {number} x - X position
  * @param {number} y - Y position
+ * 
+ * @class
+ * @classdesc
+ *
+ * Creates an instance of a coin that can be placed on the stage.
  */
 howlkraul.drops.Coin = function (x, y) {
   //--------------------------------------------------------------------------
@@ -17,6 +23,14 @@ howlkraul.drops.Coin = function (x, y) {
   //--------------------------------------------------------------------------
   // Private Properties
   //--------------------------------------------------------------------------
+
+  /**
+   * Reference to the scene.
+   * 
+   * @private
+   * @type {rune.display.Scene}
+   */
+  this.m_scene = this.application.scenes.selected;
 
   /**
    * The coins worth.
@@ -41,14 +55,6 @@ howlkraul.drops.Coin = function (x, y) {
    * @type {number}
    */
   this.m_flickerTime = 2000;
-
-  /**
-   * Reference to the scene.
-   * 
-   * @private
-   * @type {rune.display.Scene}
-   */
-  this.m_scene = this.application.scenes.selected;
 }
 
 //--------------------------------------------------------------------------
@@ -88,7 +94,6 @@ Object.defineProperty(howlkraul.drops.Coin.prototype, "worth", {
 //--------------------------------------------------------------------------
 
 /**
- * @overide
  * @inheritdoc
  */
 howlkraul.drops.Coin.prototype.init = function () {
@@ -97,7 +102,6 @@ howlkraul.drops.Coin.prototype.init = function () {
 }
 
 /**
- * @overide
  * @inheritdoc
  */
 howlkraul.drops.Coin.prototype.update = function (step) {
@@ -107,7 +111,6 @@ howlkraul.drops.Coin.prototype.update = function (step) {
 }
 
 /**
- * @overide
  * @inheritdoc
  */
 howlkraul.drops.Coin.prototype.dispose = function () {

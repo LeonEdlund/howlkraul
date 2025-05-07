@@ -1,10 +1,15 @@
 /**
- * Creates an instans of a room.
+ * Creates a new Room object.
+ *
+ * @constructor
+ * @extends rune.display.DisplayGroup
+ *
+ * @param {rune.scene.Scene} game - The scene where the group should be added.
  * 
  * @class
- * @classdesc - Reppresents a room with borders.
- * 
- * @param {rune.display.scene} game - reference to the active scene
+ * @classdesc
+ *
+ * Represents a room.
  */
 howlkraul.room.Room = function (game) {
   //--------------------------------------------------------------------------
@@ -115,13 +120,26 @@ howlkraul.room.Room.prototype.init = function () {
 howlkraul.room.Room.prototype.dispose = function () {
   rune.display.Sprite.prototype.dispose.call(this);
 
+  this.m_borders.removeMembers(true);
+  this.m_furniture.removeMembers(true);
+  this.m_lastColor.dispose();
+
+  this.m_game = null;
   this.m_borders = null;
+  this.m_furniture = null;
+  this.m_lastColor = null;
 }
 
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Removes borders from door. 
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.room.Room.prototype.openDoor = function () {
   if (!this.m_gateOpen) {
     this.animation.goto("open-door", 0);
@@ -131,6 +149,12 @@ howlkraul.room.Room.prototype.openDoor = function () {
   }
 }
 
+/**
+ * Adds borders to door. 
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.room.Room.prototype.closeDoor = function () {
   if (this.m_gateOpen) {
     this.animation.gotoAndPlay("closed-door", 0);
@@ -139,6 +163,12 @@ howlkraul.room.Room.prototype.closeDoor = function () {
   }
 }
 
+/**
+ * Randomize the colors of the room.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.room.Room.prototype.randomizeColors = function () {
   var c2 = new rune.color.Color24();
   c2.random();
@@ -216,8 +246,6 @@ howlkraul.room.Room.prototype.m_initBorders = function () {
 
     this.m_borders.forEachMember(function (wall) {
       wall.immovable = true;
-      // wall.backgroundColor = "red";
-      // wall.alpha = 0.5;
     }, this);
   }
 }

@@ -83,6 +83,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("half-heart_11x12", "./../asset/img/not_in_use/half-heart_11x12.png");
 	this.add("knight_walk", "./../asset/img/not_in_use/knight_walk.png");
 	this.add("player_hud_72x35", "./../asset/img/not_in_use/player_hud_72x35.png");
+	this.add("vase_19x27", "./../asset/img/not_in_use/vase_19x27.png");
 	this.add("arrow_19x5", "./../asset/img/projectiles/arrow_19x5.png");
 	this.add("magic_27x27", "./../asset/img/projectiles/magic_27x27.png");
 	this.add("slime_shot_6x6", "./../asset/img/projectiles/slime_shot_6x6.png");
@@ -98,7 +99,6 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("vase_part4_18x18", "./../asset/img/room/furniture/furniture parts/vase/vase_part4_18x18.png");
 	this.add("vase_part5_18x18", "./../asset/img/room/furniture/furniture parts/vase/vase_part5_18x18.png");
 	this.add("table_47x35", "./../asset/img/room/furniture/table_47x35.png");
-	this.add("vase_19x27", "./../asset/img/room/furniture/vase_19x27.png");
 	this.add("vase_19x29", "./../asset/img/room/furniture/vase_19x29.png");
 	this.add("room_400x225", "./../asset/img/room/room_400x225.png");
 };
