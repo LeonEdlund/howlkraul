@@ -38,6 +38,7 @@ howlkraul.entity.PlayableCharacter = function (x, y, height, width, texture, col
   this.m_isDead = false;
   this.m_isAttacking = false;
   this.m_energyEmpty = false;
+  this.m_isReviving = false;
 
   // COLOR
   this.m_color = color || null;
@@ -54,15 +55,52 @@ howlkraul.entity.PlayableCharacter.prototype.constructor = howlkraul.entity.Play
 // Getters and Setters
 //------------------------------------------------------------------------------
 
-Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "isAlive", {
+Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "isDead", {
   /**
    * Check if charecter is alive.
    * 
+   * @public
    * @returns {boolean}
    */
   get: function () {
-    return !this.m_isAlive;
+    return this.m_isDead;
+  },
+
+  /**
+   * Set if character is dead or not.
+   * 
+   * @public
+   * @param {bolean}
+   * @returns {boolean}
+   */
+  set: function (value) {
+    return this.m_isDead = value;
   }
+
+})
+
+Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "isReviving", {
+  /**
+   * Check if player is reviving.
+   * 
+   * @public
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_isReviving;
+  },
+
+  /**
+   * 
+   * 
+   * @public
+   * @param {bolean}
+   * @returns {boolean}
+   */
+  set: function (value) {
+    return this.m_isReviving = value;
+  }
+
 })
 
 Object.defineProperty(howlkraul.entity.PlayableCharacter.prototype, "hp", {
@@ -124,15 +162,18 @@ howlkraul.entity.PlayableCharacter.prototype.update = function (step) {
 howlkraul.entity.PlayableCharacter.prototype.move = function (input) {
   if (this.m_isDead) return;
 
+  this.m_isReviving = false;
   this.m_setFacingDirection(input);
   this.m_setAnimation(input);
 
-  if (input.up) { this.moveUp(); };
-  if (input.down) { this.moveDown(); };
-  if (input.left) { this.moveLeft(); };
-  if (input.right) { this.moveRight(); };
-  if (input.shoot) { this.attack() };
+  if (input.up) this.moveUp();
+  if (input.down) this.moveDown();
+  if (input.left) this.moveLeft();
+  if (input.right) this.moveRight();
+  if (input.shoot) this.attack();
+
   if (input.hold) {
+    this.m_isReviving = true;
     this.velocity.x = 0;
     this.velocity.y = 0;
     return;
@@ -163,10 +204,11 @@ howlkraul.entity.PlayableCharacter.prototype.takeDamage = function () {
 };
 
 howlkraul.entity.PlayableCharacter.prototype.die = function () {
+  if (this.m_isDead) return;
+
   this.m_isDead = true;
   this.animation.gotoAndPlay("dead");
   this.movementAllowed = false;
-  this.rotation = -90;
   this.m_energybar.visible = false;
 };
 
@@ -188,6 +230,7 @@ howlkraul.entity.PlayableCharacter.prototype.raiseFromDead = function () {
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
+
 
 /**
  * Init manabar
@@ -369,5 +412,4 @@ howlkraul.entity.PlayableCharacter.prototype.m_setShootingAnimation = function (
  */
 howlkraul.entity.PlayableCharacter.prototype.m_changeColor = function (color) {
   //OVERIDE IN SUBCLASS
-
 }

@@ -71,7 +71,6 @@ howlkraul.entity.Enemy.prototype.dispose = function () {
  * @inheritdoc
  */
 howlkraul.entity.Enemy.prototype.initStates = function () {
-  howlkraul.entity.Entity.prototype.initStates.call(this);
   this.states.load([
     new howlkraul.entity.FollowPlayerState(),
     new howlkraul.entity.Attack(),

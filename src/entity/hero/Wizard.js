@@ -31,7 +31,6 @@ howlkraul.entity.Wizard.prototype.initAnimations = function () {
   this.animation.create("idle-down", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 0, 0, 0, 17, 18, 17, 18, 17, 18, 0, 0, 0, 0], 13, true);
   this.animation.create("idle-sideways", [29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43], 10, true);
   this.animation.create("idle-up", [62, 62, 62, 62, 62, 62, 62, 62, 62, 71, 72, 71, 72, 71], 10, true);
-  this.animation.create("dead", [0], 0, false);
 
   // RUNNING
   this.animation.create("r-down", [19, 20, 21, 22, 23, 24], 10, true);
@@ -45,6 +44,10 @@ howlkraul.entity.Wizard.prototype.initAnimations = function () {
   this.animation.create("s-down", [26, 27], 8, true);
   this.animation.create("s-side", [54, 55], 8, true);
   this.animation.create("s-up-side", [82, 83], 8, true);
+
+  //DOWN
+  this.animation.create("dead", [84, 85, 86, 87, 88, 89], 4, true);
+  this.animation.create("res", [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], 8, true);
 };
 
 /**

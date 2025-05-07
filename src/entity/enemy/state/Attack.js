@@ -33,7 +33,6 @@ howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.Attack;
 */
 howlkraul.entity.Attack.prototype.onEnter = function () {
   rune.state.State.prototype.onEnter.call(this);
-
   switch (this.owner.facing) {
     case "side":
       this.owner.animation.gotoAndPlay("s-side");

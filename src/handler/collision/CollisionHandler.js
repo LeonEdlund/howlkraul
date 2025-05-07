@@ -43,6 +43,8 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
       this.m_handleEnemyProjectileHit();
     }
   }
+
+  this.m_checkForRevive();
 };
 
 //--------------------------------------------------------------------------
@@ -147,5 +149,20 @@ howlkraul.handler.CollisionHandler.prototype.m_handlePotionPickup = function () 
   this.game.players.hitTestGroup(this.game.potions, function (player, potion) {
     player.hp += potion.healingPower;
     this.game.potions.removeMember(potion, true);
+  }, this);
+}
+
+/**
+ * Handles player reviwing
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.handler.CollisionHandler.prototype.m_checkForRevive = function () {
+  this.game.players.hitTestGroup(this.game.players, function (alivePlayer, deadPlayer) {
+    if (deadPlayer.isDead && alivePlayer.isReviving) {
+      alivePlayer.takeDamage();
+      deadPlayer.raiseFromDead();
+    }
   }, this);
 }
