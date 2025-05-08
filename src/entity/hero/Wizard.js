@@ -123,6 +123,17 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "energy", {
   }
 });
 
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "controller", {
+  /**
+   * gets controller controlling to character
+   * 
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_input.controller;
+  }
+});
+
 //--------------------------------------------------------------------------
 // Override public prototype methods
 //--------------------------------------------------------------------------
@@ -220,6 +231,7 @@ howlkraul.entity.Wizard.prototype.takeDamage = function () {
     this.m_hp -= 1;
     this.flicker.start(this.m_damageHitCoolDown);
     this.m_lastDamageHit = now + this.m_damageHitCoolDown;
+    this.m_input.controller.vibrate(500);
     if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
   }
 

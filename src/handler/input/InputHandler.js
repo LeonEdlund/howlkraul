@@ -1,11 +1,14 @@
 howlkraul.handler.InputHandler = function (controller, keyboard, keys) {
-  this.m_controller = controller || {};
-  this.m_keyboard = keyboard || {};
-
+  this.m_controller = controller;
+  this.m_keyboard = keyboard;
   this.m_keys = keys || {};
-
-  // this.m_init();
 }
+
+Object.defineProperty(howlkraul.handler.InputHandler.prototype, "controller", {
+  get: function () {
+    return this.m_controller;
+  }
+})
 
 
 /**
@@ -24,21 +27,3 @@ howlkraul.handler.InputHandler.prototype.currentInput = function () {
     hold: this.m_keyboard.pressed(this.m_keys.hold) || this.m_controller.pressed(7),
   }
 }
-
-/**
- * Binds keyboard keys.
- *
- * @public
- * @param {object}
- * @returns {undefined}
- */
-// howlkraul.handler.InputHandler.prototype.bind = function (keys) {
-// this.m_keys = {
-//   left: keys.left,
-//   right: keys.right,
-//   up: keys.up,
-//   down: keys.down,
-//   shoot: keys.shoot,
-//   hold: keys.hold,
-// }
-// }

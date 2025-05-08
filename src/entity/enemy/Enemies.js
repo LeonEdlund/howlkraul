@@ -144,10 +144,10 @@ howlkraul.entity.Enemies.prototype.m_initEmmiters = function () {
  */
 howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
   enemy.takeDamage(spell.castedBy.power);
-  this.m_scene.spells.removeMember(spell, true);
-
+  spell.castedBy.controller.vibrate(100, 0.3, 0.6);
   this.m_scene.cameras.getCameraAt(0).shake.start(300, 1, 1);
-  this.m_scene.gamepads.get(0).vibrate(100, 0.3, 0.6);
+
+  this.m_scene.spells.removeMember(spell, true);
 
   if (enemy.hp <= 0) {
     this.m_explode(enemy);

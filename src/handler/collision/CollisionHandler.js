@@ -98,7 +98,6 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
     player.takeDamage();
     this.game.enemyProjectiles.removeMember(projectile, true);
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
-    this.game.gamepads.get(0).vibrate(500);
   }, this);
 }
 
