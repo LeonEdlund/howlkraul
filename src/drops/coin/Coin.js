@@ -142,7 +142,7 @@ howlkraul.drops.Coin.prototype.m_initAnimations = function () {
  */
 howlkraul.drops.Coin.prototype.m_countDown = function () {
   if (this.m_lifespan <= 0) {
-    this.m_scene.coins.removeMember(this);
+    this.m_scene.coins.removeMember(this, true);
     this.m_lifespan = 0;
     return;
   }

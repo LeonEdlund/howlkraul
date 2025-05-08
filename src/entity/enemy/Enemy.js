@@ -49,9 +49,6 @@ howlkraul.entity.Enemy.prototype.update = function (step) {
 
 howlkraul.entity.Enemy.prototype.dispose = function () {
   howlkraul.entity.Entity.prototype.dispose.call(this);
-  this.m_bloodEmitter = null;
-  this.m_bodypartEmitter = null;
-  this.m_particles = null;
 };
 
 //--------------------------------------------------------------------------
