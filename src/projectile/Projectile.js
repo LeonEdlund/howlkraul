@@ -118,7 +118,7 @@ howlkraul.projectile.Projectile.prototype.shootAtPoint = function (point, group)
 }
 
 //--------------------------------------------------------------------------
-// Protected Methods
+// Abstract Methods
 //--------------------------------------------------------------------------
 
 /**

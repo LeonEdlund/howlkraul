@@ -94,7 +94,7 @@ howlkraul.entity.Goblin.prototype.attack = function (player) {
     var x = this.flippedX ? this.x - 12 : this.x + 12;
     var y = this.flippedX ? this.y + 5 : this.y + 10;
 
-    var arrow = new howlkraul.projectile.Arrow(x, y, this);
+    var arrow = new howlkraul.projectile.Arrow(x, y);
 
     this.m_setShootingAnimation();
     arrow.shootAtPoint(player.hitbox.center, scene.enemyProjectiles);

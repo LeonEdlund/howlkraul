@@ -220,9 +220,8 @@ howlkraul.entity.Wizard.prototype.takeDamage = function () {
     this.m_hp -= 1;
     this.flicker.start(this.m_damageHitCoolDown);
     this.m_lastDamageHit = now + this.m_damageHitCoolDown;
+    if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
   }
-
-  if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
 
   if (this.m_hp <= 0) this.die();
 };
@@ -246,8 +245,6 @@ howlkraul.entity.Wizard.prototype.takeEnergy = function () {
     this.m_energyEmpty = true;
     this.m_energy = 0;
   }
-
-  console.log(this.m_energy);
 }
 
 howlkraul.entity.Wizard.prototype.raiseFromDead = function () {

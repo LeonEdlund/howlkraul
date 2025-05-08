@@ -64,12 +64,12 @@ howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function 
       return;
     }
 
-    this.game.spells.removeMember(spell);
+    this.game.spells.removeMember(spell, true);
   }, this);
 
   // remove enemy projectiles when hiting borders
   this.game.room.walls.hitTestGroup(this.game.enemyProjectiles, function (border, projectile) {
-    this.game.enemyProjectiles.removeMember(projectile);
+    this.game.enemyProjectiles.removeMember(projectile, true);
   }, this);
 }
 
@@ -95,8 +95,8 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
   this.game.players.hitTestGroup(this.game.enemyProjectiles, function (player, projectile) {
     if (player.hp === 0) return;
 
-    player.takeDamage(projectile.castedBy.power);
-    this.game.enemyProjectiles.removeMember(projectile);
+    player.takeDamage();
+    this.game.enemyProjectiles.removeMember(projectile, true);
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
     this.game.gamepads.get(0).vibrate(500);
   }, this);
