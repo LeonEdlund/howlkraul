@@ -22,11 +22,6 @@ howlkraul.handler.CollisionHandler = function (game) {
 howlkraul.handler.CollisionHandler.prototype.update = function () {
   this.m_handleBorderCollision();
 
-  if (this.game.spells.numMembers > 0) {
-    this.m_handleEnemySpellHit();
-  }
-
-
   if (this.game.coins.numMembers > 0) {
     this.m_handleCoinPickup();
   }
@@ -34,7 +29,6 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
   if (this.game.potions.numMembers > 0) {
     this.m_handlePotionPickup();
   }
-
 
   if (this.game.enemies.numMembers > 0) {
     this.m_handleDamageHit();
@@ -88,26 +82,6 @@ howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function 
 howlkraul.handler.CollisionHandler.prototype.m_handleDamageHit = function () {
   this.game.players.hitTestGroup(this.game.enemies, function (player, enemy) {
     player.takeDamage();
-  }, this);
-}
-
-/**
- * Handles enemies getting hit by projectiles.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function () {
-  this.game.enemies.hitTestGroup(this.game.spells, function (enemy, spell) {
-    enemy.takeDamage(spell.castedBy.power);
-    this.game.spells.removeMember(spell, true);
-
-    this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
-    this.game.gamepads.get(0).vibrate(100, 0.3, 0.6);
-
-    if (enemy.hp <= 0) {
-      this.game.enemies.removeMember(enemy, true);
-    }
   }, this);
 }
 

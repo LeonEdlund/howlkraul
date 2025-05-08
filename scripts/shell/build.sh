@@ -13,6 +13,7 @@ npx google-closure-compiler \
 --js "./../../src/ui/hud/Heart.js" \
 --js "./../../src/ui/hud/Head.js" \
 --js "./../../src/ui/manabar/Manabar.js" \
+--js "./../../src/handler/input/InputHandler.js" \
 --js "./../../src/handler/collision/CollisionHandler.js" \
 --js "./../../src/drops/coin/Coin.js" \
 --js "./../../src/drops/HealthPotion.js" \
@@ -31,6 +32,7 @@ npx google-closure-compiler \
 --js "./../../src/particle/furniture/VasePiece.js" \
 --js "./../../src/entity/Entity.js" \
 --js "./../../src/entity/hero/Wizard.js" \
+--js "./../../src/entity/enemy/Enemies.js" \
 --js "./../../src/entity/enemy/Enemy.js" \
 --js "./../../src/entity/enemy/Goblin.js" \
 --js "./../../src/entity/enemy/Slime.js" \
@@ -39,9 +41,6 @@ npx google-closure-compiler \
 --js "./../../src/entity/enemy/state/RunAwayState.js" \
 --js "./../../src/entity/enemy/state/RoamState.js" \
 --js "./../../src/entity/enemy/state/Attack.js" \
---js "./../../src/player/Player.js" \
---js "./../../src/player/PlayerOne.js" \
---js "./../../src/player/PlayerTwo.js" \
 --js "./../../src/scene/menu/Menu.js" \
 --js "./../../src/scene/game/Game.js" \
 --js "./../../src/scene/gameover/GameOver.js" \

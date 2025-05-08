@@ -1,4 +1,4 @@
-howlkraul.entity.Enemy = function (x, y, width, height, texture, particles) {
+howlkraul.entity.Enemy = function (x, y, width, height, texture) {
   howlkraul.entity.Entity.call(this, x, y, width, height, texture);
 
   /**
@@ -8,16 +8,8 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture, particles) {
    */
   this.hp = 100;
 
-  // Emitters and particles
-  this.m_bloodEmitter = null;
-  this.m_bodypartEmitter = null;
-  this.m_particles = particles;
-
   // Flags 
   this.m_horizontalMovement = false;
-
-  // STATS 
-  this.m_potionDropChance = 10;
 }
 
 //--------------------------------------------------------------------------
@@ -40,7 +32,6 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 howlkraul.entity.Enemy.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
-  this.m_initEmitters();
 };
 
 /**
@@ -52,7 +43,7 @@ howlkraul.entity.Enemy.prototype.init = function () {
  */
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
-  this.m_moveEmittersWithCharacter();
+
   this.setState();
 };
 
@@ -136,7 +127,6 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
  */
 howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   this.hp -= amount;
-  this.m_bloodEmitter.emit(5);
   if (this.hp <= 0) this.die();
 };
 
@@ -148,7 +138,6 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
  */
 howlkraul.entity.Enemy.prototype.die = function () {
   this.dropCoin();
-  this.explode();
 };
 
 /**
@@ -160,20 +149,6 @@ howlkraul.entity.Enemy.prototype.die = function () {
 howlkraul.entity.Enemy.prototype.dropCoin = function () {
   var coin = new howlkraul.drops.Coin(this.x, this.y);
   this.application.scenes.selected.coins.addMember(coin);
-};
-
-/**
- * Play die animation and drop coin.
- * 
- * @public
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.explode = function () {
-  this.m_bloodEmitter.emit(50);
-
-  if (this.m_bodypartEmitter) {
-    this.m_bodypartEmitter.emit(1);
-  }
 };
 
 /**
@@ -198,83 +173,6 @@ howlkraul.entity.Enemy.prototype.getClosestPlayer = function (players) {
   });
 
   return allPlayers[0];
-};
-
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
-
-/**
- * Take damage and lower hp. 
- * If hp is lower then 0 die.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.m_initEmitters = function () {
-  this.m_initBloodEmitter();
-
-  if (this.m_particles && this.m_particles.length > 0) {
-    this.m_initBodypartEmitter();
-  }
-};
-
-/**
- * Take damage and lower hp. 
- * If hp is lower then 0 die.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.m_initBloodEmitter = function () {
-  this.m_bloodEmitter = new rune.particle.Emitter(this.x, this.y, 15, 15, {
-    particles: [howlkraul.particle.Blood],
-    minLifespan: 1000,
-    maxLifespan: 1200,
-    minRotation: -2,
-    maxRotation: 2,
-    capacity: 92,
-    accelerationY: 0.05,
-    maxVelocityX: 1.25,
-    minVelocityX: -1.25,
-    maxVelocityY: -1.25,
-    minVelocityY: -0.85,
-  });
-
-  this.stage.addChild(this.m_bloodEmitter)
-};
-
-howlkraul.entity.Enemy.prototype.m_initBodypartEmitter = function () {
-  this.m_bodypartEmitter = new rune.particle.Emitter(this.x, this.y, 50, 50, {
-    capacity: 4,
-    accelerationY: 0.05,
-    maxVelocityX: 1.25,
-    minVelocityX: -1.25,
-    maxVelocityY: -1.25,
-    minVelocityY: -0.85,
-    minRotation: -2,
-    maxRotation: 2,
-    minLifespan: 1000,
-    maxLifespan: 1200,
-    particles: this.m_particles
-  });
-
-  this.stage.addChild(this.m_bodypartEmitter)
-};
-
-/**
- * Take damage and lower hp. 
- * If hp is lower then 0 die.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.entity.Enemy.prototype.m_moveEmittersWithCharacter = function () {
-  this.m_bloodEmitter.moveTo(this.x, this.y);
-
-  if (this.m_bodypartEmitter) {
-    this.m_bodypartEmitter.moveTo(this.x, this.y);
-  }
 };
 
 //--------------------------------------------------------------------------

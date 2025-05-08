@@ -42,7 +42,7 @@ howlkraul.scene.Game = function (numPlayers) {
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.enemies = this.groups.create(this.stage);
+    this.enemies = this.groups.add(new howlkraul.entity.Enemies(this));
 
     /**
      * ...

@@ -1,8 +1,5 @@
 howlkraul.entity.Goblin = function (x, y) {
-  howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29", [
-    howlkraul.particle.GoblinHead,
-    howlkraul.particle.GoblinChunk,
-  ]);
+  howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29");
 
   // FLAGS
   this.m_lastShot = Date.now() + rune.util.Math.randomInt(1500, 2500);
