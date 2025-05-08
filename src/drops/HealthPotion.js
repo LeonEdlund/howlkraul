@@ -1,17 +1,23 @@
 /**
- * Represents a HealthPotion. 
- * 
- * @class
- * @classdesc - Creates a instance of a HealthPotion.
+ * Creates a new HealthPotion object.
+ *
+ * @constructor
+ * @extends rune.display.Sprite
+ *
  * @param {number} x - X position
  * @param {number} y - Y position
+ * 
+ * @class
+ * @classdesc
+ *
+ * Creates an instance of a HealthPotion that can be placed on the stage.
  */
 howlkraul.drops.HealthPotion = function (x, y) {
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
 
-  rune.display.Sprite.call(this, x || 0, y || 0, 10, 10);
+  rune.display.Sprite.call(this, x || 0, y || 0, 14, 20, "health_potion_14x20");
 
 
   //--------------------------------------------------------------------------
@@ -68,5 +74,19 @@ Object.defineProperty(howlkraul.drops.HealthPotion.prototype, "healingPower", {
  */
 howlkraul.drops.HealthPotion.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
-  this.backgroundColor = "red";
+  this.m_initAnimations();
+}
+
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Initializes animations.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.drops.HealthPotion.prototype.m_initAnimations = function () {
+  this.animation.create("idle", [0, 1], 5, true);
 }

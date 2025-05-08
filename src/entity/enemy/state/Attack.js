@@ -1,13 +1,20 @@
 /**
- * Represents a state where the enemy follows the closest player on the scene. 
- * 
+ * Represents a state where the enemy attacks the closest player on the scene. 
+ *
+ * @constructor
+ * @extends rune.state.State
+ *
  * @class
- * @classdesc - Creates a instance of a Attack.
+ * @classdesc
+ *
+ * The Attack state is used to make enemies go in to attack mode. 
  */
 howlkraul.entity.Attack = function () {
+
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
+
   rune.state.State.call(this, "Attack");
 }
 
@@ -24,22 +31,8 @@ howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.Attack;
 /**
  * @override
 */
-howlkraul.entity.Attack.prototype.init = function () {
-  rune.state.State.prototype.init.call(this);
-};
-
-/**
- * @override
-*/
-howlkraul.entity.Attack.prototype.update = function () {
-  rune.state.State.prototype.update.call(this);
-  this.m_attack();
-};
-
-/**
- * @override
- */
-howlkraul.entity.Attack.prototype.m_attack = function () {
+howlkraul.entity.Attack.prototype.onEnter = function () {
+  rune.state.State.prototype.onEnter.call(this);
   switch (this.owner.facing) {
     case "side":
       this.owner.animation.gotoAndPlay("s-side");

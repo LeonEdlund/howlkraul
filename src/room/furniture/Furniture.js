@@ -1,16 +1,59 @@
-howlkraul.room.Furniture = function (x, y, width, height, texture, health) {
+/**
+ * Abstract class for furniture.
+ *
+ * @constructor
+ * @extends rune.display.Sprite
+ * @abstract
+ * 
+ * @param {number} x - X spawn position.
+ * @param {number} y - Y spawn position.
+ * @param {number} width - Width of the sprite.
+ * @param {number} height - Height of the sprite.
+ * @param {string} texture - The name of the texture.
+ * 
+ * @class
+ * @classdesc
+ *
+ * Represents a abstract class for furniture.
+ */
+howlkraul.room.Furniture = function (x, y, width, height, texture) {
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
   rune.display.Sprite.call(this, x || 0, y || 0, width, height, texture);
 
+  //--------------------------------------------------------------------------
+  // Protect properties
+  //--------------------------------------------------------------------------
+
   /**
    * The health of the furniture.
+   * Default: 5.
    * 
    * @protected
    * @type {number}
    */
-  this.m_health = health;
+  this.m_health = 5;
+
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * the last time the furniture was damaged
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_lastDamageHit = 0;
+
+  /**
+   * the last time the furniture was damaged
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_damageCoolDown = 500;
 }
 
 //--------------------------------------------------------------------------
@@ -70,6 +113,21 @@ howlkraul.room.Furniture.prototype.takeDamage = function () {
 }
 
 /**
+ * Give damage to furniture and change frame.
+ * 
+ * @public
+ * @returns {undefined} 
+ */
+howlkraul.room.Furniture.prototype.takeDamageFromEnemy = function () {
+  var now = Date.now();
+
+  if (now > this.m_lastDamageHit) {
+    this.takeDamage();
+    this.m_lastDamageHit = now + this.m_damageCoolDown;
+  }
+}
+
+/**
  * Randomly drop health Potion.
  * 
  * @public
@@ -126,10 +184,22 @@ howlkraul.room.Furniture.prototype.m_initVelocity = function () {
 // Abstract Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Initializes animations.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
 howlkraul.room.Furniture.prototype.m_initAnimations = function () {
   //OVERIDE IN SUB CLASS
 }
 
+/**
+ * Change animation frame on damage.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
 howlkraul.room.Furniture.prototype.m_changeFrame = function () {
   //OVERIDE IN SUB CLASS
 }

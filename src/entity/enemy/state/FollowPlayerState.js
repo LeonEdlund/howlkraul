@@ -1,8 +1,13 @@
 /**
  * Represents a state where the enemy follows the closest player on the scene. 
- * 
+ *
+ * @constructor
+ * @extends rune.state.State
+ *
  * @class
- * @classdesc - Creates a instance of a FollowPlayerState.
+ * @classdesc
+ *
+ * The Attack state is used to make enemies follow the closest player. 
  */
 howlkraul.entity.FollowPlayerState = function () {
   //--------------------------------------------------------------------------
@@ -32,12 +37,33 @@ howlkraul.entity.FollowPlayerState = function () {
   */
   this.m_defaultMaxVelocityY = 0;
 
+  /**
+  * The max X velocity for diagonal movement
+  * 
+  * @private
+  * @type {number}
+  */
   this.m_maxDiagonalVelocityX = 0;
+
+  /**
+  * The max Y velocity for diagonal movement
+  * 
+  * @private
+  * @type {number}
+  */
   this.m_maxDiagonalVelocityY = 0;
 }
 
+//--------------------------------------------------------------------------
+// Inheritance
+//--------------------------------------------------------------------------
+
 howlkraul.entity.FollowPlayerState.prototype = Object.create(rune.state.State.prototype);
 howlkraul.entity.FollowPlayerState.prototype.constructor = howlkraul.entity.FollowPlayerState;
+
+//--------------------------------------------------------------------------
+// Overide rune methods
+//--------------------------------------------------------------------------
 
 /**
  * @override
@@ -60,8 +86,15 @@ howlkraul.entity.FollowPlayerState.prototype.update = function () {
   this.m_followPlayer();
 };
 
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
 /**
- * @override
+ * The enemy follows the closest player.
+ * 
+ * @private
+ * @returns {undefined}
  */
 howlkraul.entity.FollowPlayerState.prototype.m_followPlayer = function () {
   var players = this.owner.application.scenes.selected.players;

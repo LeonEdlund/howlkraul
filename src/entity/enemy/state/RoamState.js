@@ -1,6 +1,23 @@
+/**
+ * Represents a state where the enemy roams the map. 
+ *
+ * @constructor
+ * @extends rune.state.State
+ *
+ * @class
+ * @classdesc
+ *
+ * The Attack state is used to make enemies roam the map.
+ */
 howlkraul.entity.RoamState = function () {
+  //--------------------------------------------------------------------------
+  // Super Call 
+  //--------------------------------------------------------------------------
   rune.state.State.call(this, "Roam");
 
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
   this.m_endMoveTime = 0;
   this.m_moveTime = rune.util.Math.randomInt(1000, 5000);
   this.m_direction = null;

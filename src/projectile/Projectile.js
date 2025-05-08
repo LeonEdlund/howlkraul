@@ -13,7 +13,7 @@ howlkraul.projectile.Projectile.prototype.constructor = howlkraul.projectile.Pro
 // Overide Methods
 //--------------------------------------------------------------------------
 
-/**
+/** 
  * @override
  */
 howlkraul.projectile.Projectile.prototype.init = function () {
@@ -91,8 +91,8 @@ howlkraul.projectile.Projectile.prototype.shootInDirection = function (direction
 /**
  * Initialize hitbox
  * 
- * @method
- * @public
+ * @protected
+ * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.shootAtPoint = function (point, group) {
   // Calculate the angle in radians
@@ -124,8 +124,8 @@ howlkraul.projectile.Projectile.prototype.shootAtPoint = function (point, group)
 /**
  * Initialize sprite animations.
  * 
- * @method
  * @protected
+ * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.m_initAnimation = function () {
   // OVERIDE IN SUB CLASS
@@ -134,10 +134,9 @@ howlkraul.projectile.Projectile.prototype.m_initAnimation = function () {
 /**
  * Initialize hitbox
  * 
- * @method
  * @protected
+ * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.m_initHitbox = function () {
   // OVERIDE IN SUB CLASS
 };
-
