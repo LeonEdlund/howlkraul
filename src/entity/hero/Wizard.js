@@ -12,7 +12,7 @@
  * 
  * The Wizard class represents an animated Wizard sprite.
  */
-howlkraul.entity.Wizard = function (x, y, color) {
+howlkraul.entity.Wizard = function (x, y, color, input) {
   howlkraul.entity.Entity.call(this, x || 30, y || 50, 27, 34, "Wizard_27x34");
 
   // Default Stats
@@ -38,6 +38,9 @@ howlkraul.entity.Wizard = function (x, y, color) {
 
   // COLOR
   this.m_color = color || null;
+
+  // INPUT
+  this.m_input = input;
 };
 
 //------------------------------------------------------------------------------
