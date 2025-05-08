@@ -119,6 +119,8 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemySpellHit = function ()
  */
 howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = function () {
   this.game.players.hitTestGroup(this.game.enemyProjectiles, function (player, projectile) {
+    if (player.hp === 0) return;
+
     player.takeDamage(projectile.castedBy.power);
     this.game.enemyProjectiles.removeMember(projectile);
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
@@ -147,7 +149,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
  */
 howlkraul.handler.CollisionHandler.prototype.m_handlePotionPickup = function () {
   this.game.players.hitTestGroup(this.game.potions, function (player, potion) {
-    player.hp += potion.healingPower;
+    player.regenHealth(potion.healingPower);
     this.game.potions.removeMember(potion, true);
   }, this);
 }

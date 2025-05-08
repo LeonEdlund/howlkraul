@@ -12,7 +12,7 @@
  * 
  * The Wizard class represents an animated Wizard sprite.
  */
-howlkraul.entity.Wizard = function (x, y, color, input) {
+howlkraul.entity.Wizard = function (x, y, input, hud) {
   howlkraul.entity.Entity.call(this, x || 30, y || 50, 27, 34, "Wizard_27x34");
 
   // Default Stats
@@ -36,11 +36,10 @@ howlkraul.entity.Wizard = function (x, y, color, input) {
   this.m_energyEmpty = false;
   this.m_isReviving = false;
 
-  // COLOR
-  this.m_color = color || null;
-
   // INPUT
   this.m_input = input;
+
+  this.m_hud = hud;
 };
 
 //------------------------------------------------------------------------------
@@ -111,23 +110,6 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "hp", {
   get: function () {
     return this.m_hp;
   },
-
-  /**
-   * sets players health
-   * 
-   * @param {number} value
-   * @returns {boolean}
-   */
-  set: function (value) {
-    if (this.m_hp === this.maxHp) return;
-
-    if (this.m_hp === this.maxHp - 1) {
-      this.m_hp = this.maxHp;
-    } else {
-      this.m_hp = value;
-    }
-
-  }
 })
 
 Object.defineProperty(howlkraul.entity.Wizard.prototype, "energy", {
@@ -154,7 +136,6 @@ howlkraul.entity.Wizard.prototype.init = function () {
   this.hitbox.set(5, (this.height - 10), (this.width - 10), 9);
   this.setVelocity(0.08, 1.2);
   this.m_initEnergybar();
-  this.m_changeColor();
 };
 
 /**
@@ -189,6 +170,7 @@ howlkraul.entity.Wizard.prototype.initAnimations = function () {
  */
 howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
+  this.m_checkInput();
   this.m_regenEnergy();
 };
 
@@ -196,8 +178,9 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
 // Public Methods
 //--------------------------------------------------------------------------
 
-howlkraul.entity.Wizard.prototype.move = function (input) {
+howlkraul.entity.Wizard.prototype.move = function () {
   if (this.m_isDead) return;
+  var input = this.m_input.currentInput();
 
   this.m_isReviving = false;
   this.m_setFacingDirection(input);
@@ -239,6 +222,8 @@ howlkraul.entity.Wizard.prototype.takeDamage = function () {
     this.m_lastDamageHit = now + this.m_damageHitCoolDown;
   }
 
+  if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
+
   if (this.m_hp <= 0) this.die();
 };
 
@@ -259,7 +244,10 @@ howlkraul.entity.Wizard.prototype.takeEnergy = function () {
 
   if (this.m_energy <= 0) {
     this.m_energyEmpty = true;
+    this.m_energy = 0;
   }
+
+  console.log(this.m_energy);
 }
 
 howlkraul.entity.Wizard.prototype.raiseFromDead = function () {
@@ -269,11 +257,39 @@ howlkraul.entity.Wizard.prototype.raiseFromDead = function () {
   this.movementAllowed = true;
   this.m_hp = 2;
   this.m_energybar.visible = true;
+  if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
+}
+
+howlkraul.entity.Wizard.prototype.regenHealth = function (amount) {
+  if (this.m_hp === this.maxHp) return;
+
+  if (this.m_hp === this.maxHp - 1) {
+    this.m_hp = this.maxHp;
+  } else {
+    this.m_hp += amount;
+  }
+
+  if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
+
+}
+
+howlkraul.entity.Wizard.prototype.bindHUD = function (hud) {
+  this.m_hud = hud;
 }
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
+
+/**
+ * Checks for user input
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_checkInput = function () {
+  this.move();
+};
 
 /**
  * Init manabar
@@ -288,7 +304,7 @@ howlkraul.entity.Wizard.prototype.m_initEnergybar = function () {
 
 howlkraul.entity.Wizard.prototype.m_regenEnergy = function () {
   if (this.m_energy < 100) {
-    this.m_energy += this.energyRegenSpeed;
+    this.m_energy = Math.round(this.m_energy + this.energyRegenSpeed);
   }
 
   if (this.m_energy >= 100) {
@@ -441,7 +457,7 @@ howlkraul.entity.Wizard.prototype.m_setSpellStartingPosition = function () {
  * @param {string} color - The color to make the character as a string. 
  * @returns {undefined}
  */
-howlkraul.entity.Wizard.prototype.m_changeColor = function (color) {
+howlkraul.entity.Wizard.prototype.changeColor = function () {
   // LIGHTEST
   var originalC1 = new rune.color.Color24(178, 206, 219);
   var newC1 = null;
@@ -462,17 +478,11 @@ howlkraul.entity.Wizard.prototype.m_changeColor = function (color) {
   var originalC5 = new rune.color.Color24(3, 25, 63);
   var newC5 = null;
 
-  if (!this.m_color) return;
-
-  switch (this.m_color) {
-    case "green":
-      newC1 = new rune.color.Color24(194, 167, 138);
-      newC2 = new rune.color.Color24(196, 118, 69);
-      newC3 = new rune.color.Color24(181, 104, 60);
-      newC4 = new rune.color.Color24(115, 55, 28);
-      newC5 = new rune.color.Color24(46, 19, 5);
-  }
-
+  newC1 = new rune.color.Color24(194, 167, 138);
+  newC2 = new rune.color.Color24(196, 118, 69);
+  newC3 = new rune.color.Color24(181, 104, 60);
+  newC4 = new rune.color.Color24(115, 55, 28);
+  newC5 = new rune.color.Color24(46, 19, 5);
 
   this.texture.replaceColor(originalC1, newC1);
   this.texture.replaceColor(originalC2, newC2);

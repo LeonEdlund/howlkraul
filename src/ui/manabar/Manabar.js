@@ -74,7 +74,7 @@ howlkraul.ui.Manabar.prototype.m_followPlayer = function () {
 };
 
 howlkraul.ui.Manabar.prototype.m_handleEmptyMana = function () {
-  if (this.m_character && this.m_character.m_energy <= 0) {
+  if (this.m_character && this.m_character.energy <= 1) {
     this.forgroundColor = "red";
   }
 }

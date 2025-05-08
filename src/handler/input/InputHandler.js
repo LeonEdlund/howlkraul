@@ -1,5 +1,6 @@
-howlkraul.handler.InputHandler = function (controller, keys) {
-  this.m_controller = controller;
+howlkraul.handler.InputHandler = function (controller, keyboard, keys) {
+  this.m_controller = controller || {};
+  this.m_keyboard = keyboard || {};
 
   this.m_keys = keys || {};
 
@@ -15,12 +16,12 @@ howlkraul.handler.InputHandler = function (controller, keys) {
  */
 howlkraul.handler.InputHandler.prototype.currentInput = function () {
   return {
-    left: this.keyboard.pressed(this.m_keys.left) || this.m_controller.stickLeftLeft,
-    right: this.keyboard.pressed(this.m_keys.left) || this.m_controller.stickLeftRight,
-    up: this.keyboard.pressed(this.m_keys.left) || this.m_controller.stickLeftUp,
-    down: this.keyboard.pressed(this.m_keys.left) || this.m_controller.stickLeftDown,
-    shoot: this.keyboard.justPressed(this.m_keys.left) || this.m_controller.justPressed(0),
-    hold: this.keyboard.pressed(this.m_keys.left) || this.m_controller.pressed(7),
+    left: this.m_keyboard.pressed(this.m_keys.left) || this.m_controller.stickLeftLeft,
+    right: this.m_keyboard.pressed(this.m_keys.right) || this.m_controller.stickLeftRight,
+    up: this.m_keyboard.pressed(this.m_keys.up) || this.m_controller.stickLeftUp,
+    down: this.m_keyboard.pressed(this.m_keys.down) || this.m_controller.stickLeftDown,
+    shoot: this.m_keyboard.justPressed(this.m_keys.shoot) || this.m_controller.justPressed(0),
+    hold: this.m_keyboard.pressed(this.m_keys.hold) || this.m_controller.pressed(7),
   }
 }
 
@@ -32,12 +33,12 @@ howlkraul.handler.InputHandler.prototype.currentInput = function () {
  * @returns {undefined}
  */
 // howlkraul.handler.InputHandler.prototype.bind = function (keys) {
-//   this.m_keys = {
-//     left: keys.left,
-//     right: keys.right,
-//     up: keys.up,
-//     down: keys.down,
-//     shoot: keys.shoot,
-//     hold: keys.hold,
-//   }
+// this.m_keys = {
+//   left: keys.left,
+//   right: keys.right,
+//   up: keys.up,
+//   down: keys.down,
+//   shoot: keys.shoot,
+//   hold: keys.hold,
+// }
 // }

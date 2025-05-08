@@ -5,7 +5,7 @@ howlkraul.entity.Goblin = function (x, y) {
   ]);
 
   // FLAGS
-  this.m_lastShot = 0;
+  this.m_lastShot = Date.now() + rune.util.Math.randomInt(1500, 2500);
   this.m_lastShotAnimation = 0;
   this.m_shootCooldown = rune.util.Math.randomInt(2000, 4000);
 }

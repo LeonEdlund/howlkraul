@@ -17,22 +17,35 @@ howlkraul.ui.PlayerHud = function (x, y, character, flipped) {
 howlkraul.ui.PlayerHud.prototype = Object.create(rune.display.DisplayObjectContainer.prototype);
 howlkraul.ui.PlayerHud.prototype.constructor = howlkraul.ui.PlayerHud;
 
+/**
+ * @inheritdoc
+ */
 howlkraul.ui.PlayerHud.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
 
   this.m_initBackground();
   this.m_initHearts();
   this.m_initHead();
-
   this.flippedX = this.m_flipped;
+};
+
+/**
+ * @inheritdoc
+ */
+howlkraul.ui.PlayerHud.prototype.dispose = function () {
+  rune.display.DisplayObjectContainer.prototype.init.call(this);
+
+  this.m_character = null;
+  this.m_hearts = null;
 };
 
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
-howlkraul.ui.PlayerHud.prototype.updateHealth = function () {
-  switch (this.m_character.hp) {
+howlkraul.ui.PlayerHud.prototype.updateHealth = function (health) {
+  console.log(health)
+  switch (health) {
     case 6:
       this.m_hearts.heart2.setHeart(2);
       this.m_hearts.heart1.setHeart(2);
