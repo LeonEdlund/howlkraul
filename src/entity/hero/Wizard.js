@@ -445,7 +445,7 @@ howlkraul.entity.Wizard.prototype.m_setSpellStartingPosition = function () {
     x: 0,
     y: 0
   }
-  console.log(this.facing)
+
   if (this.facing === "up") {
     cords.x = this.topLeft.x;
     cords.y = this.topLeft.y;

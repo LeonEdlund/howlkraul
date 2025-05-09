@@ -271,11 +271,15 @@ howlkraul.scene.Game.prototype.m_initPlayerTwo = function () {
         });
 
     var playerTwo = new howlkraul.entity.Wizard(70, 70, p2Input);
-    var p2HUD = new howlkraul.ui.PlayerHud(310, 10, playerTwo);
     playerTwo.changeColor();
+
+    var p2HUD = new howlkraul.ui.PlayerHud(310, 10, playerTwo);
     playerTwo.bindHUD(p2HUD);
+
     this.players.addMember(playerTwo);
     this.stage.addChild(p2HUD)
+
+    p2HUD.changeHeadColor();
 };
 
 /**
@@ -361,23 +365,19 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
 
     if (!this.m_room.gateOpen) return;
 
-    // Check if a player walks through the door
-    var playersReady = 0;
-    this.players.forEachMember(function (player) {
-        if (player.topLeft.x > this.application.width) {
-            playersReady += 1;
+    for (var i = 0; i < this.players.numMembers; i++) {
+        if (this.players.getMemberAt(i).topLeft.x > this.application.width && !this.m_roundTransition) {
+            this.cameras.getCameraAt(0).fade.out(100);
+            this.m_roundTransition = true;
+
+            this.m_transitionTimer = this.timers.create({
+                duration: 1000,
+                onComplete: this.m_loadNewRound,
+                scope: this
+            }, true);
+
+            break;
         }
-    }, this);
-
-    if (playersReady === 1 && !this.m_roundTransition) {
-        this.cameras.getCameraAt(0).fade.out(100);
-        this.m_roundTransition = true;
-
-        this.m_transitionTimer = this.timers.create({
-            duration: 1000,
-            onComplete: this.m_loadNewRound,
-            scope: this
-        }, true);
     }
 }
 
