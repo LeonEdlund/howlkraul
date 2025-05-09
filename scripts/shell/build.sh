@@ -15,8 +15,9 @@ npx google-closure-compiler \
 --js "./../../src/ui/manabar/Manabar.js" \
 --js "./../../src/handler/input/InputHandler.js" \
 --js "./../../src/handler/collision/CollisionHandler.js" \
---js "./../../src/drops/coin/Coin.js" \
+--js "./../../src/drops/Coin.js" \
 --js "./../../src/drops/HealthPotion.js" \
+--js "./../../src/drops/Bomb.js" \
 --js "./../../src/room/furniture/FurnitureGroup.js" \
 --js "./../../src/room/furniture/Furniture.js" \
 --js "./../../src/room/furniture/Table.js" \

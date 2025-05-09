@@ -138,6 +138,8 @@ howlkraul.room.Furniture.prototype.dropLoot = function () {
 
   if (rune.util.Math.chance(30)) {
     this.m_dropHpPotion();
+  } else {
+    this.m_dropBomb();
   }
 
 }
@@ -168,6 +170,16 @@ howlkraul.room.Furniture.prototype.m_dropCoins = function () {
     var y = this.center.y + rune.util.Math.randomInt(-20, 20);
     this.application.scenes.selected.coins.addMember(new howlkraul.drops.Coin(x, y));
   }
+}
+
+/**
+ * drops a bomb.
+ * 
+ * @public
+ * @returns {undefined} 
+ */
+howlkraul.room.Furniture.prototype.m_dropBomb = function () {
+  this.application.scenes.selected.stage.addChild(new howlkraul.drops.Bomb(this.center.x, this.center.y));
 }
 
 /**
