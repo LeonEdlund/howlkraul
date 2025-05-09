@@ -445,10 +445,13 @@ howlkraul.entity.Wizard.prototype.m_setSpellStartingPosition = function () {
     x: 0,
     y: 0
   }
-
-  if (this.facing === "up" || this.facing === "down") {
+  console.log(this.facing)
+  if (this.facing === "up") {
     cords.x = this.topLeft.x;
     cords.y = this.topLeft.y;
+  } else if (this.facing.includes("down")) {
+    cords.x = this.centerX - 12;
+    cords.y = this.centerY;
   } else {
     cords.x = this.flippedX ? this.x - 12 : this.x + 12;
     cords.y = this.flippedX ? this.y + 5 : this.y + 10;
