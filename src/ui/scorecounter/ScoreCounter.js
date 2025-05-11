@@ -31,9 +31,9 @@ Object.defineProperty(howlkraul.ui.ScoreCounter.prototype, "score", {
  */
 howlkraul.ui.ScoreCounter.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
-  this.debug = true;
-  //this.m_initCoin();
+
   this.m_initCounter();
+  this.m_initCoin();
 };
 
 /**
@@ -55,6 +55,9 @@ howlkraul.ui.ScoreCounter.prototype.dispose = function () {
 howlkraul.ui.ScoreCounter.prototype.updateCounter = function (amount) {
   this.m_score += amount;
   this.m_counter.text = this.m_score.toString();
+  this.m_centerCounter();
+  this.m_centerCoin();
+  this.m_coin.spin();
 };
 
 //--------------------------------------------------------------------------
@@ -63,13 +66,27 @@ howlkraul.ui.ScoreCounter.prototype.updateCounter = function (amount) {
 
 
 howlkraul.ui.ScoreCounter.prototype.m_initCoin = function () {
-
+  this.m_coin = new howlkraul.ui.CounterCoin(0, 0);
+  this.m_centerCoin();
+  this.addChild(this.m_coin);
 };
 
 howlkraul.ui.ScoreCounter.prototype.m_initCounter = function () {
   this.m_counter = new rune.text.BitmapField(this.m_score.toString(), "font_480x45");
   this.m_counter.autoSize = true;
-
+  this.m_centerCounter();
   this.addChild(this.m_counter);
 };
+
+howlkraul.ui.ScoreCounter.prototype.m_centerCounter = function () {
+  this.m_counter.centerX = this.width / 2;
+  this.m_counter.centerY = this.height / 2;
+};
+
+howlkraul.ui.ScoreCounter.prototype.m_centerCoin = function () {
+  this.m_coin.centerX = this.m_counter.left - 8;
+  this.m_coin.centerY = (this.height / 2) - 2;
+};
+
+
 

@@ -77,6 +77,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("troll_gore5_19x18", "./../asset/img/gore/troll/troll_gore5_19x18.png");
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
+	this.add("coin_hud_12x18", "./../asset/img/hud/hud components/coin_hud_12x18.png");
 	this.add("player_hud_69x31", "./../asset/img/hud/hud components/player_hud_69x31.png");
 	this.add("xfragmentation1_6x8", "./../asset/img/not_in_use/bomb/xfragmentation1_6x8.png");
 	this.add("xfragmentation2_6x8", "./../asset/img/not_in_use/bomb/xfragmentation2_6x8.png");
