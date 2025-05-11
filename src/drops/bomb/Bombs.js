@@ -37,6 +37,14 @@ howlkraul.drops.Bombs = function (scene) {
    * @type {rune.particle.Emitter}
    */
   this.m_emitter = null;
+
+  /**
+ * Emitter for bomb fragments.
+ * 
+ * @private
+ * @type {rune.particle.Emitter}
+ */
+  this.m_smokeEmitter = null;
 }
 
 //--------------------------------------------------------------------------
@@ -59,7 +67,14 @@ howlkraul.drops.Bombs.prototype.constructor = howlkraul.drops.Bombs;
  */
 howlkraul.drops.Bombs.prototype.explode = function (cordinates) {
   this.m_emitter.moveTo(cordinates.x, cordinates.y);
+  this.m_smokeEmitter.moveTo(cordinates.x, cordinates.y);
+  this.m_cloudEmitter.moveTo(cordinates.x, cordinates.y);
+
   this.m_emitter.emit(30);
+  this.m_smokeEmitter.emit(30);
+  this.m_cloudEmitter.emit(10);
+
+  this.application.scenes.selected.cameras.getCameraAt(0).shake.start(200);
 }
 
 //--------------------------------------------------------------------------
@@ -95,6 +110,8 @@ howlkraul.drops.Bombs.prototype.dispose = function () {
   rune.display.DisplayGroup.prototype.dispose.call(this);
 
   this.m_scene.stage.removeChild(this.m_emitter, true);
+  this.m_scene.stage.removeChild(this.m_smokeEmitter, true);
+  this.m_scene.stage.removeChild(this.m_cloudEmitter, true);
   this.m_scene = null;
   this.m_emitter = null;
 }
@@ -124,7 +141,36 @@ howlkraul.drops.Bombs.prototype.m_initEmitter = function () {
     particles: [howlkraul.particle.BombFragment]
   });
 
+  this.m_smokeEmitter = new rune.particle.Emitter(this.x, this.y, 10, 10, {
+    capacity: 30,
+    accelerationY: 0,
+    maxVelocityX: 1,
+    minVelocityX: -1,
+    maxVelocityY: 0.5,
+    minVelocityY: -0.5,
+    minRotation: -2,
+    maxRotation: 2,
+    minLifespan: 500,
+    maxLifespan: 800,
+    particles: [howlkraul.particle.Smoke]
+  });
+
+  this.m_cloudEmitter = new rune.particle.Emitter(this.x, this.y, 20, 20, {
+    capacity: 10,
+    maxVelocityX: 0.1,
+    minVelocityX: -0.1,
+    maxVelocityY: 0.1,
+    minVelocityY: -0.1,
+    minRotation: -0.1,
+    maxRotation: 0.2,
+    minLifespan: 700,
+    maxLifespan: 1000,
+    particles: [howlkraul.particle.Smoke]
+  });
+
   this.m_scene.stage.addChild(this.m_emitter);
+  this.m_scene.stage.addChild(this.m_smokeEmitter);
+  this.m_scene.stage.addChild(this.m_cloudEmitter);
 }
 
 /**

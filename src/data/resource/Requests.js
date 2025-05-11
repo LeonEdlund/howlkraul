@@ -52,6 +52,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("bomb_19x22", "./../asset/img/drops/bomb_19x22.png");
 	this.add("coin_11x26", "./../asset/img/drops/coin_11x26.png");
 	this.add("health_potion_14x20", "./../asset/img/drops/health_potion_14x20.png");
+	this.add("font_480x45", "./../asset/img/fonts/font_480x45.png");
 	this.add("blood1", "./../asset/img/gore/blood1.png");
 	this.add("blood2", "./../asset/img/gore/blood2.png");
 	this.add("blood3", "./../asset/img/gore/blood3.png");
@@ -77,6 +78,10 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
 	this.add("player_hud_69x31", "./../asset/img/hud/hud components/player_hud_69x31.png");
+	this.add("xfragmentation1_6x8", "./../asset/img/not_in_use/bomb/xfragmentation1_6x8.png");
+	this.add("xfragmentation2_6x8", "./../asset/img/not_in_use/bomb/xfragmentation2_6x8.png");
+	this.add("xfragmentation3_6x8", "./../asset/img/not_in_use/bomb/xfragmentation3_6x8.png");
+	this.add("xfragmentation4_6x8", "./../asset/img/not_in_use/bomb/xfragmentation4_6x8.png");
 	this.add("empty-heart_11x12", "./../asset/img/not_in_use/empty-heart_11x12.png");
 	this.add("full-heart_11x12", "./../asset/img/not_in_use/full-heart_11x12.png");
 	this.add("goblin_29x27", "./../asset/img/not_in_use/goblin_29x27.png");
@@ -89,6 +94,16 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("fragmentation2_6x8", "./../asset/img/projectiles/bomb/fragmentation2_6x8.png");
 	this.add("fragmentation3_6x8", "./../asset/img/projectiles/bomb/fragmentation3_6x8.png");
 	this.add("fragmentation4_6x8", "./../asset/img/projectiles/bomb/fragmentation4_6x8.png");
+	this.add("cloud1_6x6", "./../asset/img/projectiles/bomb/smoke/cloud1_6x6.png");
+	this.add("cloud2_6x6", "./../asset/img/projectiles/bomb/smoke/cloud2_6x6.png");
+	this.add("cloud3_6x6", "./../asset/img/projectiles/bomb/smoke/cloud3_6x6.png");
+	this.add("cloud4_6x6", "./../asset/img/projectiles/bomb/smoke/cloud4_6x6.png");
+	this.add("cloud5_6x6", "./../asset/img/projectiles/bomb/smoke/cloud5_6x6.png");
+	this.add("smoke1_6x6", "./../asset/img/projectiles/bomb/smoke/smoke1_6x6.png");
+	this.add("smoke2_6x6", "./../asset/img/projectiles/bomb/smoke/smoke2_6x6.png");
+	this.add("smoke3_6x6", "./../asset/img/projectiles/bomb/smoke/smoke3_6x6.png");
+	this.add("smoke4_6x6", "./../asset/img/projectiles/bomb/smoke/smoke4_6x6.png");
+	this.add("smoke5_6x6", "./../asset/img/projectiles/bomb/smoke/smoke5_6x6.png");
 	this.add("magic_27x27", "./../asset/img/projectiles/magic_27x27.png");
 	this.add("slime_shot_6x6", "./../asset/img/projectiles/slime_shot_6x6.png");
 	this.add("table_part1_18x18", "./../asset/img/room/furniture/furniture parts/table/table_part1_18x18.png");

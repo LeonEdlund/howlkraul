@@ -115,8 +115,6 @@ howlkraul.scene.Game = function (numPlayers) {
      * @type {number}
      */
     this.m_round = 1;
-
-    this.money = 0;
 };
 
 //------------------------------------------------------------------------------
@@ -194,8 +192,7 @@ howlkraul.scene.Game.prototype.dispose = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
-    this.money += amount;
-    this.moneyCounter.setValue(this.money);
+    this.moneyCounter.updateCounter(amount);
 };
 
 //--------------------------------------------------------------------------
@@ -209,9 +206,8 @@ howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
-    this.moneyCounter = new rune.ui.Counter(5, undefined, undefined, undefined, 5);
-    this.moneyCounter.moveTo(320, 0);
-    this.moneyCounter.setValue(0);
+    this.moneyCounter = new howlkraul.ui.ScoreCounter(0, 15);
+    this.moneyCounter.centerX = this.application.screen.centerX;
     this.stage.addChild(this.moneyCounter);
 };
 
@@ -324,6 +320,7 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
             this.enemies.addMember(new howlkraul.entity.Troll(x3, y3));
         }
     }
+    //this.enemies.addMember(new howlkraul.entity.BigTroll(100, 100));
 }
 
 /**
@@ -431,7 +428,7 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     }, this);
 
     if (deadPlayers >= this.players.numMembers) {
-        this.application.scenes.load([new howlkraul.scene.GameOver(this.money)])
+        this.application.scenes.load([new howlkraul.scene.GameOver(this.moneyCounter.score)])
     }
 };
 
