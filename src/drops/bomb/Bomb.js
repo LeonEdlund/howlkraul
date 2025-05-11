@@ -19,6 +19,14 @@ howlkraul.drops.Bomb = function (x, y) {
 
   rune.display.Sprite.call(this, x || 0, y || 0, 19, 22, "bomb_19x22");
 
+  //--------------------------------------------------------------------------
+  // Overide rune properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * @inheritdoc
+   */
+  this.velocity.max.x = 0.05;
 
   //--------------------------------------------------------------------------
   // Private Properties
@@ -31,6 +39,7 @@ howlkraul.drops.Bomb = function (x, y) {
    * @type {number}
    */
   this.FLICKER_TIME = 700;
+
 }
 
 //--------------------------------------------------------------------------
@@ -50,7 +59,8 @@ howlkraul.drops.Bomb.prototype.constructor = howlkraul.drops.Bomb;
 howlkraul.drops.Bomb.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
   this.m_initAnimations();
-  this.flicker.start(this.FLICKER_TIME)
+  this.m_initRoll();
+  this.flicker.start(this.FLICKER_TIME);
 }
 
 /**
@@ -58,7 +68,7 @@ howlkraul.drops.Bomb.prototype.init = function () {
  */
 howlkraul.drops.Bomb.prototype.update = function (step) {
   rune.display.Sprite.prototype.update.call(this, step);
-  
+
 }
 
 /**
@@ -95,4 +105,16 @@ howlkraul.drops.Bomb.prototype.m_setAnimationScript = function (animation) {
     bombGroup.explode(new rune.geom.Vector2D(this.centerX, this.centerY));
     bombGroup.removeMember(this, true);
   }, this);
+}
+
+/**
+ * Initializes random rolling.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.drops.Bomb.prototype.m_initRoll = function () {
+  var randomNum = rune.util.Math.random(-0.02, 0.02)
+  this.velocity.acceleration.x = randomNum;
+  this.velocity.angularAcceleration = randomNum;
 }
