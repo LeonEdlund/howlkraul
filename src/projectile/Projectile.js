@@ -41,46 +41,47 @@ howlkraul.projectile.Projectile.prototype.dispose = function () {
  * @param {string} direction - The direction as a string.
  * @param {rune.display.DisplayGroup} direction - The direction as a string.
  */
-howlkraul.projectile.Projectile.prototype.shootInDirection = function (direction, group) {
+howlkraul.projectile.Projectile.prototype.shootInDirection = function (direction, speed, group) {
+  this.velocity.acceleration.x = 0.9;
   switch (direction) {
     case "down":
-      this.velocity.x = 0;
-      this.velocity.y = 4;
+      this.velocity.acceleration.x = 0;
+      this.velocity.acceleration.y = speed;
       this.rotation = 90;
       break;
     case "down-right":
-      this.velocity.x = 4;
-      this.velocity.y = 4;
+      this.velocity.acceleration.x = speed;
+      this.velocity.acceleration.y = speed;
       this.rotation = 45;
       break;
     case "down-left":
-      this.velocity.x = -4;
-      this.velocity.y = 4;
+      this.velocity.acceleration.x = -speed;
+      this.velocity.acceleration.y = speed;
       this.rotation = 145;
       break;
     case "up":
-      this.velocity.x = 0;
-      this.velocity.y = -4;
+      this.velocity.acceleration.x = 0;
+      this.velocity.acceleration.y = -speed;
       this.rotation = -90;
       break;
     case "up-right":
-      this.velocity.x = 4;
-      this.velocity.y = -4;
+      this.velocity.acceleration.x = speed;
+      this.velocity.acceleration.y = -speed;
       this.rotation = -45;
       break;
     case "up-left":
-      this.velocity.x = -4;
-      this.velocity.y = -4;
+      this.velocity.acceleration.x = -speed;
+      this.velocity.acceleration.y = -speed;
       this.rotation = -145;
       break;
     case "right":
-      this.velocity.x = 4;
-      this.velocity.y = 0;
+      this.velocity.acceleration.x = speed;
+      this.velocity.acceleration.y = 0;
       this.rotation = 0;
       break;
     case "left":
-      this.velocity.x = -4;
-      this.velocity.y = 0;
+      this.velocity.acceleration.x = -speed;
+      this.velocity.acceleration.y = 0;
       this.rotation = -180;
       break;
   }
@@ -106,7 +107,7 @@ howlkraul.projectile.Projectile.prototype.shootAtPoint = function (point, group)
   // Set projectile speed (adjust this value as needed)
   var speed = 3;
 
-  // Calculate velocity components using the angle
+  // Calculate velocity.acceleration components using the angle
   this.velocity.x = rune.util.Math.cos(radians) * speed;
   this.velocity.y = rune.util.Math.sin(radians) * speed;
 
