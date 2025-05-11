@@ -86,6 +86,14 @@ howlkraul.entity.FollowPlayerState.prototype.update = function () {
   this.m_followPlayer();
 };
 
+/**
+ * @override
+*/
+howlkraul.entity.FollowPlayerState.prototype.onEnter = function () {
+  rune.state.State.prototype.onEnter(this);
+  console.log("follow player")
+};
+
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------

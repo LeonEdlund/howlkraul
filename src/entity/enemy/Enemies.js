@@ -55,6 +55,10 @@ howlkraul.entity.Enemies.prototype = Object.create(rune.display.DisplayGroup.pro
 howlkraul.entity.Enemies.prototype.constructor = howlkraul.entity.Enemies;
 
 //--------------------------------------------------------------------------
+// Public Methods
+//--------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------
 // Overide Methods
 //--------------------------------------------------------------------------
 
@@ -146,25 +150,17 @@ howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
   enemy.takeDamage(spell.castedBy.power);
   spell.castedBy.controller.vibrate(100, 0.3, 0.6);
   this.m_scene.cameras.getCameraAt(0).shake.start(300, 1, 1);
-
   this.m_scene.spells.removeMember(spell, true);
 
-  if (enemy.hp <= 0) {
-    this.m_explode(enemy);
-    this.removeMember(enemy, true);
-  } else {
-    this.m_bleed(enemy);
-  }
 }
 
-
 /**
- * Emmits debree based on furniture type.
+ * Emitts debree based on furniture type.
  * 
  * @private
  * @returns {undefined}
  */
-howlkraul.entity.Enemies.prototype.m_explode = function (enemy) {
+howlkraul.entity.Enemies.prototype.explode = function (enemy) {
   if (enemy instanceof howlkraul.entity.Slime || enemy instanceof howlkraul.entity.Troll) {
     this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
     this.m_bloodEmitter.emit(50);
@@ -177,12 +173,12 @@ howlkraul.entity.Enemies.prototype.m_explode = function (enemy) {
 }
 
 /**
- * Emmits debree based on furniture type.
+ * Emitts debree based on furniture type.
  * 
  * @private
  * @returns {undefined}
  */
-howlkraul.entity.Enemies.prototype.m_bleed = function (enemy) {
+howlkraul.entity.Enemies.prototype.bleed = function (enemy) {
   this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
   this.m_bloodEmitter.emit(5);
 }

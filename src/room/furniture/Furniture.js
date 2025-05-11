@@ -128,7 +128,7 @@ howlkraul.room.Furniture.prototype.takeDamageFromEnemy = function () {
 }
 
 /**
- * Randomly drop health Potion.
+ * Randomly drop loot.
  * 
  * @public
  * @returns {undefined} 
@@ -138,7 +138,7 @@ howlkraul.room.Furniture.prototype.dropLoot = function () {
 
   if (rune.util.Math.chance(30)) {
     this.m_dropHpPotion();
-  } else {
+  } else if (rune.util.Math.chance(60)) {
     this.m_dropBomb();
   }
 
@@ -179,7 +179,7 @@ howlkraul.room.Furniture.prototype.m_dropCoins = function () {
  * @returns {undefined} 
  */
 howlkraul.room.Furniture.prototype.m_dropBomb = function () {
-  this.application.scenes.selected.stage.addChild(new howlkraul.drops.Bomb(this.center.x, this.center.y));
+  this.application.scenes.selected.bombs.addMember(new howlkraul.drops.Bomb(this.center.x, this.center.y));
 }
 
 /**

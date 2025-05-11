@@ -220,7 +220,7 @@ howlkraul.entity.Wizard.prototype.attack = function () {
     this.m_setShootingAnimation();
     this.takeEnergy();
     var spell = new howlkraul.projectile.Spell(cordinates.x, cordinates.y, this);
-    spell.shootInDirection(this.facing, scene.spells);
+    spell.shootInDirection(this.facing, 0.9, scene.spells);
   };
 }
 

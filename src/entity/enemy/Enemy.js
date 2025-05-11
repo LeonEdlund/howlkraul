@@ -10,6 +10,7 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture) {
 
   // Flags 
   this.m_horizontalMovement = false;
+  this.m_isAttacking = false;
 }
 
 //--------------------------------------------------------------------------
@@ -17,6 +18,16 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture) {
 //--------------------------------------------------------------------------
 howlkraul.entity.Enemy.prototype = Object.create(howlkraul.entity.Entity.prototype);
 howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
+
+//--------------------------------------------------------------------------
+// Getter and setters
+//--------------------------------------------------------------------------
+
+Object.defineProperty(howlkraul.entity.Enemy.prototype, "isAttacking", {
+  get: function () {
+    return this.m_isAttacking;
+  }
+});
 
 //--------------------------------------------------------------------------
 // Overide Rune Methods
@@ -31,7 +42,7 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
  */
 howlkraul.entity.Enemy.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
-
+  this.initAnimationScripts();
 };
 
 /**
@@ -124,7 +135,12 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
  */
 howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   this.hp -= amount;
-  if (this.hp <= 0) this.die();
+
+  if (this.hp <= 0) {
+    this.die();
+  } else {
+    this.application.scenes.selected.enemies.bleed(this);
+  }
 };
 
 /**
@@ -135,6 +151,8 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
  */
 howlkraul.entity.Enemy.prototype.die = function () {
   this.dropCoin();
+  this.application.scenes.selected.enemies.explode(this);
+  this.application.scenes.selected.enemies.removeMember(this);
 };
 
 /**
@@ -206,5 +224,16 @@ howlkraul.entity.Enemy.prototype.setState = function () {
  * @returns {undefined}
 */
 howlkraul.entity.Enemy.prototype.attack = function () {
+  // OVERIDE IN CHILD CLASS
+};
+
+/**
+ * Attack player.
+ * Overide in sub class to specific logic for attacking.
+ * 
+ * @public
+ * @returns {undefined}
+*/
+howlkraul.entity.Enemy.prototype.initAnimationScripts = function () {
   // OVERIDE IN CHILD CLASS
 };

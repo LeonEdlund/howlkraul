@@ -208,11 +208,9 @@ howlkraul.room.FurnitureGroup.prototype.m_handleCollisonHit = function () {
   var spells = this.application.scenes.selected.spells;
   var enemyProjectile = this.application.scenes.selected.enemyProjectiles;
 
-  // PLAYERS
+
   this.hitTestAndSeparateGroup(players);
   this.hitTestAndSeparateGroup(enemies, this.m_handleDamage, this);
-
-  // PROJECTILES
   this.hitTestGroup(spells, this.m_handleDamage, this);
   this.hitTestGroup(enemyProjectile, this.m_handleDamage, this);
 }
@@ -234,8 +232,10 @@ howlkraul.room.FurnitureGroup.prototype.m_handleDamage = function (target, attac
   }
 
   if (attacker instanceof howlkraul.entity.Enemy) {
-    target.takeDamageFromEnemy();
-    attacker.attack();
+    if (!attacker.isAttacking) {
+      target.takeDamageFromEnemy();
+      attacker.attack();
+    }
   } else {
     target.takeDamage();
   }
