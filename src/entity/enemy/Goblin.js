@@ -1,6 +1,8 @@
 howlkraul.entity.Goblin = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29");
 
+  this.speed = rune.util.Math.random(0.4, 0.5);
+
   // FLAGS
   this.m_lastShot = Date.now() + rune.util.Math.randomInt(1500, 2500);
   this.m_lastShotAnimation = 0;
@@ -20,7 +22,7 @@ howlkraul.entity.Goblin.prototype.constructor = howlkraul.entity.Goblin;
 howlkraul.entity.Goblin.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
-  this.setVelocity(0.1, 1);
+  //this.setVelocity(0.1, 1);
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
 };
 

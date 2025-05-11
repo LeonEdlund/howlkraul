@@ -1,7 +1,7 @@
 howlkraul.entity.Troll = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "troll_29x29");
   this.hp = 150;
-
+  this.speed = rune.util.Math.random(0.3, 0.4);
   this.m_lastAttack = 0;
   this.m_attackCoolDown = 500;
   this.m_isAttacking = false;

@@ -3,6 +3,8 @@ howlkraul.entity.Entity = function (x, y, height, width, texture) {
 
   this.facing = "down";
   this.acceleration = 1;
+  this.speed = 1;
+  this.drag = 0.1;
   this.m_movementAllowed = true;
 }
 
@@ -37,6 +39,7 @@ howlkraul.entity.Entity.prototype.init = function () {
 
   this.initAnimations();
   this.initStates();
+  this.setVelocity();
 }
 
 //--------------------------------------------------------------------------
@@ -83,11 +86,11 @@ howlkraul.entity.Entity.prototype.moveDown = function () {
  * @param {number} drag 
  * @param {number} speed 
  */
-howlkraul.entity.Entity.prototype.setVelocity = function (drag, speed) {
-  this.velocity.drag.x = drag;
-  this.velocity.drag.y = drag;
-  this.velocity.max.x = speed;
-  this.velocity.max.y = speed;
+howlkraul.entity.Entity.prototype.setVelocity = function () {
+  this.velocity.drag.x = this.drag;
+  this.velocity.drag.y = this.drag;
+  this.velocity.max.x = this.speed;
+  this.velocity.max.y = this.speed;
 };
 
 //--------------------------------------------------------------------------
