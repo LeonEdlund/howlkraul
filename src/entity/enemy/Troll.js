@@ -29,21 +29,18 @@ howlkraul.entity.Troll.prototype.init = function () {
 };
 
 //--------------------------------------------------------------------------
-// Public Methods
+// Overide Methods
 //--------------------------------------------------------------------------
 
 howlkraul.entity.Troll.prototype.attack = function () {
   var now = Date.now();
 
   if (now > this.m_lastAttack) {
+    this.m_isAttacking = true;
     this.states.select("Attack");
     this.m_lastAttack = now + this.m_attackCoolDown;
   }
 };
-
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
 
 /**
  * @override
@@ -59,16 +56,26 @@ howlkraul.entity.Troll.prototype.initAnimations = function () {
 
   // ATTACKING
   this.animation.create("s", [7, 8, 6, 6, 6, 6], 5, true);
-  this.animation.create("s-side", [17, 18, 9, 9, 9, 9, 9], 8, true);
+  this.animation.create("s-side", [17, 18, 9, 9], 8, true);
   this.animation.create("s-up", [26, 27], 5, true);
 };
 
 /**
- * Configures the animation sequence.
- * 
- * @returns {undefined}
- * @private
-*/
+ * @override
+ */
+howlkraul.entity.Troll.prototype.initAnimationScripts = function () {
+  var shootingDown = this.animation.find("s");
+  var shootingSide = this.animation.find("s-side");
+  var shootingUp = this.animation.find("s-up");
+
+  shootingDown.scripts.add(5, function () { this.m_isAttacking = false; }, this);
+  shootingSide.scripts.add(3, function () { this.m_isAttacking = false; }, this);
+  shootingUp.scripts.add(1, function () { this.m_isAttacking = false; }, this);
+};
+
+/**
+ * @inheritdoc
+ */
 howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
   switch (this.facing) {
     case "up":
@@ -83,8 +90,11 @@ howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
   }
 };
 
+/**
+ * @inheritdoc
+ */
 howlkraul.entity.Troll.prototype.setState = function () {
-  howlkraul.entity.Enemy.prototype.setState.call(this);
+  if (this.m_isAttacking) return;
 
   var players = this.application.scenes.selected.players;
   var closestPlayer = this.getClosestPlayer(players);
@@ -94,7 +104,7 @@ howlkraul.entity.Troll.prototype.setState = function () {
 
   if (distance < 12) {
     if (this.facing === "down") this.moveTo(this.x, (this.y + 1));
-    this.attack();
+    if (!this.m_isAttacking) this.attack();
   } else if (distance < 160) {
     this.states.select("FollowPlayer");
   } else {
