@@ -179,7 +179,7 @@ howlkraul.room.Furniture.prototype.m_dropCoins = function () {
  * @returns {undefined} 
  */
 howlkraul.room.Furniture.prototype.m_dropBomb = function () {
-  this.application.scenes.selected.stage.addChild(new howlkraul.drops.Bomb(this.center.x, this.center.y));
+  this.application.scenes.selected.bombs.addMember(new howlkraul.drops.Bomb(this.center.x, this.center.y));
 }
 
 /**

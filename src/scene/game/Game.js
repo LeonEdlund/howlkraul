@@ -80,6 +80,14 @@ howlkraul.scene.Game = function (numPlayers) {
      * ...
      * 
      * @private
+     * @type {rune.display.DisplayGroup}
+     */
+    this.bombs = this.groups.add(new howlkraul.drops.Bombs(this));;
+
+    /**
+     * ...
+     * 
+     * @private
      * @type {howlkraul.handler.CollisionHandler}
      */
     this.m_collisionHandler = new howlkraul.handler.CollisionHandler(this);

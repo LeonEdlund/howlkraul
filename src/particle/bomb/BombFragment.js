@@ -14,3 +14,6 @@ howlkraul.particle.BombFragment = function () {
 
 howlkraul.particle.BombFragment.prototype = Object.create(rune.particle.Particle.prototype);
 howlkraul.particle.BombFragment.prototype.constructor = howlkraul.particle.BombFragment;
+
+
+
