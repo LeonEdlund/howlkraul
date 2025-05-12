@@ -51,6 +51,10 @@ howlkraul.entity.Attack.prototype.onEnter = function () {
   this.owner.animation.gotoAndPlay(animation);
 
   if (this.owner.m_clothes) {
-    this.owner.m_clothes.setAnimation(animation);
+    this.owner.m_clothes.forEach(function (clothing) {
+      clothing.setAnimation(animation);
+    });
+
+    //this.m_clothes.setAnimation(animation);
   }
 };

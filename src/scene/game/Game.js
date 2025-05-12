@@ -296,37 +296,37 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
     var minX = 200; // Determin min distance from left wall of room
     var minY = 30;// Determin min distance from top wall of room
 
-    // for (var i = 0; i < amount; i++) {
-    //     var x1 = rune.util.Math.randomInt(minX, (this.application.width - 50));
-    //     var x2 = rune.util.Math.randomInt(minX, (this.application.width - 50));
-    //     var x3 = rune.util.Math.randomInt(minX, (this.application.width - 50));
+    for (var i = 0; i < amount; i++) {
+        var x1 = rune.util.Math.randomInt(minX, (this.application.width - 50));
+        var x2 = rune.util.Math.randomInt(minX, (this.application.width - 50));
+        var x3 = rune.util.Math.randomInt(minX, (this.application.width - 50));
 
-    //     var y1 = rune.util.Math.randomInt(minY, (this.application.height - 50));
-    //     var y2 = rune.util.Math.randomInt(minY, (this.application.height - 50));
-    //     var y3 = rune.util.Math.randomInt(minY, (this.application.height - 50));
+        var y1 = rune.util.Math.randomInt(minY, (this.application.height - 50));
+        var y2 = rune.util.Math.randomInt(minY, (this.application.height - 50));
+        var y3 = rune.util.Math.randomInt(minY, (this.application.height - 50));
 
-    //     // Goblin
-    //     if (rune.util.Math.chance(50)) {
-    //         this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
-    //     }
+        // Goblin
+        if (rune.util.Math.chance(50)) {
+            this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
+        }
 
-    //     // Slimes
-    //     if (rune.util.Math.chance(80)) {
-    //         this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
-    //     }
+        // Slimes
+        if (rune.util.Math.chance(80)) {
+            this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
+        }
 
-    //     // Troll
-    //     if (rune.util.Math.chance(65)) {
-    //         this.enemies.addMember(new howlkraul.entity.Troll(x3, y3));
-    //     }
-    // }
+        // Troll
+        if (rune.util.Math.chance(65)) {
+            this.enemies.addMember(new howlkraul.entity.Troll(x3, y3));
+        }
+    }
 
     // Big Troll
-    // if (rune.util.Math.chance(60) && this.m_round > 4) {
-    var x4 = rune.util.Math.randomInt(minX, (this.application.width - 80));
-    var y4 = rune.util.Math.randomInt(minY, (this.application.height - 80));
-    this.enemies.addMember(new howlkraul.entity.BigTroll(x4, y4));
-    // }
+    if (rune.util.Math.chance(60) && this.m_round > 4) {
+        var x4 = rune.util.Math.randomInt(minX, (this.application.width - 80));
+        var y4 = rune.util.Math.randomInt(minY, (this.application.height - 80));
+        this.enemies.addMember(new howlkraul.entity.BigTroll(x4, y4));
+    }
 
 }
 
