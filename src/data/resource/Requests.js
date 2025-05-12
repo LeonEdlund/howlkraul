@@ -45,7 +45,9 @@ howlkraul.data.Requests.prototype.m_construct = function() {
     rune.resource.Requests.prototype.m_construct.call(this);
     this.add("goblin_29x29", "./../asset/img/actors/enemies/goblin_29x29.png");
 	this.add("slime_19x19", "./../asset/img/actors/enemies/slime_19x19.png");
+	this.add("clothing_29x29", "./../asset/img/actors/enemies/troll/clothing_29x29.png");
 	this.add("helmet1_29x29", "./../asset/img/actors/enemies/troll/helmet1_29x29.png");
+	this.add("helmet2_29x29", "./../asset/img/actors/enemies/troll/helmet2_29x29.png");
 	this.add("troll_29x29", "./../asset/img/actors/enemies/troll/troll_29x29.png");
 	this.add("archer_27x34", "./../asset/img/actors/heros/archer_27x34.png");
 	this.add("wizard_27x34", "./../asset/img/actors/heros/wizard_27x34.png");
@@ -120,5 +122,8 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("vase_part5_18x18", "./../asset/img/room/furniture/furniture parts/vase/vase_part5_18x18.png");
 	this.add("table_47x35", "./../asset/img/room/furniture/table_47x35.png");
 	this.add("vase_19x29", "./../asset/img/room/furniture/vase_19x29.png");
+	this.add("entrance_400x225", "./../asset/img/room/outside/entrance_400x225.png");
+	this.add("outside_400x225", "./../asset/img/room/outside/outside_400x225.png");
+	this.add("shadow_400x225", "./../asset/img/room/outside/shadow_400x225.png");
 	this.add("room_400x225", "./../asset/img/room/room_400x225.png");
 };
