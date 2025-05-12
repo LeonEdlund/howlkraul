@@ -95,7 +95,7 @@ howlkraul.drops.Bombs.prototype.init = function () {
  */
 howlkraul.drops.Bombs.prototype.update = function (step) {
   rune.display.DisplayGroup.prototype.update.call(this, step);
-
+  this.hitTestAndSeparateGroup(this.m_scene.room.walls);
   if (this.m_emitter.numParticles) {
     var particles = this.m_emitter.getParticles(true)
     this.m_scene.enemies.hitTestContentOf(particles, this.m_handleDamage, this);

@@ -14,6 +14,8 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture) {
   // Flags 
   this.m_horizontalMovement = false;
   this.m_isAttacking = false;
+
+  this.m_frameCounter = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -60,8 +62,13 @@ howlkraul.entity.Enemy.prototype.init = function () {
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
 
-  this.closestPlayer = this.getClosestPlayer();
-  this.setState();
+  this.m_frameCounter++;
+
+  if (this.m_frameCounter % 10 === 0) {
+    console.log("tjo")
+    this.closestPlayer = this.getClosestPlayer();
+    this.setState();
+  }
 };
 
 howlkraul.entity.Enemy.prototype.dispose = function () {

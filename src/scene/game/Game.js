@@ -448,6 +448,7 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
 howlkraul.scene.Game.prototype.m_disposeBetweenRound = function () {
     this.coins.removeMembers(true);
     this.potions.removeMembers(true);
+    this.bombs.removeMembers(true);
     this.enemies.removeMembers(true);
     this.spells.removeMembers(true);
     this.enemyProjectiles.removeMembers(true);
