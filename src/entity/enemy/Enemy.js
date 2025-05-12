@@ -8,6 +8,9 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture) {
    */
   this.hp = 100;
 
+  this.closestPlayer = null;
+  this.distanceToClosestPlayer = 0;
+
   // Flags 
   this.m_horizontalMovement = false;
   this.m_isAttacking = false;
@@ -42,6 +45,8 @@ Object.defineProperty(howlkraul.entity.Enemy.prototype, "isAttacking", {
  */
 howlkraul.entity.Enemy.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
+
+  this.closestPlayer = this.getClosestPlayer();
   this.initAnimationScripts();
 };
 
@@ -55,6 +60,7 @@ howlkraul.entity.Enemy.prototype.init = function () {
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
 
+  this.closestPlayer = this.getClosestPlayer();
   this.setState();
 };
 
@@ -172,7 +178,8 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
  * @public
  * @returns {howlkraul.entity.PlayableCharacter}
  */
-howlkraul.entity.Enemy.prototype.getClosestPlayer = function (players) {
+howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
+  var players = this.application.scenes.selected.players;
   if (players.numMembers === 0) return;
 
   var m_this = this;
@@ -187,6 +194,7 @@ howlkraul.entity.Enemy.prototype.getClosestPlayer = function (players) {
     return m_this.distance(a) - m_this.distance(b);
   });
 
+  this.distanceToClosestPlayer = Math.round(this.distance(allPlayers[0].center));
   return allPlayers[0];
 };
 

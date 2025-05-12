@@ -3,8 +3,12 @@ howlkraul.entity.Entity = function (x, y, height, width, texture) {
 
   this.facing = "down";
   this.acceleration = 1;
-  this.speed = 1;
-  this.drag = 0.1;
+  this.m_speed = 1;
+  this.m_drag = 0.1;
+
+  this.velocity.drag.x = 0.1;
+  this.velocity.drag.y = 0.1;
+
   this.m_movementAllowed = true;
 }
 
@@ -27,6 +31,36 @@ Object.defineProperty(howlkraul.entity.Entity.prototype, "movementAllowed", {
   }
 });
 
+Object.defineProperty(howlkraul.entity.Entity.prototype, "speed", {
+  get: function () {
+    return this.m_speed;
+  },
+
+  /**
+   * @param {boolean} value 
+   */
+  set: function (value) {
+    this.m_speed = value;
+    this.velocity.max.x = value;
+    this.velocity.max.y = value;
+  }
+});
+
+Object.defineProperty(howlkraul.entity.Entity.prototype, "drag", {
+  get: function () {
+    return this.m_drag;
+  },
+
+  /**
+   * @param {boolean} value 
+   */
+  set: function (value) {
+    this.m_speed = value;
+    this.velocity.drag.x = value;
+    this.velocity.drag.y = value;
+  }
+});
+
 //--------------------------------------------------------------------------
 // Overide Methods
 //--------------------------------------------------------------------------
@@ -39,7 +73,7 @@ howlkraul.entity.Entity.prototype.init = function () {
 
   this.initAnimations();
   this.initStates();
-  this.setVelocity();
+  //this.setVelocity();
 }
 
 //--------------------------------------------------------------------------
@@ -79,19 +113,6 @@ howlkraul.entity.Entity.prototype.moveDown = function () {
   if (!this.movementAllowed) return;
   this.velocity.y += this.acceleration;
 }
-
-/**
- * 
- * @protected
- * @param {number} drag 
- * @param {number} speed 
- */
-howlkraul.entity.Entity.prototype.setVelocity = function () {
-  this.velocity.drag.x = this.drag;
-  this.velocity.drag.y = this.drag;
-  this.velocity.max.x = this.speed;
-  this.velocity.max.y = this.speed;
-};
 
 //--------------------------------------------------------------------------
 // Abstract methods

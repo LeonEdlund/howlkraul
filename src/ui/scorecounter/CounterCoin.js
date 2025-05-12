@@ -79,7 +79,5 @@ howlkraul.ui.CounterCoin.prototype.m_initEmitter = function () {
     minVelocityY: -0.5,
   });
 
-  console.log(this.m_emitter)
-
   this.application.scenes.selected.stage.addChild(this.m_emitter);
 };

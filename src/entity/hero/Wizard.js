@@ -19,6 +19,7 @@ howlkraul.entity.Wizard = function (x, y, input, hud) {
   this.m_hp = 6;
   this.maxHp = 6;
   this.power = 50;
+  this.speed = 1.2;
   this.m_energy = 100;
   this.energyRegenSpeed = 0.7;
   this.energyCost = 20;
@@ -145,7 +146,7 @@ howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
   this.hitbox.set(5, (this.height - 10), (this.width - 10), 9);
-  this.setVelocity(0.08, 1.2);
+  //this.setVelocity(0.08, 1.2);
   this.m_initEnergybar();
 };
 

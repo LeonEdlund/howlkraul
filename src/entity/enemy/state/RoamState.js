@@ -24,16 +24,12 @@ howlkraul.entity.RoamState = function () {
   this.m_directionIndex = null;
 }
 
+//--------------------------------------------------------------------------
+// Inheritance
+//--------------------------------------------------------------------------
+
 howlkraul.entity.RoamState.prototype = Object.create(rune.state.State.prototype);
 howlkraul.entity.RoamState.prototype.constructor = howlkraul.entity.RoamState;
-
-
-/**
- * @override
-*/
-howlkraul.entity.RoamState.prototype.init = function () {
-  rune.state.State.prototype.init.call(this);
-};
 
 /**
  * @override
@@ -48,41 +44,18 @@ howlkraul.entity.RoamState.prototype.update = function (step) {
 
 howlkraul.entity.RoamState.prototype.onEnter = function () {
   rune.state.State.prototype.onEnter.call(this);
-  this.owner.setVelocity(0.08, 0.5);
-};
 
+  this.owner.speed = this.owner.defaultSpeed;
+};
 
 howlkraul.entity.RoamState.prototype.m_roam = function () {
   var now = Date.now();
 
   if (now >= this.m_endMoveTime) {
     this.m_setDirection();
-
-    this.m_moveTime = rune.util.Math.randomInt(1000, 3000);
+    this.m_moveTime = rune.util.Math.randomInt(1000, 5000);
     this.m_endMoveTime = now + this.m_moveTime;
   }
-
-  if (this.m_direction) {
-    this.m_direction();
-  }
-};
-
-howlkraul.entity.RoamState.prototype.m_updateDirection = function () {
-  var directions = [
-    this.owner.moveUp.bind(this.owner),
-    this.owner.moveDown.bind(this.owner),
-    this.owner.moveLeft.bind(this.owner),
-    this.owner.moveRight.bind(this.owner),
-  ];
-
-  var rIndex = rune.util.Math.randomInt(0, directions.length - 1);
-  var direction = directions[rIndex];
-
-  if (direction === this.m_direction) {
-    this.m_getDirection();
-  }
-
-  this.m_direction = direction;
 
   if (this.m_direction) {
     this.m_direction();
@@ -105,8 +78,8 @@ howlkraul.entity.RoamState.prototype.m_setDirection = function () {
     attemps++;
   }
 
-  this.m_direction = directions[rIndex];
   this.m_directionIndex = rIndex;
+  this.m_direction = directions[rIndex];
 };
 
 howlkraul.entity.RoamState.prototype.m_isStuck = function () {

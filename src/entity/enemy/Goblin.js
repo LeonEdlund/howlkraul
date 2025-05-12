@@ -2,6 +2,7 @@ howlkraul.entity.Goblin = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29");
 
   this.speed = rune.util.Math.random(0.4, 0.5);
+  this.defaultSpeed = this.speed;
 
   // FLAGS
   this.m_lastShot = Date.now() + rune.util.Math.randomInt(1500, 2500);
@@ -22,7 +23,6 @@ howlkraul.entity.Goblin.prototype.constructor = howlkraul.entity.Goblin;
 howlkraul.entity.Goblin.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
-  //this.setVelocity(0.1, 1);
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
 };
 
@@ -65,27 +65,21 @@ howlkraul.entity.Goblin.prototype.initAnimations = function () {
 };
 
 howlkraul.entity.Goblin.prototype.setState = function () {
-  howlkraul.entity.Enemy.prototype.setState.call(this);
+  if (!this.closestPlayer) return;
 
-  var players = this.application.scenes.selected.players;
-  var closestPlayer = this.getClosestPlayer(players);
-  if (!closestPlayer) return;
-
-  var distance = Math.round(this.distance(closestPlayer.center));
-
-  if (distance < 110 && distance > 70) {
+  if (this.distanceToClosestPlayer < 110 && this.distanceToClosestPlayer > 70) {
     this.states.select("RunAway");
-    this.attack(closestPlayer);
+    this.attack(this.closestPlayer);
     return;
-  } else if (distance > 120) {
+  } else if (this.distanceToClocestPlayer > 120) {
     this.states.select("Roam");
-  } else if (distance < 70 && distance > 50) {
+  } else if (this.distanceToClosestPlayer < 70 && this.distanceToClosestPlayer > 50) {
     this.states.select("FollowPlayer");
   } else {
     this.states.select("Roam");
   }
 
-  this.attack(closestPlayer);
+  this.attack(this.closestPlayer);
 };
 
 howlkraul.entity.Goblin.prototype.attack = function (player) {
