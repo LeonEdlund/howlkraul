@@ -322,7 +322,7 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
     }
 
     // Big Troll
-    if (rune.util.Math.chance(60) && this.m_round > 4) {
+    if (rune.util.Math.chance(60) && this.m_round > 5) {
         var x4 = rune.util.Math.randomInt(minX, (this.application.width - 80));
         var y4 = rune.util.Math.randomInt(minY, (this.application.height - 80));
         this.enemies.addMember(new howlkraul.entity.BigTroll(x4, y4));

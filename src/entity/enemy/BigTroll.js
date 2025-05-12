@@ -1,11 +1,12 @@
 howlkraul.entity.BigTroll = function (x, y) {
   howlkraul.entity.Troll.call(this, x, y);
 
-  this.hp = 450;
+  this.hp = 400;
   this.speed = 0.2;
+  this.defaultSpeed = 0.2;
   this.mass = 20;
   this.m_isThrowing = false;
-  this.m_lastThrow = 0;
+  this.m_lastThrow = Date.now() + 4000;
 }
 
 //--------------------------------------------------------------------------
@@ -56,25 +57,7 @@ howlkraul.entity.BigTroll.prototype.initAnimationScripts = function () {
   animation.scripts.add(5, function () {
     var bomb = new howlkraul.drops.Bomb(this.centerX, this.centerY);
     this.application.scenes.selected.bombs.addMember(bomb);
-
-
-    //FIX LATER
-    var directionX = this.flippedX ? -2 : 2;
-
-    // STEP 2: Set maximum velocities to allow proper movement
-    bomb.velocity.max.x = 4;
-    bomb.velocity.max.y = 4;
-
-    // STEP 3: Set initial velocity (strong upward component)
-    bomb.velocity.x = directionX;
-    bomb.velocity.y = -2;  // Strong initial upward force
-
-    // STEP 4: Add gravity by setting acceleration
-    bomb.velocity.acceleration.y = 0.01;  // Gravity pulls downward
-
-    // STEP 5: Reduce drag to maintain horizontal movement
-    bomb.velocity.drag.x = 0.01;  // Very little horizontal drag
-    bomb.velocity.drag.y = 0.01;  // Very little vertical drag
+    bomb.throw(this.flippedX);
   }, this);
 
 };
@@ -112,7 +95,11 @@ howlkraul.entity.BigTroll.prototype.setState = function () {
     return;
   }
 
-  howlkraul.entity.Troll.prototype.setState.call(this);
+  if (this.distanceToClosestPlayer < 12) {
+    this.states.select("Attack");
+  } else {
+    this.states.select("FollowPlayer");
+  }
 };
 
 /**
@@ -123,6 +110,5 @@ howlkraul.entity.BigTroll.prototype.initStates = function () {
     new howlkraul.entity.FollowPlayerState(),
     new howlkraul.entity.Attack(),
     new howlkraul.entity.BigTrollAttack(),
-    new howlkraul.entity.RoamState(),
   ]);
 }

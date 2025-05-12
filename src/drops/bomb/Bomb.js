@@ -118,3 +118,29 @@ howlkraul.drops.Bomb.prototype.m_initRoll = function () {
   this.velocity.acceleration.x = randomNum;
   this.velocity.angularAcceleration = randomNum;
 }
+
+/**
+ * Initializes random rolling.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.drops.Bomb.prototype.throw = function (left) {
+  //FIX LATER
+  var directionX = left ? -2 : 2;
+
+  // STEP 2: Set maximum velocities to allow proper movement
+  this.velocity.max.x = 4;
+  this.velocity.max.y = 4;
+
+  // STEP 3: Set initial velocity (strong upward component)
+  this.velocity.x = directionX;
+  this.velocity.y = -1;  // Strong initial upward force
+
+  // STEP 4: Add gravity by setting acceleration
+  this.velocity.acceleration.y = 0.02;  // Gravity pulls downward
+
+  // STEP 5: Reduce drag to maintain horizontal movement
+  this.velocity.drag.x = 0.01;  // Very little horizontal drag
+  this.velocity.drag.y = 0.01;  // Very little vertical drag
+}
