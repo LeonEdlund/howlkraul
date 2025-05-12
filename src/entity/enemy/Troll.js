@@ -6,6 +6,7 @@ howlkraul.entity.Troll = function (x, y) {
   this.m_lastAttack = 0;
   this.m_attackCoolDown = 500;
   this.m_isAttacking = false;
+  this.m_clothes = [];
 }
 
 //--------------------------------------------------------------------------
@@ -26,6 +27,16 @@ howlkraul.entity.Troll.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
+  this.m_initClothes();
+};
+
+/**
+ * @override
+ */
+howlkraul.entity.Troll.prototype.update = function (step) {
+  howlkraul.entity.Enemy.prototype.update.call(this, step);
+
+  this.m_updateClothingAnimation();
 };
 
 //--------------------------------------------------------------------------
@@ -103,6 +114,47 @@ howlkraul.entity.Troll.prototype.setState = function () {
     this.states.select("FollowPlayer");
   } else {
     this.states.select("Roam");
+  }
+};
+
+//--------------------------------------------------------------------------
+// Protected Methods
+//--------------------------------------------------------------------------
+
+/**
+ * @protected
+ */
+howlkraul.entity.Troll.prototype.m_initClothes = function () {
+  var m_self = this;
+
+  if (rune.util.Math.chance(50)) {
+    this.m_clothes.push(new howlkraul.entity.TrollClothes([
+      "helmet1_29x29",
+      "helmet2_29x29"]));
+  }
+
+  if (rune.util.Math.chance(50)) {
+    this.m_clothes.push(new howlkraul.entity.TrollClothes(["clothing_29x29"]));
+  }
+
+  this.m_clothes.forEach(function (clothing) {
+    m_self.addChild(clothing)
+  });
+};
+
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
+/**
+ * @inheritdoc
+ */
+howlkraul.entity.Troll.prototype.m_updateClothingAnimation = function () {
+  var m_self = this;
+  if (this.m_clothes) {
+    this.m_clothes.forEach(function (clothing) {
+      clothing.setAnimation(m_self.animation.current.name);
+    });
   }
 };
 

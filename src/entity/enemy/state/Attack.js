@@ -32,16 +32,15 @@ howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.Attack;
  * @override
 */
 howlkraul.entity.Attack.prototype.onEnter = function () {
-  rune.state.State.prototype.onEnter.call(this);
-  console.log("attacking")
   switch (this.owner.facing) {
-    case "side":
-      this.owner.animation.gotoAndPlay("s-side");
-      break;
     case "up":
       this.owner.animation.gotoAndPlay("s-up");
       break;
+    case "side":
+      this.owner.animation.gotoAndPlay("s-side");
+      break;
     case "down":
       this.owner.animation.gotoAndPlay("s");
+      break;
   }
 };

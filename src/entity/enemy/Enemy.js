@@ -14,6 +14,8 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture) {
   // Flags 
   this.m_horizontalMovement = false;
   this.m_isAttacking = false;
+
+  this.m_frameCounter = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -60,11 +62,20 @@ howlkraul.entity.Enemy.prototype.init = function () {
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
 
-  this.closestPlayer = this.getClosestPlayer();
-  this.setState();
+  this.m_frameCounter++;
+
+  if (this.m_frameCounter % 10 === 0) {
+    console.log("tjo")
+    this.closestPlayer = this.getClosestPlayer();
+    this.setState();
+  }
 };
 
 howlkraul.entity.Enemy.prototype.dispose = function () {
+  if (this.numChildren > 0) {
+    this.removeChildren(true);
+  }
+
   howlkraul.entity.Entity.prototype.dispose.call(this);
 };
 
@@ -158,7 +169,7 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
 howlkraul.entity.Enemy.prototype.die = function () {
   this.dropCoin();
   this.application.scenes.selected.enemies.explode(this);
-  this.application.scenes.selected.enemies.removeMember(this);
+  this.application.scenes.selected.enemies.removeMember(this, true);
 };
 
 /**
@@ -194,7 +205,8 @@ howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
     return m_this.distance(a) - m_this.distance(b);
   });
 
-  this.distanceToClosestPlayer = Math.round(this.distance(allPlayers[0].center));
+  var distance = rune.util.Math.distance(this.centerX, this.centerY, allPlayers[0].centerX, allPlayers[0].centerY)
+  this.distanceToClosestPlayer = Math.round(distance);
   return allPlayers[0];
 };
 

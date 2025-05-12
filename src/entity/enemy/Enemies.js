@@ -68,7 +68,7 @@ howlkraul.entity.Enemies.prototype.constructor = howlkraul.entity.Enemies;
 howlkraul.entity.Enemies.prototype.init = function () {
   rune.display.DisplayGroup.prototype.init.call(this);
 
-  this.m_initEmmiters();
+  this.m_initEmitters();
 }
 
 /**
@@ -104,7 +104,7 @@ howlkraul.entity.Enemies.prototype.dispose = function () {
  * @private
  * @returns {undefined}
  */
-howlkraul.entity.Enemies.prototype.m_initEmmiters = function () {
+howlkraul.entity.Enemies.prototype.m_initEmitters = function () {
   this.m_bloodEmitter = new rune.particle.Emitter(this.x, this.y, 15, 15, {
     particles: [howlkraul.particle.Blood],
     minLifespan: 1000,
@@ -151,7 +151,6 @@ howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
   spell.castedBy.controller.vibrate(100, 0.3, 0.6);
   this.m_scene.cameras.getCameraAt(0).shake.start(300, 1, 1);
   this.m_scene.spells.removeMember(spell, true);
-
 }
 
 /**

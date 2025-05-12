@@ -40,6 +40,7 @@ howlkraul.entity.FollowPlayerState.prototype.update = function () {
  * @override
 */
 howlkraul.entity.FollowPlayerState.prototype.onEnter = function () {
+  this.owner.speed = this.owner.defaultSpeed;
   if (this.owner instanceof howlkraul.entity.Goblin) {
     this.owner.speed += 0.3;
   }

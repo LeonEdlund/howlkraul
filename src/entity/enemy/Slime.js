@@ -2,6 +2,7 @@ howlkraul.entity.Slime = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 19, 19, "slime_19x19");
   this.hp = 50;
   this.speed = rune.util.Math.random(0.15, 0.2);
+  this.defaultSpeed = this.speed;
 }
 
 howlkraul.entity.Slime.prototype = Object.create(howlkraul.entity.Enemy.prototype);

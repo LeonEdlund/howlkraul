@@ -21,8 +21,8 @@ howlkraul.entity.BigTrollAttack = function () {
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
-howlkraul.entity.Attack.prototype = Object.create(rune.state.State.prototype);
-howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.BigTrollAttack;
+howlkraul.entity.BigTrollAttack.prototype = Object.create(rune.state.State.prototype);
+howlkraul.entity.BigTrollAttack.prototype.constructor = howlkraul.entity.BigTrollAttack;
 
 //--------------------------------------------------------------------------
 // Overide rune methods
@@ -31,17 +31,8 @@ howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.BigTrollAttack;
 /**
  * @override
 */
-howlkraul.entity.Attack.prototype.onEnter = function () {
-  rune.state.State.prototype.onEnter.call(this);
-
-  switch (this.owner.facing) {
-    case "side":
-      this.owner.animation.gotoAndPlay("s-side");
-      break;
-    case "up":
-      this.owner.animation.gotoAndPlay("s-up");
-      break;
-    case "down":
-      this.owner.animation.gotoAndPlay("s");
-  }
+howlkraul.entity.BigTrollAttack.prototype.onEnter = function () {
+  console.log("throw")
+  this.owner.speed = 0;
+  this.owner.animation.gotoAndPlay("throw", [0]);
 };
