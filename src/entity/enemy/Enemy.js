@@ -65,6 +65,10 @@ howlkraul.entity.Enemy.prototype.update = function (step) {
 };
 
 howlkraul.entity.Enemy.prototype.dispose = function () {
+  if (this.numChildren > 0) {
+    this.removeChildren(true);
+  }
+
   howlkraul.entity.Entity.prototype.dispose.call(this);
 };
 
@@ -158,7 +162,7 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
 howlkraul.entity.Enemy.prototype.die = function () {
   this.dropCoin();
   this.application.scenes.selected.enemies.explode(this);
-  this.application.scenes.selected.enemies.removeMember(this);
+  this.application.scenes.selected.enemies.removeMember(this, true);
 };
 
 /**

@@ -30,6 +30,15 @@ howlkraul.entity.Troll.prototype.init = function () {
   this.m_initClothes();
 };
 
+/**
+ * @override
+ */
+howlkraul.entity.Troll.prototype.update = function (step) {
+  howlkraul.entity.Enemy.prototype.update.call(this, step);
+
+  this.m_updateClothingAnimation();
+};
+
 //--------------------------------------------------------------------------
 // Overide Methods
 //--------------------------------------------------------------------------
@@ -79,28 +88,16 @@ howlkraul.entity.Troll.prototype.initAnimationScripts = function () {
  * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
-  var animation = "";
-
   switch (this.facing) {
     case "up":
-      animation = "r-up";
+      this.animation.gotoAndPlay("r-up");
       break;
     case "side":
-      animation = "r-side";
+      this.animation.gotoAndPlay("r-side");
       break;
     case "down":
-      animation = "r";
+      this.animation.gotoAndPlay("r");
       break;
-  }
-
-  this.animation.gotoAndPlay(animation);
-
-  if (this.m_clothes) {
-    this.m_clothes.forEach(function (clothing) {
-      clothing.setAnimation(animation);
-    });
-
-    //this.m_clothes.setAnimation(animation);
   }
 };
 
@@ -143,5 +140,21 @@ howlkraul.entity.Troll.prototype.m_initClothes = function () {
   this.m_clothes.forEach(function (clothing) {
     m_self.addChild(clothing)
   });
+};
+
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
+/**
+ * @inheritdoc
+ */
+howlkraul.entity.Troll.prototype.m_updateClothingAnimation = function () {
+  var m_self = this;
+  if (this.m_clothes) {
+    this.m_clothes.forEach(function (clothing) {
+      clothing.setAnimation(m_self.animation.current.name);
+    });
+  }
 };
 

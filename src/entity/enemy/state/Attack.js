@@ -32,29 +32,15 @@ howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.Attack;
  * @override
 */
 howlkraul.entity.Attack.prototype.onEnter = function () {
-  rune.state.State.prototype.onEnter.call(this);
-
-  var animation = "";
-
   switch (this.owner.facing) {
     case "up":
-      animation = "s-up";
+      this.owner.animation.gotoAndPlay("s-up");
       break;
     case "side":
-      animation = "s-side";
+      this.owner.animation.gotoAndPlay("s-side");
       break;
     case "down":
-      animation = "s";
+      this.owner.animation.gotoAndPlay("s");
       break;
-  }
-
-  this.owner.animation.gotoAndPlay(animation);
-
-  if (this.owner.m_clothes) {
-    this.owner.m_clothes.forEach(function (clothing) {
-      clothing.setAnimation(animation);
-    });
-
-    //this.m_clothes.setAnimation(animation);
   }
 };
