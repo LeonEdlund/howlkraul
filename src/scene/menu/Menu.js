@@ -87,6 +87,7 @@ howlkraul.scene.Menu.prototype.update = function (step) {
  */
 howlkraul.scene.Menu.prototype.dispose = function () {
     rune.scene.Scene.prototype.dispose.call(this);
+
     this.m_menu = null;
 };
 
@@ -101,8 +102,6 @@ howlkraul.scene.Menu.prototype.m_initMenu = function () {
     this.m_menu.onSelect(this.m_onMenuSelect, this);
     this.m_menu.add("1 Player");
     this.m_menu.add("2 Player");
-    // this.m_menu.add("3 Player");
-    // this.m_menu.add("4 Player");
     this.m_menu.center = this.application.screen.center;
     this.stage.addChild(this.m_menu);
 };
@@ -116,15 +115,15 @@ howlkraul.scene.Menu.prototype.m_initMenu = function () {
 howlkraul.scene.Menu.prototype.m_handleInput = function () {
     if (!this.m_menu) return;
 
-    var input = {}
+    var p1 = this.gamepads.get(0);
+    var p2 = this.gamepads.get(1);
 
-    for (var i = 0; i < this.gamepads.numGamepads; i++) {
-        input = {
-            up: this.gamepads.get(i).stickLeftJustUp,
-            down: this.gamepads.get(i).stickLeftJustDown,
-            select: this.gamepads.get(i).justPressed(0),
-        }
+    input = {
+        up: p1.stickLeftJustUp || p2.stickLeftJustUp,
+        down: p1.stickLeftJustDown || p2.stickLeftJustDown,
+        select: p1.justPressed(0) || p2.justPressed(0),
     }
+
 
     if (this.keyboard.justPressed("down") || input.down) {
         this.m_menu.down();
