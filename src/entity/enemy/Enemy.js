@@ -194,7 +194,8 @@ howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
     return m_this.distance(a) - m_this.distance(b);
   });
 
-  this.distanceToClosestPlayer = Math.round(this.distance(allPlayers[0].center));
+  var distance = rune.util.Math.distance(this.centerX, this.centerY, allPlayers[0].centerX, allPlayers[0].centerY)
+  this.distanceToClosestPlayer = Math.round(distance);
   return allPlayers[0];
 };
 

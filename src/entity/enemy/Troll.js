@@ -6,6 +6,7 @@ howlkraul.entity.Troll = function (x, y) {
   this.m_lastAttack = 0;
   this.m_attackCoolDown = 500;
   this.m_isAttacking = false;
+  this.m_clothes = null;
 }
 
 //--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ howlkraul.entity.Troll.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
+  this.m_initClothes();
 };
 
 //--------------------------------------------------------------------------
@@ -77,16 +79,24 @@ howlkraul.entity.Troll.prototype.initAnimationScripts = function () {
  * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
+  var animation = "";
+
   switch (this.facing) {
     case "up":
-      this.animation.gotoAndPlay("r-up");
+      animation = "r-up";
       break;
     case "side":
-      this.animation.gotoAndPlay("r-side");
+      animation = "r-side";
       break;
     case "down":
-      this.animation.gotoAndPlay("r");
+      animation = "r";
       break;
+  }
+
+  this.animation.gotoAndPlay(animation);
+
+  if (this.m_clothes) {
+    this.m_clothes.setAnimation(animation);
   }
 };
 
@@ -104,5 +114,17 @@ howlkraul.entity.Troll.prototype.setState = function () {
   } else {
     this.states.select("Roam");
   }
+};
+
+//--------------------------------------------------------------------------
+// Protected Methods
+//--------------------------------------------------------------------------
+
+/**
+ * @protected
+ */
+howlkraul.entity.Troll.prototype.m_initClothes = function () {
+  this.m_clothes = new howlkraul.entity.TrollClothes(["clothing_29x29", "helmet1_29x29", "helmet2_29x29"]);
+  this.addChild(this.m_clothes);
 };
 

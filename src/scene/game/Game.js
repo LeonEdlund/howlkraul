@@ -319,12 +319,12 @@ howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
     //     if (rune.util.Math.chance(65)) {
     //         this.enemies.addMember(new howlkraul.entity.Troll(x3, y3));
     //     }
-
     // }
+
     // Big Troll
     // if (rune.util.Math.chance(60) && this.m_round > 4) {
-    var x4 = rune.util.Math.randomInt(minX, (this.application.width - 50));
-    var y4 = rune.util.Math.randomInt(minY, (this.application.height - 50));
+    var x4 = rune.util.Math.randomInt(minX, (this.application.width - 80));
+    var y4 = rune.util.Math.randomInt(minY, (this.application.height - 80));
     this.enemies.addMember(new howlkraul.entity.BigTroll(x4, y4));
     // }
 

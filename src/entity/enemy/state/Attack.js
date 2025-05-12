@@ -33,15 +33,24 @@ howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.Attack;
 */
 howlkraul.entity.Attack.prototype.onEnter = function () {
   rune.state.State.prototype.onEnter.call(this);
-  console.log("attacking")
+
+  var animation = "";
+
   switch (this.owner.facing) {
-    case "side":
-      this.owner.animation.gotoAndPlay("s-side");
-      break;
     case "up":
-      this.owner.animation.gotoAndPlay("s-up");
+      animation = "s-up";
+      break;
+    case "side":
+      animation = "s-side";
       break;
     case "down":
-      this.owner.animation.gotoAndPlay("s");
+      animation = "s";
+      break;
+  }
+
+  this.owner.animation.gotoAndPlay(animation);
+
+  if (this.owner.m_clothes) {
+    this.owner.m_clothes.setAnimation(animation);
   }
 };

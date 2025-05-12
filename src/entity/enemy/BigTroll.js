@@ -3,7 +3,6 @@ howlkraul.entity.BigTroll = function (x, y) {
   this.hp = 450;
   this.speed = 0.2;
   this.mass = 20;
-  this.m_clothes = null;
 }
 
 //--------------------------------------------------------------------------
@@ -22,9 +21,6 @@ howlkraul.entity.BigTroll.prototype.constructor = howlkraul.entity.BigTroll;
  */
 howlkraul.entity.BigTroll.prototype.init = function () {
   howlkraul.entity.Troll.prototype.init.call(this);
-
-  this.m_clothes = new howlkraul.entity.TrollClothes()
-  this.addChild(this.m_clothes);
   this.scaleX = 1.5;
   this.scaleY = 1.5;
 };
@@ -62,25 +58,9 @@ howlkraul.entity.BigTroll.prototype.dropCoin = function () {
   }
 };
 
-howlkraul.entity.BigTroll.prototype.m_setRunningAnimation = function () {
-  var animation = "";
+/**
+ * @protected
+ */
+howlkraul.entity.BigTroll.prototype.m_initClothes = function () {
 
-  switch (this.facing) {
-    case "up":
-      animation = "r-up";
-      break;
-    case "side":
-      animation = "r-side";
-      break;
-    case "down":
-      animation = "r";
-      break;
-  }
-
-  this.animation.gotoAndPlay(animation);
-
-  if (this.m_clothes) {
-    this.m_clothes.setAnimation(animation);
-
-  }
 };
