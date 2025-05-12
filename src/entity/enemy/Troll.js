@@ -2,6 +2,7 @@ howlkraul.entity.Troll = function (x, y) {
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "troll_29x29");
   this.hp = 150;
   this.speed = rune.util.Math.random(0.3, 0.4);
+  this.defaultSpeed = this.speed;
   this.m_lastAttack = 0;
   this.m_attackCoolDown = 500;
   this.m_isAttacking = false;
@@ -24,7 +25,6 @@ howlkraul.entity.Troll.prototype.constructor = howlkraul.entity.Troll;
 howlkraul.entity.Troll.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
-  this.setVelocity(0.1, rune.util.Math.random(0.3, 0.4));
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
 };
 
@@ -94,18 +94,12 @@ howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
  * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.setState = function () {
-  if (this.m_isAttacking) return;
+  if (this.m_isAttacking || !this.closestPlayer) return;
 
-  var players = this.application.scenes.selected.players;
-  var closestPlayer = this.getClosestPlayer(players);
-  if (!closestPlayer) return;
-
-  var distance = rune.util.Math.distance(this.centerX, this.centerY, closestPlayer.centerX, closestPlayer.centerY);
-
-  if (distance < 12) {
+  if (this.distanceToClosestPlayer < 12) {
     if (this.facing === "down") this.moveTo(this.x, (this.y + 1));
     if (!this.m_isAttacking) this.attack();
-  } else if (distance < 160) {
+  } else if (this.distanceToClosestPlayer < 160) {
     this.states.select("FollowPlayer");
   } else {
     this.states.select("Roam");

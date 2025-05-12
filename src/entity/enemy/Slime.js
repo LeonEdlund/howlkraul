@@ -13,8 +13,8 @@ howlkraul.entity.Slime.prototype.constructor = howlkraul.entity.Slime;
 howlkraul.entity.Slime.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
-  //this.setVelocity(0.1, 0.2);
   this.hitbox.set(0, 0, this.height, this.width);
+  this.states.select("FollowPlayer");
 };
 
 /**
