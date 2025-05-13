@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 
 /**
- * Creates a new Game scene object.
+ * Creates a new character selection object.
  *
  * @constructor
  * @extends rune.scene.Scene
@@ -12,9 +12,9 @@
  * @class
  * @classdesc
  * 
- * Game scene.
+ * Character selection scene.
  */
-howlkraul.scene.Game = function (twoPlayer) {
+howlkraul.scene.CharacterSelection = function (twoPlayer) {
 
     //--------------------------------------------------------------------------
     // Super call

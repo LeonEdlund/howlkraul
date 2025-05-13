@@ -13,6 +13,7 @@ howlkraul.handler.CollisionHandler = function (game) {
 //--------------------------------------------------------------------------
 // Public methods
 //--------------------------------------------------------------------------
+
 /**
  * Gets called every frame.
  * 
@@ -40,6 +41,18 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
 
   this.m_checkForRevive();
 };
+
+/**
+ * Cleans up resources.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.handler.CollisionHandler.prototype.dispose = function () {
+  this.game = null;
+};
+
+
 
 //--------------------------------------------------------------------------
 // Private Methods
@@ -109,7 +122,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
  */
 howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
   this.game.players.hitTestGroup(this.game.coins, function (player, coin) {
-    this.game.addToMoneyCounter(coin.worth);
+    this.game.moneyCounter.add(coin.worth);
     this.game.coins.removeMember(coin, true);
   }, this);
 }

@@ -52,7 +52,7 @@ howlkraul.ui.ScoreCounter.prototype.dispose = function () {
 // Public Methods
 //--------------------------------------------------------------------------
 
-howlkraul.ui.ScoreCounter.prototype.updateCounter = function (amount) {
+howlkraul.ui.ScoreCounter.prototype.add = function (amount) {
   this.m_score += amount;
   this.m_counter.text = this.m_score.toString();
   this.m_centerCounter();

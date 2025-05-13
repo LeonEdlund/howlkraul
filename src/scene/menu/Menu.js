@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 
 /**
- * Creates a new object.
+ * Creates a new Menu object.
  *
  * @constructor
  * @extends rune.scene.Scene
@@ -29,7 +29,7 @@ howlkraul.scene.Menu = function () {
     //--------------------------------------------------------------------------
 
     /**
-     * The menu. 
+     * Refers to the menu with different options. 
      * 
      * @private
      * @type {rune.ui.VTMenu}
@@ -50,25 +50,24 @@ howlkraul.scene.Menu.prototype.constructor = howlkraul.scene.Menu;
 //------------------------------------------------------------------------------
 
 /**
- * This method is automatically executed once after the scene is instantiated. 
- * The method is used to create objects to be used within the scene.
- *
+ * Initializes all objects for the scene.
+ * Is run once when an instance is created.
+ * 
+ * @public
  * @returns {undefined}
  */
 howlkraul.scene.Menu.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
 
     this.m_initMenu();
-
-
 };
 
 /**
  * This method is automatically executed once per "tick". The method is used for 
  * calculations such as application logic.
  *
- * @param {number} step Fixed time step.
- *
+ * @public
+ * @param {number} step - Fixed time step.
  * @returns {undefined}
  */
 howlkraul.scene.Menu.prototype.update = function (step) {
@@ -83,19 +82,26 @@ howlkraul.scene.Menu.prototype.update = function (step) {
  * exist when the scene is destroyed. The process is performed in order to 
  * avoid memory leaks.
  *
+ * @public
  * @returns {undefined}
  */
 howlkraul.scene.Menu.prototype.dispose = function () {
-    rune.scene.Scene.prototype.dispose.call(this);
-
+    this.stage.removeChild(this.m_menu, true);
     this.m_menu = null;
+
+    rune.scene.Scene.prototype.dispose.call(this);
 };
 
+//--------------------------------------------------------------------------
+// Private methods
+//--------------------------------------------------------------------------
+
 /**
- * Initializing menu with options and adds it to stage.
+ * Method that initializes the menu object with options and adds it to the stage.
  * 
  * @private
  * @returns {undefined}
+ * @ignore
  */
 howlkraul.scene.Menu.prototype.m_initMenu = function () {
     this.m_menu = new rune.ui.VTMenu();
@@ -103,14 +109,16 @@ howlkraul.scene.Menu.prototype.m_initMenu = function () {
     this.m_menu.add("1 Player");
     this.m_menu.add("2 Player");
     this.m_menu.center = this.application.screen.center;
+
     this.stage.addChild(this.m_menu);
 };
 
 /**
- * Handle menu selection input. 
+ * Method that is run every update tick and handles controller input for menu selections.
  * 
  * @private
  * @returns {undefined}
+ * @ignore
  */
 howlkraul.scene.Menu.prototype.m_handleInput = function () {
     if (!this.m_menu) return;
@@ -139,24 +147,19 @@ howlkraul.scene.Menu.prototype.m_handleInput = function () {
 };
 
 /**
- * Callback function on menu selection
+ * Callback function on menu option selection
  * 
  * @private
  * @returns {undefined}
+ * @ignore
  */
 howlkraul.scene.Menu.prototype.m_onMenuSelect = function (menuOption) {
     switch (menuOption.text) {
         case "1 Player":
-            this.application.scenes.load([new howlkraul.scene.Game(1)]);
+            this.application.scenes.load([new howlkraul.scene.Game()]);
             break;
         case "2 Player":
-            this.application.scenes.load([new howlkraul.scene.Game(2)]);
-            break;
-        case "3 Player":
-            this.application.scenes.load([new howlkraul.scene.Game(3)]);
-            break;
-        case "4 Player":
-            this.application.scenes.load([new howlkraul.scene.Game(4)]);
+            this.application.scenes.load([new howlkraul.scene.Game(true)]);
             break;
     }
 };

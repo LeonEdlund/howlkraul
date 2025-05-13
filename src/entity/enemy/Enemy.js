@@ -65,7 +65,6 @@ howlkraul.entity.Enemy.prototype.update = function (step) {
   this.m_frameCounter++;
 
   if (this.m_frameCounter % 10 === 0) {
-    console.log("tjo")
     this.closestPlayer = this.getClosestPlayer();
     this.setState();
   }
