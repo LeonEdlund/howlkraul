@@ -15,16 +15,16 @@
  * resource file is made available by reference (URI) or base64-encoded string. 
  * Tip: Use Rune-tools to easily bake resource files into this class.
  */
-howlkraul.data.Requests = function() {
+howlkraul.data.Requests = function () {
 
-    //--------------------------------------------------------------------------
-    // Super call
-    //--------------------------------------------------------------------------
-    
-    /**
-     * Extend rune.resource.Requests
-     */
-    rune.resource.Requests.call(this);
+	//--------------------------------------------------------------------------
+	// Super call
+	//--------------------------------------------------------------------------
+
+	/**
+	 * Extend rune.resource.Requests
+	 */
+	rune.resource.Requests.call(this);
 };
 
 //------------------------------------------------------------------------------

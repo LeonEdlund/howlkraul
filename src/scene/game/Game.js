@@ -1,107 +1,125 @@
+//------------------------------------------------------------------------------
+// Constructor scope
+//------------------------------------------------------------------------------
+
 /**
- * Creates a new scene for the game.
+ * Creates a new Game scene object.
  *
  * @constructor
  * @extends rune.scene.Scene
- *
+ * @param {bool} twoPlayer  - how many players that should be instantiated.
+ * 
  * @class
  * @classdesc
  * 
  * Game scene.
  */
-howlkraul.scene.Game = function (numPlayers) {
-    rune.scene.Scene.call(this);
+howlkraul.scene.Game = function (twoPlayer) {
+
+    //--------------------------------------------------------------------------
+    // Super call
+    //--------------------------------------------------------------------------
 
     /**
-     * Numbers of players.
+    * Calls the constructor method of the super class.
+    */
+    rune.scene.Scene.call(this);
+
+    //--------------------------------------------------------------------------
+    // Private properties
+    //--------------------------------------------------------------------------
+
+    /**
+     * The amount of players that should be instantiated
      * 
      * @private
      * @type {number}
      */
-    this.m_numPlayers = numPlayers || 1;
+    this.m_twoPlayer = twoPlayer || false;
 
     /**
-     * ...
+     * Refers to 
      * 
      * @private
      * @type {howlkraul.room.Room}
      */
-    this.m_room = new howlkraul.room.Room(this);
+    this.m_room = null;
 
     /**
-     * ...
+     * Referes to the ScoreCounter. 
+     * 
+     * @private
+     * @type {howlkraul.ui.ScoreCounter}
+     */
+    this.m_moneyCounter = null;
+
+    /**
+     * Referes to the DisplayGroup holding all players. 
      * 
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.players = this.groups.create(this.stage);
+    this.m_players = null;
 
     /**
-     * ...
+     * Referes to the DisplayGroup holding all Wizard enemies. 
      * 
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.enemies = this.groups.add(new howlkraul.entity.Enemies(this));
+    this.m_enemies = null;
 
     /**
-     * ...
+     * Referes to the DisplayGroup holding all Wizard spells. 
      * 
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.spells = this.groups.create(this.stage);
+    this.m_spells = null;
 
     /**
-     * ...
+     * Referes to the DisplayGroup holding all Wizard spells. 
      * 
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.enemyProjectiles = this.groups.create(this.stage);
+    this.m_enemyProjectiles = null;
 
     /**
-     * ...
+     * Referes to the DisplayGroup holding all coins. 
      * 
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.coins = this.groups.create(this.stage);
+    this.m_coins = null;
 
     /**
-     * ...
+     * Referes to the DisplayGroup holding all potions. 
      * 
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.potions = this.groups.create(this.stage);
+    this.m_potions = null;
 
     /**
-     * ...
+     * Referes to the DisplayGroup holding all bombs. 
      * 
      * @private
      * @type {rune.display.DisplayGroup}
      */
-    this.bombs = this.groups.add(new howlkraul.drops.Bombs(this));;
+    this.m_bombs = null;
 
     /**
-     * ...
+     * Referes to the CollisonHandler.
+     * Used to check collision. 
      * 
      * @private
      * @type {howlkraul.handler.CollisionHandler}
      */
-    this.m_collisionHandler = new howlkraul.handler.CollisionHandler(this);
+    this.m_collisionHandler = null;
 
     /**
-     * ...
-     * 
-     * @private
-     * @type {rune.ui.Counter}
-     */
-    this.moneyCounter = null;
-
-    /**
-     * ...
+     * Flag to check if game is currently transitioning.  
      * 
      * @private
      * @type {boolean}
@@ -109,7 +127,7 @@ howlkraul.scene.Game = function (numPlayers) {
     this.m_roundTransition = false;
 
     /**
-     * ...
+     * The number of rounds played.
      * 
      * @private
      * @type {number}
@@ -125,35 +143,209 @@ howlkraul.scene.Game.prototype = Object.create(rune.scene.Scene.prototype);
 howlkraul.scene.Game.prototype.constructor = howlkraul.scene.Game;
 
 //--------------------------------------------------------------------------
-// Getters And Setters
+// Public Getter And Setters
 //--------------------------------------------------------------------------
 
+/**
+ * Referes to the room object that holds the room sprite and walls.
+ * Usefull for collision testing against walls. 
+ *
+ * @member {howlkraul.room.Room} room
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.scene.Game.prototype, "room", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
     get: function () {
         return this.m_room;
     }
 });
 
+/**
+ * Referes to the DisplayGroup holding all players. 
+ *
+ * @member {rune.display.DisplayGroup} players
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "players", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_players;
+    }
+});
+
+/**
+ * Referes to the DisplayGroup holding all enemies. 
+ *
+ * @member {rune.display.DisplayGroup} enemies
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "enemies", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_enemies;
+    }
+});
+
+/**
+ * Referes to the DisplayGroup holding all Wizard spells. 
+ *
+ * @member {rune.display.DisplayGroup} spells
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "spells", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_spells;
+    }
+});
+
+/**
+ * Referes to the DisplayGroup holding all enemy projectiles. 
+ *
+ * @member {rune.display.DisplayGroup} enemyProjectiles
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "enemyProjectiles", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_enemyProjectiles;
+    }
+});
+
+/**
+ * Referes to the DisplayGroup holding all coins. 
+ *
+ * @member {rune.display.DisplayGroup} coins
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "coins", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_coins;
+    }
+});
+
+/**
+ * Referes to the DisplayGroup holding all potions. 
+ *
+ * @member {rune.display.DisplayGroup} potions
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "potions", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_potions;
+    }
+});
+
+/**
+ * Referes to the DisplayGroup holding all bombs. 
+ *
+ * @member {rune.display.DisplayGroup} bombs
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "bombs", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_bombs;
+    }
+});
+
+/**
+ * Referes to the ScoreCounter object.
+ * Usefull for updating or retriving the score.
+ *
+ * @member {howlkraul.ui.ScoreCounter} moneyCounter
+ * @memberof howlkraul.scene.Game
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.Game.prototype, "moneyCounter", {
+    /**
+     * @this rune.scene.Scene
+     * @ignore
+     */
+    get: function () {
+        return this.m_moneyCounter;
+    }
+});
+
 //------------------------------------------------------------------------------
-// Override public prototype methods (ENGINE)
+// Override rune methods
 //------------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Initializes all objects for the scene.
+ * Is run once when an instance is created.
+ * 
+ * @public
+ * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
 
-    this.stage.addChild(this.m_room);
+    this.m_initRoom();
     this.m_initMoneyCounter();
     this.m_initPlayers();
-    this.m_initEnemies(this.m_round);
+    this.m_initEnemyGroup();
+    this.m_initSpellGroup();
+    this.m_initEnemyProjectileGroup();
+    this.m_initCoinGroup();
+    this.m_initPotionGroup();
+    this.m_initBombGroup();
+    this.m_initCollisionHandler();
     this.m_initSort();
+    this.m_spawnEnemies();
 };
 
 /**
- * @inheritdoc
- */
+ * This method is automatically executed once per "tick". The method is used for 
+ * calculations such as application logic.
+*
+* @public
+* @param {number} step Fixed time step.
+* @returns {undefined}
+*/
 howlkraul.scene.Game.prototype.update = function (step) {
     rune.scene.Scene.prototype.update.call(this, step);
 
@@ -164,193 +356,73 @@ howlkraul.scene.Game.prototype.update = function (step) {
 };
 
 /**
- * @inheritdoc
+ * This method is automatically called once just before the scene ends. Use 
+ * the method to reset references and remove objects that no longer need to 
+ * exist when the scene is destroyed. The process is performed in order to 
+ * avoid memory leaks.
+ *
+ * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.dispose = function () {
+    this.m_disposeRoom();
+    this.m_disposeMoneyCounter();
+    this.m_disposePlayers();
+    this.m_disposeEnemieGroup();
+    this.m_disposeSpellGroup();
+    this.m_disposeEnemyProjectileGroup();
+    this.m_disposeCoinGroup();
+    this.m_disposePotionGroup();
+    this.m_disposeBombGroup();
+    this.m_disposeCollisionHandler();
+    this.stage.removeChildren(true);
+
     rune.scene.Scene.prototype.dispose.call(this);
-
-    this.m_room = null;
-    this.borders = null;
-    this.players = null;
-    this.enemies = null;
-    this.spells = null;
-    this.enemyProjectiles = null;
-    this.coins = null;
-    this.m_collisionHandler = null;
-    this.moneyCounter = null;
 };
 
 //--------------------------------------------------------------------------
-// Public Methods
+// Pivate Methods (GAME LOGIC)
 //--------------------------------------------------------------------------
 
 /**
- * Add money to the total money counter.
- * 
- * @public
- * @param {number} amount - How much should be added.
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.addToMoneyCounter = function (amount) {
-    this.moneyCounter.updateCounter(amount);
-};
-
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
-
-/**
- * Initializes the money counter.
+ * Spawns enemies to stage;
  * 
  * @private
  * @returns {undefined}
  */
-howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
-    this.moneyCounter = new howlkraul.ui.ScoreCounter(0, 15);
-    this.moneyCounter.centerX = this.application.screen.centerX;
-    this.stage.addChild(this.moneyCounter);
-};
+howlkraul.scene.Game.prototype.m_spawnEnemies = function () {
+    randomFunc = rune.util.Math.randomInt;
+    var minX = 200;
+    var maxX = this.application.width - 50;
 
-/**
- * Initializes all players.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.m_initPlayers = function () {
-    switch (this.m_numPlayers) {
-        case 1:
-            this.m_initPlayerOne();
-            break;
-        case 2:
-            this.m_initPlayerOne();
-            this.m_initPlayerTwo();
-            break;
-    }
-};
+    var minY = 30;
+    var maxY = this.application.height - 50;
 
-/**
- * Initialize player one.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.m_initPlayerOne = function () {
-    var p1Input = new howlkraul.handler.InputHandler(
-        this.gamepads.get(0),
-        this.keyboard,
-        {
-            left: "a",
-            right: "d",
-            up: "w",
-            down: "s",
-            shoot: "space",
-            hold: "shift",
-        });
-
-    var playerOne = new howlkraul.entity.Wizard(50, 50, p1Input);
-    var p1HUD = new howlkraul.ui.PlayerHud(20, 10, playerOne);
-    playerOne.bindHUD(p1HUD);
-    this.players.addMember(playerOne);
-    this.stage.addChild(p1HUD)
-};
-
-/**
- * Initialize player two.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.m_initPlayerTwo = function () {
-    var p2Input = new howlkraul.handler.InputHandler(
-        this.gamepads.get(1),
-        this.keyboard,
-        {
-            left: "left",
-            right: "right",
-            up: "up",
-            down: "down",
-            shoot: "m",
-            hold: "n",
-        });
-
-    var playerTwo = new howlkraul.entity.Wizard(70, 70, p2Input);
-    playerTwo.changeColor();
-
-    var p2HUD = new howlkraul.ui.PlayerHud(310, 10, playerTwo);
-    playerTwo.bindHUD(p2HUD);
-
-    this.players.addMember(playerTwo);
-    this.stage.addChild(p2HUD)
-
-    p2HUD.changeHeadColor();
-};
-
-/**
- * Initializes all Enemies.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.m_initEnemies = function (amount) {
-    var minX = 200; // Determin min distance from left wall of room
-    var minY = 30;// Determin min distance from top wall of room
-
-    for (var i = 0; i < amount; i++) {
-        var x1 = rune.util.Math.randomInt(minX, (this.application.width - 50));
-        var x2 = rune.util.Math.randomInt(minX, (this.application.width - 50));
-        var x3 = rune.util.Math.randomInt(minX, (this.application.width - 50));
-
-        var y1 = rune.util.Math.randomInt(minY, (this.application.height - 50));
-        var y2 = rune.util.Math.randomInt(minY, (this.application.height - 50));
-        var y3 = rune.util.Math.randomInt(minY, (this.application.height - 50));
-
+    for (var i = 0; i < this.m_round; i++) {
         // Goblin
         if (rune.util.Math.chance(50)) {
-            this.enemies.addMember(new howlkraul.entity.Goblin(x2, y2));
+            this.m_enemies.addMember(new howlkraul.entity.Goblin(randomFunc(minX, maxX), randomFunc(minY, maxY)));
         }
 
         // Slimes
         if (rune.util.Math.chance(80)) {
-            this.enemies.addMember(new howlkraul.entity.Slime(x1, y1));
+            this.m_enemies.addMember(new howlkraul.entity.Slime(randomFunc(minX, maxX), randomFunc(minY, maxY)));
         }
 
         // Troll
         if (rune.util.Math.chance(65)) {
-            this.enemies.addMember(new howlkraul.entity.Troll(x3, y3));
+            this.m_enemies.addMember(new howlkraul.entity.Troll(randomFunc(minX, maxX), randomFunc(minY, maxY)));
         }
     }
 
     // Big Troll
     if (rune.util.Math.chance(60) && this.m_round > 5) {
-        var x4 = rune.util.Math.randomInt(minX, (this.application.width - 80));
-        var y4 = rune.util.Math.randomInt(minY, (this.application.height - 80));
-        this.enemies.addMember(new howlkraul.entity.BigTroll(x4, y4));
+        this.m_enemies.addMember(new howlkraul.entity.BigTroll(
+            randomFunc(minX, this.application.width - 80),
+            randomFunc(minY, this.application.height - 80)
+        ));
     }
 
 }
-
-/**
- * Sort the visual objects on the stage. 
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.m_initSort = function () {
-    var room = this.m_room;
-
-    this.stage.sort = function (a, b) {
-        if (a === room) {
-            return Number.NEGATIVE_INFINITY;
-        }
-
-        if (b == room) {
-            return Number.POSITIVE_INFINITY;
-        }
-
-        return a.bottom - b.bottom;
-    };
-};
 
 /**
  * Handle pause of the game.
@@ -371,14 +443,12 @@ howlkraul.scene.Game.prototype.m_handlePause = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
-    if (this.enemies.numMembers <= 0 && !this.m_room.gateOpen) {
-        this.m_room.openDoor();
-    }
+    if (this.m_enemies.numMembers > 0) return;
 
-    if (!this.m_room.gateOpen) return;
+    this.m_room.openDoor();
 
-    for (var i = 0; i < this.players.numMembers; i++) {
-        if (this.players.getMemberAt(i).topLeft.x > this.application.width && !this.m_roundTransition) {
+    for (var i = 0; i < this.m_players.numMembers; i++) {
+        if (this.m_players.getMemberAt(i).topLeft.x > this.application.width && !this.m_roundTransition) {
             this.cameras.getCameraAt(0).fade.out(100);
             this.m_roundTransition = true;
 
@@ -409,11 +479,11 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
 
     this.m_room.randomizeColors();
     this.m_room.placeFurniture();
-    this.m_initEnemies(this.m_round);
+    this.m_spawnEnemies();
 
     // move players
     var spawnPoint = 10;
-    this.players.forEachMember(function (player) {
+    this.m_players.forEachMember(function (player) {
         spawnPoint += 20;
         player.moveTo(spawnPoint, 130);
         if (player.hp === 0) player.raiseFromDead();
@@ -428,28 +498,416 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
  */
 howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     var deadPlayers = 0;
-    this.players.forEachMember(function (player) {
+    this.m_players.forEachMember(function (player) {
         if (player.hp === 0) {
             deadPlayers += 1;
         }
     }, this);
 
-    if (deadPlayers >= this.players.numMembers) {
-        this.application.scenes.load([new howlkraul.scene.GameOver(this.moneyCounter.score)])
+    if (deadPlayers >= this.m_players.numMembers) {
+        this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score)])
+    }
+};
+
+//--------------------------------------------------------------------------
+// Private Methods (INIT)
+//--------------------------------------------------------------------------
+
+/**
+ * Initializes the room.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initRoom = function () {
+    this.m_disposeRoom();
+
+    if (!this.m_room) {
+        this.m_room = new howlkraul.room.Room(this);
+        this.stage.addChild(this.m_room);
     }
 };
 
 /**
- * Clear up resources between rounds
+ * Initializes the money counter.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
+    this.m_disposeMoneyCounter();
+
+    if (!this.m_moneyCounter) {
+        this.m_moneyCounter = new howlkraul.ui.ScoreCounter(0, 15);
+        this.m_moneyCounter.centerX = this.application.screen.centerX;
+        this.stage.addChild(this.m_moneyCounter);
+    }
+};
+
+/**
+ * Initializes as many players as m_players.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Game.prototype.m_initPlayers = function () {
+    this.m_disposePlayers();
+    if (!this.m_players) {
+        this.m_players = this.groups.create(this.stage);
+
+        if (this.m_twoPlayer) {
+            this.m_initPlayerOne();
+            this.m_initPlayerTwo();
+        } else {
+            this.m_initPlayerOne();
+        }
+    }
+};
+
+/**
+ * Initialize player one.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Game.prototype.m_initPlayerOne = function () {
+    var p1Input = new howlkraul.handler.InputHandler(
+        this.gamepads.get(0),
+        this.keyboard,
+        {
+            left: "a",
+            right: "d",
+            up: "w",
+            down: "s",
+            shoot: "space",
+            hold: "shift",
+        });
+
+    var playerOne = new howlkraul.entity.Wizard(50, 50, p1Input);
+    var p1HUD = new howlkraul.ui.PlayerHud(20, 10, playerOne);
+    playerOne.bindHUD(p1HUD);
+
+    this.m_players.addMember(playerOne);
+    this.stage.addChild(p1HUD)
+};
+
+/**
+ * Initialize player two.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Game.prototype.m_initPlayerTwo = function () {
+    var p2Input = new howlkraul.handler.InputHandler(
+        this.gamepads.get(1),
+        this.keyboard,
+        {
+            left: "left",
+            right: "right",
+            up: "up",
+            down: "down",
+            shoot: "m",
+            hold: "n",
+        });
+
+    var playerTwo = new howlkraul.entity.Wizard(70, 70, p2Input);
+    playerTwo.changeColor();
+
+    var p2HUD = new howlkraul.ui.PlayerHud(310, 10, playerTwo);
+    playerTwo.bindHUD(p2HUD);
+
+    this.m_players.addMember(playerTwo);
+    this.stage.addChild(p2HUD)
+
+    p2HUD.changeHeadColor();
+};
+
+/**
+ * Initializes enemy group.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initEnemyGroup = function () {
+    this.m_disposeEnemieGroup();
+
+    if (!this.m_enemies) {
+        this.m_enemies = this.groups.add(new howlkraul.entity.Enemies(this));
+    }
+};
+
+/**
+ * Initializes spell group.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initSpellGroup = function () {
+    this.m_disposeSpellGroup();
+
+    if (!this.m_spells) {
+        this.m_spells = this.groups.create(this.stage);
+    }
+};
+
+/**
+ * Initializes EnemyProjectile group.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initEnemyProjectileGroup = function () {
+    this.m_disposeEnemyProjectileGroup();
+
+    if (!this.m_enemyProjectiles) {
+        this.m_enemyProjectiles = this.groups.create(this.stage);
+    }
+};
+
+/**
+ * Initializes Coin group.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initCoinGroup = function () {
+    this.m_disposeCoinGroup();
+
+    if (!this.m_coins) {
+        this.m_coins = this.groups.create(this.stage);
+    }
+};
+
+/**
+ * Initializes potion group.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initPotionGroup = function () {
+    this.m_disposePotionGroup();
+
+    if (!this.m_potions) {
+        this.m_potions = this.groups.create(this.stage);
+    }
+};
+
+/**
+ * Initializes potion group.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initBombGroup = function () {
+    this.m_disposeBombGroup();
+
+    if (!this.m_bombs) {
+        this.m_bombs = this.groups.add(new howlkraul.drops.Bombs(this));
+    }
+};
+
+/**
+ * Initializes Collision handler.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initCollisionHandler = function () {
+    this.m_disposeCollisionHandler();
+
+    if (!this.m_collisionHandler) {
+        this.m_collisionHandler = new howlkraul.handler.CollisionHandler(this);
+    }
+};
+
+/**
+ * Sort the visual objects on the stage. 
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Game.prototype.m_initSort = function () {
+    var room = this.m_room;
+
+    this.stage.sort = function (a, b) {
+        if (a === room) {
+            return Number.NEGATIVE_INFINITY;
+        }
+
+        if (b == room) {
+            return Number.POSITIVE_INFINITY;
+        }
+
+        return a.bottom - b.bottom;
+    };
+};
+
+
+//--------------------------------------------------------------------------
+// Private Methods (DISPOSE)
+//--------------------------------------------------------------------------
+
+/**
+ * Clear up resources between rounds.
  * 
  * @private
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_disposeBetweenRound = function () {
-    this.coins.removeMembers(true);
-    this.potions.removeMembers(true);
-    this.bombs.removeMembers(true);
-    this.enemies.removeMembers(true);
-    this.spells.removeMembers(true);
-    this.enemyProjectiles.removeMembers(true);
+    this.m_enemies.removeMembers(true);
+    this.m_spells.removeMembers(true);
+    this.m_enemyProjectiles.removeMembers(true);
+    this.m_coins.removeMembers(true);
+    this.m_potions.removeMembers(true);
+    this.m_bombs.removeMembers(true);
+    this.m_room.furniture.removeMembers(true);
+};
+
+/**
+ * Disposes room.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeRoom = function () {
+    if (this.m_room) {
+        this.stage.removeChild(this.m_room, true);
+        this.m_room = null;
+    }
+};
+
+/**
+ * Disposes moneycounter
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeMoneyCounter = function () {
+    if (this.m_moneyCounter) {
+        this.stage.removeChild(this.m_moneyCounter, true);
+        this.m_moneyCounter = null;
+    }
+};
+
+/**
+ * Disposes players
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposePlayers = function () {
+    if (this.m_players) {
+        this.m_players.removeMembers(true);
+        this.m_players = null;
+    }
+};
+
+/**
+ * Disposes Enemie Group
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeEnemieGroup = function () {
+    if (this.m_enemies) {
+        this.m_enemies.removeMembers(true);
+        this.m_enemies = null;
+    }
+};
+
+/**
+ * Disposes spell Group
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeSpellGroup = function () {
+    if (this.m_spells) {
+        this.m_spells.removeMembers(true);
+        this.m_spells = null;
+    }
+};
+
+/**
+ * Disposes EnemyProjectile Group
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeEnemyProjectileGroup = function () {
+    if (this.m_enemyProjectiles) {
+        this.m_enemyProjectiles.removeMembers(true);
+        this.m_enemyProjectiles = null;
+    }
+};
+
+/**
+ * Disposes Coin Group
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeCoinGroup = function () {
+    if (this.m_coins) {
+        this.m_coins.removeMembers(true);
+        this.m_coins = null;
+    }
+};
+
+/**
+ * Disposes potion group
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposePotionGroup = function () {
+    if (this.m_potions) {
+        this.m_potions.removeMembers(true);
+        this.m_potions = null;
+    }
+};
+
+/**
+ * Disposes potion group
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeBombGroup = function () {
+    if (this.m_bombs) {
+        this.m_bombs.removeMembers(true);
+        this.m_bombs = null;
+    }
+};
+
+/**
+ * Disposes Collision handler.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_disposeCollisionHandler = function () {
+    if (this.m_collisionHandler) {
+        this.m_collisionHandler.dispose();
+        this.m_collisionHandler = null;
+    }
 };
