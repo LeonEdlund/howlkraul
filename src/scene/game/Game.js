@@ -323,6 +323,7 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "moneyCounter", {
  */
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
+
     this.m_initRoom();
     this.m_initMoneyCounter();
     this.m_initPlayers();
@@ -334,19 +335,17 @@ howlkraul.scene.Game.prototype.init = function () {
     this.m_initBombGroup();
     this.m_initCollisionHandler();
     this.m_initSort();
-    this.m_loadStates();
-
     this.m_spawnEnemies();
 };
 
 /**
  * This method is automatically executed once per "tick". The method is used for 
  * calculations such as application logic.
- *
- * @public
- * @param {number} step Fixed time step.
- * @returns {undefined}
- */
+*
+* @public
+* @param {number} step Fixed time step.
+* @returns {undefined}
+*/
 howlkraul.scene.Game.prototype.update = function (step) {
     rune.scene.Scene.prototype.update.call(this, step);
 
