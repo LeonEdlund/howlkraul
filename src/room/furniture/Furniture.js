@@ -213,5 +213,5 @@ howlkraul.room.Furniture.prototype.m_initAnimations = function () {
  * @returns {undefined}
  */
 howlkraul.room.Furniture.prototype.m_changeFrame = function () {
-  //OVERIDE IN SUB CLASS
+  this.animation.gotoNextFrame();
 }

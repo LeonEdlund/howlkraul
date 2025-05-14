@@ -15,16 +15,16 @@
  * resource file is made available by reference (URI) or base64-encoded string. 
  * Tip: Use Rune-tools to easily bake resource files into this class.
  */
-howlkraul.data.Requests = function () {
+howlkraul.data.Requests = function() {
 
-	//--------------------------------------------------------------------------
-	// Super call
-	//--------------------------------------------------------------------------
-
-	/**
-	 * Extend rune.resource.Requests
-	 */
-	rune.resource.Requests.call(this);
+    //--------------------------------------------------------------------------
+    // Super call
+    //--------------------------------------------------------------------------
+    
+    /**
+     * Extend rune.resource.Requests
+     */
+    rune.resource.Requests.call(this);
 };
 
 //------------------------------------------------------------------------------
@@ -79,18 +79,23 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("troll_gore5_19x18", "./../asset/img/gore/troll/troll_gore5_19x18.png");
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
-	this.add("Player_hud_69x31", "./../asset/img/hud/hud components/Player_hud_69x31.png");
 	this.add("coin_hud_12x18", "./../asset/img/hud/hud components/coin_hud_12x18.png");
+	this.add("player_hud_69x31", "./../asset/img/hud/hud components/player_hud_69x31.png");
+	this.add("highscoreV1_167x182", "./../asset/img/hud/start screen/highscoreV1_167x182.png");
 	this.add("xfragmentation1_6x8", "./../asset/img/not_in_use/bomb/xfragmentation1_6x8.png");
 	this.add("xfragmentation2_6x8", "./../asset/img/not_in_use/bomb/xfragmentation2_6x8.png");
 	this.add("xfragmentation3_6x8", "./../asset/img/not_in_use/bomb/xfragmentation3_6x8.png");
 	this.add("xfragmentation4_6x8", "./../asset/img/not_in_use/bomb/xfragmentation4_6x8.png");
 	this.add("empty-heart_11x12", "./../asset/img/not_in_use/empty-heart_11x12.png");
+	this.add("entrance_15x79", "./../asset/img/not_in_use/entrance_15x79.png");
+	this.add("entrance_400x225", "./../asset/img/not_in_use/entrance_400x225.png");
 	this.add("full-heart_11x12", "./../asset/img/not_in_use/full-heart_11x12.png");
 	this.add("goblin_29x27", "./../asset/img/not_in_use/goblin_29x27.png");
 	this.add("half-heart_11x12", "./../asset/img/not_in_use/half-heart_11x12.png");
 	this.add("knight_walk", "./../asset/img/not_in_use/knight_walk.png");
 	this.add("player_hud_72x35", "./../asset/img/not_in_use/player_hud_72x35.png");
+	this.add("shadow_400x225", "./../asset/img/not_in_use/shadow_400x225.png");
+	this.add("shadow_50x92", "./../asset/img/not_in_use/shadow_50x92.png");
 	this.add("vase_19x27", "./../asset/img/not_in_use/vase_19x27.png");
 	this.add("arrow_19x5", "./../asset/img/projectiles/arrow_19x5.png");
 	this.add("fragmentation1_6x8", "./../asset/img/projectiles/bomb/fragmentation1_6x8.png");
@@ -122,8 +127,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("vase_part5_18x18", "./../asset/img/room/furniture/furniture parts/vase/vase_part5_18x18.png");
 	this.add("table_47x35", "./../asset/img/room/furniture/table_47x35.png");
 	this.add("vase_19x29", "./../asset/img/room/furniture/vase_19x29.png");
-	this.add("entrance_400x225", "./../asset/img/room/outside/entrance_400x225.png");
+	this.add("entrance_49x90", "./../asset/img/room/outside/entrance_49x90.png");
 	this.add("outside_400x225", "./../asset/img/room/outside/outside_400x225.png");
-	this.add("shadow_400x225", "./../asset/img/room/outside/shadow_400x225.png");
 	this.add("room_400x225", "./../asset/img/room/room_400x225.png");
 };

@@ -156,10 +156,10 @@ howlkraul.scene.Menu.prototype.m_handleInput = function () {
 howlkraul.scene.Menu.prototype.m_onMenuSelect = function (menuOption) {
     switch (menuOption.text) {
         case "1 Player":
-            this.application.scenes.load([new howlkraul.scene.Game()]);
+            this.application.scenes.load([new howlkraul.scene.CharacterSelection()]);
             break;
         case "2 Player":
-            this.application.scenes.load([new howlkraul.scene.Game(true)]);
+            this.application.scenes.load([new howlkraul.scene.CharacterSelection(true)]);
             break;
     }
 };

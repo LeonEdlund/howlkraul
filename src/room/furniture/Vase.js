@@ -45,13 +45,5 @@ howlkraul.room.Vase.prototype.constructor = howlkraul.room.Vase;
  * @inheritdoc
  */
 howlkraul.room.Vase.prototype.m_initAnimations = function () {
-  howlkraul.room.Furniture.prototype.update.call(this);
   this.animation.create("animation", [0, 1, 2, 3, 4, 5, 6, 7], 1, false);
-}
-
-/**
- * @inheritdoc
- */
-howlkraul.room.Vase.prototype.m_changeFrame = function () {
-  this.animation.gotoNextFrame();
 }

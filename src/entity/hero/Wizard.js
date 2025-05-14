@@ -191,7 +191,8 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
 //--------------------------------------------------------------------------
 
 howlkraul.entity.Wizard.prototype.move = function () {
-  if (this.m_isDead) return;
+  if (this.m_isDead || !this.m_input) return;
+
   var input = this.m_input.currentInput();
 
   this.m_isReviving = false;
@@ -285,6 +286,10 @@ howlkraul.entity.Wizard.prototype.regenHealth = function (amount) {
 
 howlkraul.entity.Wizard.prototype.bindHUD = function (hud) {
   this.m_hud = hud;
+}
+
+howlkraul.entity.Wizard.prototype.bindControlls = function (controlls) {
+  this.m_input = controlls;
 }
 
 //--------------------------------------------------------------------------

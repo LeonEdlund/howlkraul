@@ -613,7 +613,7 @@ howlkraul.scene.Game.prototype.m_initPlayerTwo = function () {
         });
 
     var playerTwo = new howlkraul.entity.Wizard(70, 70, p2Input);
-    playerTwo.changeColor();
+    playerTwo.changeColor("red");
 
     var p2HUD = new howlkraul.ui.PlayerHud(310, 10, playerTwo);
     playerTwo.bindHUD(p2HUD);

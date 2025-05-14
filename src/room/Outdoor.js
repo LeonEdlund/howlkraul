@@ -15,7 +15,7 @@ howlkraul.room.Outdoor = function (game) {
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
-  rune.display.Sprite.call(this, 0, 0, 400, 225, "room_400x225");
+  rune.display.Sprite.call(this, 0, 0, 400, 225, "outside_400x225");
 
   //--------------------------------------------------------------------------
   // Private properties
@@ -36,14 +36,6 @@ howlkraul.room.Outdoor = function (game) {
    * @type {rune.display.DisplayGroup}
    */
   this.m_borders = null;
-
-  /**
-   * Invisible walls, used as Outdoor borders.
-   * 
-   * @private 
-   * @type {howlkraul.Outdoor.FurnitureGroup}
-   */
-  this.m_furniture = null;
 
   /**
    * The invisible gate.
@@ -73,7 +65,7 @@ howlkraul.room.Outdoor.prototype.constructor = howlkraul.room.Outdoor;
 // Getter and setters
 //--------------------------------------------------------------------------
 
-Object.defineProperty(howlkraul.room.Outdoor.prototype, "walls", {
+Object.defineProperty(howlkraul.room.Outdoor.prototype, "borders", {
   get: function () {
     return this.m_borders;
   }
@@ -95,7 +87,6 @@ Object.defineProperty(howlkraul.room.Outdoor.prototype, "gateOpen", {
 howlkraul.room.Outdoor.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
 
-  this.m_initAnimations();
   this.m_initBorders();
 }
 
@@ -103,16 +94,12 @@ howlkraul.room.Outdoor.prototype.init = function () {
  * @inheritdoc
  */
 howlkraul.room.Outdoor.prototype.dispose = function () {
-  rune.display.Sprite.prototype.dispose.call(this);
-
   this.m_borders.removeMembers(true);
-  this.m_furniture.removeMembers(true);
-  this.m_lastColor.dispose();
-
   this.m_game = null;
   this.m_borders = null;
-  this.m_furniture = null;
-  this.m_lastColor = null;
+
+
+  rune.display.Sprite.prototype.dispose.call(this);
 }
 
 //--------------------------------------------------------------------------
@@ -130,21 +117,7 @@ howlkraul.room.Outdoor.prototype.openDoor = function () {
     this.animation.goto("open-door", 0);
     this.animation.play();
     this.m_gateOpen = true;
-    this.m_gate.y = 125;
-  }
-}
-
-/**
- * Adds borders to door. 
- * 
- * @public
- * @returns {undefined}
- */
-howlkraul.room.Outdoor.prototype.closeDoor = function () {
-  if (this.m_gateOpen) {
-    this.animation.gotoAndPlay("closed-door", 0);
-    this.m_gateOpen = false;
-    this.m_gate.y = 70;
+    this.m_gate.y = 142;
   }
 }
 
@@ -152,17 +125,6 @@ howlkraul.room.Outdoor.prototype.closeDoor = function () {
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
-
-/**
- * Inititiates animations for door.
- * 
- * @private 
- * @returns {undefined}
- */
-howlkraul.room.Outdoor.prototype.m_initAnimations = function () {
-  this.animation.create("closed-door", [13, 14, 15, 16, 17, 18, 19], 10, false);
-  this.animation.create("open-door", [0, 1, 2, 3, 4, 5, 6, 7], 10, false);
-}
 
 /**
  * Inititiates hidden walls used as borders.
@@ -176,9 +138,9 @@ howlkraul.room.Outdoor.prototype.m_initBorders = function () {
 
     var width = this.game.application.width;
     var height = this.game.application.height;
-    var thicknessTop = 45;
-    var thicknessBottom = 16;
-    var thicknessSides = 16;
+    var thicknessTop = 20;
+    var thicknessBottom = 5;
+    var thicknessSides = 13;
 
     var bottomY = height - thicknessBottom;
     var rightX = width - thicknessSides;
@@ -186,8 +148,8 @@ howlkraul.room.Outdoor.prototype.m_initBorders = function () {
     var top = new rune.display.Graphic(0, 0, width, thicknessTop);
     var left = new rune.display.Graphic(0, 0, thicknessSides, height);
     var bottom = new rune.display.Graphic(0, bottomY, width, thicknessBottom);
-    var rightTop = new rune.display.Graphic(rightX, 0, thicknessSides, 100);
-    this.m_gate = new rune.display.Graphic(rightX, 40, thicknessSides, 180);
+    var rightTop = new rune.display.Graphic(rightX, 0, thicknessSides, 90);
+    this.m_gate = new rune.display.Graphic(rightX, 70, thicknessSides, 230);
 
     this.m_borders.addMember(top);
     this.m_borders.addMember(left);
@@ -197,6 +159,8 @@ howlkraul.room.Outdoor.prototype.m_initBorders = function () {
 
     this.m_borders.forEachMember(function (wall) {
       wall.immovable = true;
+      // wall.backgroundColor = "red";
+      // wall.alpha = 0.5;
     }, this);
   }
 }
