@@ -14,7 +14,7 @@
  * 
  * Game scene.
  */
-howlkraul.scene.Game = function (twoPlayer) {
+howlkraul.scene.Game = function (selectedPlayers) {
 
     //--------------------------------------------------------------------------
     // Super call
@@ -35,7 +35,15 @@ howlkraul.scene.Game = function (twoPlayer) {
      * @private
      * @type {number}
      */
-    this.m_twoPlayer = twoPlayer || false;
+    // this.m_twoPlayer = twoPlayer || false;
+
+    /**
+     * The playable characters that should be added to the scene.
+     * 
+     * @private
+     * @type {array}
+     */
+    this.m_selectedPlayers = selectedPlayers || [];
 
     /**
      * Refers to 
@@ -554,15 +562,24 @@ howlkraul.scene.Game.prototype.m_initMoneyCounter = function () {
  */
 howlkraul.scene.Game.prototype.m_initPlayers = function () {
     this.m_disposePlayers();
+
     if (!this.m_players) {
         this.m_players = this.groups.create(this.stage);
 
-        if (this.m_twoPlayer) {
-            this.m_initPlayerOne();
-            this.m_initPlayerTwo();
-        } else {
-            this.m_initPlayerOne();
+        for (var i = 0; i < this.m_selectedPlayers.length; i++) {
+            var player = this.m_selectedPlayers[i];
+            this.m_players.addMember(player);
+            player.moveTo(50, 20);
+            this.stage.addChild(player.HUD);
         }
+
+
+        // if (this.m_twoPlayer) {
+        //     this.m_initPlayerOne();
+        //     this.m_initPlayerTwo();
+        // } else {
+        //     this.m_initPlayerOne();
+        // }
     }
 };
 

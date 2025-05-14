@@ -135,6 +135,17 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "controller", {
   }
 });
 
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "HUD", {
+  /**
+   * gets controller controlling to character
+   * 
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_hud;
+  }
+});
+
 //--------------------------------------------------------------------------
 // Override public prototype methods
 //--------------------------------------------------------------------------
@@ -146,7 +157,6 @@ howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
   this.hitbox.set(5, (this.height - 10), (this.width - 10), 9);
-  //this.setVelocity(0.08, 1.2);
   this.m_initEnergybar();
 };
 

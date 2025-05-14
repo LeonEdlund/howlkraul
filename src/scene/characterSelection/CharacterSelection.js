@@ -213,7 +213,7 @@ howlkraul.scene.CharacterSelection.prototype.update = function (step) {
     this.m_moveP2Selector();
   }
 
-  if (this.m_playerOne) {
+  if (this.m_playerOne && !this.m_twoPlayer || this.m_playerOne && this.m_playerTwo) {
     this.m_enviroment.openDoor();
     this.m_checkIfGameStarted();
   }
@@ -263,11 +263,12 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
     };
   }
 
-  this.m_p1Selector.center = this.m_wizards[this.m_p1Choice].center;
-
   if (this.keyboard.justPressed("enter")) {
     this.m_selectPlayerP1();
+    return;
   }
+
+  this.m_p1Selector.center = this.m_wizards[this.m_p1Choice].center;
 };
 
 /**
@@ -293,11 +294,12 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
     };
   }
 
-  this.m_p2Selector.center = this.m_wizards[this.m_p2Choice].center;
-
   if (this.keyboard.justPressed("m")) {
     this.m_selectPlayerP2();
+    return;
   }
+
+  this.m_p2Selector.center = this.m_wizards[this.m_p2Choice].center;
 };
 
 
@@ -326,7 +328,13 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP1 = function () {
   this.m_playerOne.bindControlls(p1Input);
   this.m_bindHUD(this.m_playerOne, new howlkraul.ui.PlayerHud(20, 10, this.m_playerOne));
 
-  this.m_wizards.splice(this.m_p1Choice, 1);
+  var removedIndex = this.m_p1Choice;
+  this.m_wizards.splice(removedIndex, 1);
+
+  if (this.m_p2Choice >= removedIndex) {
+    this.m_p2Choice = this.m_wizards.length - 1;
+  }
+
   this.m_allActivePlayers.push(this.m_playerOne);
   this.stage.removeChild(this.m_p1Selector);
 };
@@ -355,7 +363,13 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP2 = function () {
   this.m_playerTwo.bindControlls(p2Input);
   this.m_bindHUD(this.m_playerTwo, new howlkraul.ui.PlayerHud(310, 10, this.m_playerTwo));
 
-  this.m_wizards.splice(this.m_p2Choice, 1);
+  var removedIndex = this.m_p2Choice;
+  this.m_wizards.splice(removedIndex, 1);
+
+  if (this.m_p1Choice >= removedIndex) {
+    this.m_p1Choice = this.m_wizards.length - 1;
+  }
+
   this.m_allActivePlayers.push(this.m_playerTwo);
   this.stage.removeChild(this.m_p2Selector);
 };
@@ -375,6 +389,10 @@ howlkraul.scene.CharacterSelection.prototype.m_checkIfGameStarted = function () 
     var playerTwoReady = this.m_playerTwo.topLeft.x > this.application.screen.right;
 
     if (playerOneReady && playerTwoReady) {
+      this.stage.removeChild(this.m_playerOne);
+      this.stage.removeChild(this.m_playerTwo);
+      this.stage.removeChild(this.m_playerOne.HUD);
+      this.stage.removeChild(this.m_playerTwo.HUD);
       this.application.scenes.load([new howlkraul.scene.Game(this.m_allActivePlayers)]);
     }
     return;
@@ -382,6 +400,8 @@ howlkraul.scene.CharacterSelection.prototype.m_checkIfGameStarted = function () 
 
   // SINGLE PLAYER
   if (playerOneReady) {
+    this.stage.removeChild(this.m_playerOne);
+    this.stage.removeChild(this.m_playerOne.HUD);
     this.application.scenes.load([new howlkraul.scene.Game(this.m_allActivePlayers)]);
   }
 };
