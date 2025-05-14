@@ -41,6 +41,8 @@ howlkraul.entity.Wizard = function (x, y, input, hud) {
   this.m_input = input;
 
   this.m_hud = hud;
+
+  this.m_color = "blue";
 };
 
 //------------------------------------------------------------------------------
@@ -143,6 +145,28 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "HUD", {
    */
   get: function () {
     return this.m_hud;
+  }
+});
+
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "color", {
+  /**
+   * gets controller controlling to character
+   * 
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_color;
+  }
+});
+
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "manabar", {
+  /**
+   * gets controller controlling to character
+   * 
+   * @returns {boolean}
+   */
+  get: function () {
+    return this.m_energybar;
   }
 });
 
@@ -486,6 +510,8 @@ howlkraul.entity.Wizard.prototype.m_setSpellStartingPosition = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Wizard.prototype.changeColor = function (color) {
+  this.m_color = color;
+
   // LIGHTEST
   var originalC1 = new rune.color.Color24(178, 206, 219);
   var newC1 = null;

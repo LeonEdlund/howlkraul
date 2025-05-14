@@ -232,7 +232,9 @@ howlkraul.scene.CharacterSelection.prototype.update = function (step) {
 howlkraul.scene.CharacterSelection.prototype.dispose = function () {
   this.m_disposeEnvironment();
   this.m_disposeWizards();
+  this.m_disposeSelectors();
   this.stage.removeChildren(true);
+
   rune.scene.Scene.prototype.dispose.call(this);
 };
 
@@ -248,14 +250,14 @@ howlkraul.scene.CharacterSelection.prototype.dispose = function () {
 * @ignore
 */
 howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
-  if (this.keyboard.justPressed("d")) {
+  if (this.keyboard.justPressed("d") || this.gamepads.get(0).stickLeftJustRight) {
     this.m_p1Choice++;
 
     if (this.m_p1Choice > this.m_wizards.length - 1) {
       this.m_p1Choice = 0
     };
 
-  } else if (this.keyboard.justPressed("a")) {
+  } else if (this.keyboard.justPressed("a") || this.gamepads.get(0).stickLeftJustLeft) {
     this.m_p1Choice--;
 
     if (this.m_p1Choice < 0) {
@@ -263,12 +265,13 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
     };
   }
 
-  if (this.keyboard.justPressed("enter")) {
+  if (this.keyboard.justPressed("enter") || this.gamepads.get(0).justPressed(0)) {
     this.m_selectPlayerP1();
     return;
   }
 
-  this.m_p1Selector.center = this.m_wizards[this.m_p1Choice].center;
+  this.m_p1Selector.centerY = this.m_wizards[this.m_p1Choice].centerY + 14;
+  this.m_p1Selector.centerX = this.m_wizards[this.m_p1Choice].centerX;
 };
 
 /**
@@ -279,14 +282,14 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
 * @ignore
 */
 howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
-  if (this.keyboard.justPressed("right")) {
+  if (this.keyboard.justPressed("right") || this.gamepads.get(1).stickLeftJustRight) {
     this.m_p2Choice++;
 
     if (this.m_p2Choice > this.m_wizards.length - 1) {
       this.m_p2Choice = 0
     };
 
-  } else if (this.keyboard.justPressed("left")) {
+  } else if (this.keyboard.justPressed("left") || this.gamepads.get(1).stickLeftJustLeft) {
     this.m_p2Choice--;
 
     if (this.m_p2Choice < 0) {
@@ -294,12 +297,13 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
     };
   }
 
-  if (this.keyboard.justPressed("m")) {
+  if (this.keyboard.justPressed("m") || this.gamepads.get(1).justPressed(0)) {
     this.m_selectPlayerP2();
     return;
   }
 
-  this.m_p2Selector.center = this.m_wizards[this.m_p2Choice].center;
+  this.m_p2Selector.centerY = this.m_wizards[this.m_p2Choice].centerY + 14;
+  this.m_p2Selector.centerX = this.m_wizards[this.m_p2Choice].centerX;
 };
 
 
@@ -312,6 +316,7 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
 */
 howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP1 = function () {
   this.m_playerOne = this.m_wizards[this.m_p1Choice];
+  this.m_playerOne.manabar.visible = true;
 
   var p1Input = new howlkraul.handler.InputHandler(
     this.gamepads.get(0),
@@ -348,6 +353,7 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP1 = function () {
 */
 howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP2 = function () {
   this.m_playerTwo = this.m_wizards[this.m_p2Choice];
+  this.m_playerOne.manabar.visible = true;
 
   var p2Input = new howlkraul.handler.InputHandler(
     this.gamepads.get(1),
@@ -422,6 +428,7 @@ howlkraul.scene.CharacterSelection.prototype.m_checkIfGameStarted = function () 
 howlkraul.scene.CharacterSelection.prototype.m_bindHUD = function (player, hud) {
   player.bindHUD(hud);
   this.stage.addChild(hud);
+  hud.changeColor(player.color);
 };
 
 /**
@@ -473,7 +480,9 @@ howlkraul.scene.CharacterSelection.prototype.m_initWizards = function () {
     this.m_wizards.push(redWiz);
 
     for (let i = 0; i < this.m_wizards.length; i++) {
+      console.log(this.m_wizards[i])
       this.stage.addChild(this.m_wizards[i]);
+      this.m_wizards[i].manabar.visible = false;
     }
   }
 };
@@ -486,17 +495,15 @@ howlkraul.scene.CharacterSelection.prototype.m_initWizards = function () {
 * @ignore
 */
 howlkraul.scene.CharacterSelection.prototype.m_initSelectors = function () {
+  this.m_disposeSelectors();
+
   if (!this.m_p1Selector) {
-    this.m_p1Selector = new rune.display.Graphic(0, 0, 30, 30);
-    this.m_p1Selector.backgroundColor = "red";
-    this.m_p1Selector.alpha = 0.4;
+    this.m_p1Selector = new rune.display.Graphic(0, 0, 37, 19, "player_selection_p1_37x19");
     this.stage.addChild(this.m_p1Selector);
   }
 
   if (this.m_twoPlayer && !this.m_p2Selector) {
-    this.m_p2Selector = new rune.display.Graphic(0, 0, 30, 30);
-    this.m_p2Selector.backgroundColor = "blue";
-    this.m_p2Selector.alpha = 0.4;
+    this.m_p2Selector = new rune.display.Graphic(0, 0, 37, 19, "player_selection_p2_37x19");
     this.stage.addChild(this.m_p2Selector);
   }
 };
@@ -589,5 +596,24 @@ howlkraul.scene.CharacterSelection.prototype.m_disposeSpellGroup = function () {
   if (this.m_spells) {
     this.m_spells.removeChildren(true);
     this.m_spells = null;
+  }
+};
+
+/**
+ * Disposes all selectors
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.CharacterSelection.prototype.m_disposeSelectors = function () {
+  if (this.m_p1Selector) {
+    this.stage.removeChild(this.m_p1Selector);
+    this.m_p1Selector = null;
+  }
+
+  if (this.m_p2Selector) {
+    this.stage.removeChild(this.m_p2Selector);
+    this.m_p2Selector = null;
   }
 };

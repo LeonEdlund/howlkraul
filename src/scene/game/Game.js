@@ -569,76 +569,11 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
         for (var i = 0; i < this.m_selectedPlayers.length; i++) {
             var player = this.m_selectedPlayers[i];
             this.m_players.addMember(player);
-            player.moveTo(50, 20);
+            player.moveTo(30 + (i * 10), 123);
             this.stage.addChild(player.HUD);
+            player.HUD.changeColor(player.color);
         }
-
-
-        // if (this.m_twoPlayer) {
-        //     this.m_initPlayerOne();
-        //     this.m_initPlayerTwo();
-        // } else {
-        //     this.m_initPlayerOne();
-        // }
     }
-};
-
-/**
- * Initialize player one.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.m_initPlayerOne = function () {
-    var p1Input = new howlkraul.handler.InputHandler(
-        this.gamepads.get(0),
-        this.keyboard,
-        {
-            left: "a",
-            right: "d",
-            up: "w",
-            down: "s",
-            shoot: "space",
-            hold: "shift",
-        });
-
-    var playerOne = new howlkraul.entity.Wizard(50, 50, p1Input);
-    var p1HUD = new howlkraul.ui.PlayerHud(20, 10, playerOne);
-    playerOne.bindHUD(p1HUD);
-
-    this.m_players.addMember(playerOne);
-    this.stage.addChild(p1HUD)
-};
-
-/**
- * Initialize player two.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.scene.Game.prototype.m_initPlayerTwo = function () {
-    var p2Input = new howlkraul.handler.InputHandler(
-        this.gamepads.get(1),
-        this.keyboard,
-        {
-            left: "left",
-            right: "right",
-            up: "up",
-            down: "down",
-            shoot: "m",
-            hold: "n",
-        });
-
-    var playerTwo = new howlkraul.entity.Wizard(70, 70, p2Input);
-    playerTwo.changeColor("red");
-
-    var p2HUD = new howlkraul.ui.PlayerHud(310, 10, playerTwo);
-    playerTwo.bindHUD(p2HUD);
-
-    this.m_players.addMember(playerTwo);
-    this.stage.addChild(p2HUD)
-
-    p2HUD.changeHeadColor();
 };
 
 /**
@@ -685,6 +620,7 @@ howlkraul.scene.Game.prototype.m_initEnemyProjectileGroup = function () {
         this.m_enemyProjectiles = this.groups.create(this.stage);
     }
 };
+
 
 /**
  * Initializes Coin group.

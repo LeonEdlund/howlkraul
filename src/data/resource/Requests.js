@@ -81,6 +81,8 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
 	this.add("coin_hud_12x18", "./../asset/img/hud/hud components/coin_hud_12x18.png");
 	this.add("player_hud_69x31", "./../asset/img/hud/hud components/player_hud_69x31.png");
+	this.add("player_selection_p1_37x19", "./../asset/img/hud/selectors/player_selection_p1_37x19.png");
+	this.add("player_selection_p2_37x19", "./../asset/img/hud/selectors/player_selection_p2_37x19.png");
 	this.add("highscoreV1_167x182", "./../asset/img/hud/start screen/highscoreV1_167x182.png");
 	this.add("xfragmentation1_6x8", "./../asset/img/not_in_use/bomb/xfragmentation1_6x8.png");
 	this.add("xfragmentation2_6x8", "./../asset/img/not_in_use/bomb/xfragmentation2_6x8.png");
