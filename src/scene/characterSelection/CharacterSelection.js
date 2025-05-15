@@ -7,7 +7,7 @@
  *
  * @constructor
  * @extends rune.scene.Scene
- * @param {bool} twoPlayer  - how many players that should be instantiated.
+ * @param {bool} twoPlayer  - If the game should be 2 player. Default: False. Optional.
  * 
  * @class
  * @classdesc
@@ -46,7 +46,7 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
   this.m_environment = null;
 
   /**
-   * Refers to the gate sprite
+   * Refers to the gate sprite.
    * 
    * @private
    * @type {howlkraul.room.Outdoorgate}
@@ -57,7 +57,7 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
    * All playable dummy wizards.
    * 
    * @private
-   * @type {array}
+   * @type {array<howlkraul.entity.Wizard>}
    */
   this.m_wizards = [];
 
@@ -78,18 +78,18 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
   this.m_p2Selector = null
 
   /**
-   * The wizard coice for player one.
+   * The wizard index coice for player one.
    * 
    * @private
-   * @type {array}
+   * @type {number}
    */
   this.m_p1Choice = 0;
 
   /**
-   * The wizard coice for player two.
+   * The wizard index coice for player two.
    * 
    * @private
-   * @type {array}
+   * @type {number}
    */
   this.m_p2Choice = 2;
 
@@ -97,7 +97,7 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
    * The chosen wizard for player one.
    * 
    * @private
-   * @type {array}
+   * @type {howlkraul.entity.Wizard}
    */
   this.m_playerOne = null;
 
@@ -105,7 +105,7 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
    * The chosen wizard for player two.
    * 
    * @private
-   * @type {array}
+   * @type {howlkraul.entity.Wizard}
    */
   this.m_playerTwo = null;
 
@@ -113,7 +113,7 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
    * All active players.
    * 
    * @private
-   * @type {array}
+   * @type {array<howlkraul.entity.Wizard>}
    */
   this.m_allActivePlayers = [];
 
@@ -124,15 +124,6 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
    * @type {rune.display.DisplayGroup}
    */
   this.m_spells = null;
-
-  /**
-   * Referes to the CollisonHandler.
-   * Used to check collision. 
-   * 
-   * @private
-   * @type {howlkraul.handler.CollisionHandler}
-   */
-  this.m_collisionHandler = null;
 
   /**
    * Flag to check if CharacterSelection is currently transitioning.  
@@ -204,12 +195,11 @@ howlkraul.scene.CharacterSelection.prototype.init = function () {
 howlkraul.scene.CharacterSelection.prototype.update = function (step) {
   rune.scene.Scene.prototype.update.call(this, step);
 
-
   if (!this.m_playerOne) {
     this.m_moveP1Selector();
   }
 
-  if (!this.m_playerTwo && this.m_twoPlayer) {
+  if (this.m_twoPlayer && !this.m_playerTwo) {
     this.m_moveP2Selector();
   }
 
@@ -233,6 +223,7 @@ howlkraul.scene.CharacterSelection.prototype.dispose = function () {
   this.m_disposeEnvironment();
   this.m_disposeWizards();
   this.m_disposeSelectors();
+  this.m_disposeSpellGroup();
   this.stage.removeChildren(true);
 
   rune.scene.Scene.prototype.dispose.call(this);
@@ -252,26 +243,18 @@ howlkraul.scene.CharacterSelection.prototype.dispose = function () {
 howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
   if (this.keyboard.justPressed("d") || this.gamepads.get(0).stickLeftJustRight) {
     this.m_p1Choice++;
-
-    if (this.m_p1Choice > this.m_wizards.length - 1) {
-      this.m_p1Choice = 0
-    };
-
   } else if (this.keyboard.justPressed("a") || this.gamepads.get(0).stickLeftJustLeft) {
     this.m_p1Choice--;
-
-    if (this.m_p1Choice < 0) {
-      this.m_p1Choice = this.m_wizards.length - 1
-    };
   }
+
+  this.m_p1Choice = rune.util.Math.wrap(this.m_p1Choice, 0, this.m_wizards.length - 1);
+  this.m_p1Selector.centerY = this.m_wizards[this.m_p1Choice].centerY + 14;
+  this.m_p1Selector.centerX = this.m_wizards[this.m_p1Choice].centerX;
 
   if (this.keyboard.justPressed("enter") || this.gamepads.get(0).justPressed(0)) {
     this.m_selectPlayerP1();
     return;
   }
-
-  this.m_p1Selector.centerY = this.m_wizards[this.m_p1Choice].centerY + 14;
-  this.m_p1Selector.centerX = this.m_wizards[this.m_p1Choice].centerX;
 };
 
 /**
@@ -284,26 +267,19 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
 howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
   if (this.keyboard.justPressed("right") || this.gamepads.get(1).stickLeftJustRight) {
     this.m_p2Choice++;
-
-    if (this.m_p2Choice > this.m_wizards.length - 1) {
-      this.m_p2Choice = 0
-    };
-
   } else if (this.keyboard.justPressed("left") || this.gamepads.get(1).stickLeftJustLeft) {
     this.m_p2Choice--;
-
-    if (this.m_p2Choice < 0) {
-      this.m_p2Choice = this.m_wizards.length - 1
-    };
   }
+
+  this.m_p2Choice = rune.util.Math.wrap(this.m_p2Choice, 0, this.m_wizards.length - 1)
+  this.m_p2Selector.centerY = this.m_wizards[this.m_p2Choice].centerY + 14;
+  this.m_p2Selector.centerX = this.m_wizards[this.m_p2Choice].centerX;
 
   if (this.keyboard.justPressed("m") || this.gamepads.get(1).justPressed(0)) {
     this.m_selectPlayerP2();
     return;
   }
 
-  this.m_p2Selector.centerY = this.m_wizards[this.m_p2Choice].centerY + 14;
-  this.m_p2Selector.centerX = this.m_wizards[this.m_p2Choice].centerX;
 };
 
 
@@ -381,7 +357,7 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP2 = function () {
 };
 
 /**
-* Selects a player and binds controlls.
+* Checks if both players has walked through the gate.
 * 
 * @private
 * @returns {undefined}
@@ -455,7 +431,7 @@ howlkraul.scene.CharacterSelection.prototype.m_initEnvironment = function () {
 };
 
 /**
-* Initializes all wizzards in different colors.
+* Initializes all wizards in different colors.
 * 
 * @private
 * @returns {undefined}
@@ -465,22 +441,12 @@ howlkraul.scene.CharacterSelection.prototype.m_initWizards = function () {
   this.m_disposeWizards();
 
   if (this.m_wizards.length <= 0) {
-    var blueWiz = new howlkraul.entity.Wizard(60, 70);
-    var brownWiz = new howlkraul.entity.Wizard(120, 50);
-    var greenWiz = new howlkraul.entity.Wizard(220, 70);
-    var redWiz = new howlkraul.entity.Wizard(300, 50);
+    this.m_wizards.push(new howlkraul.entity.Wizard(60, 70));
+    this.m_wizards.push(new howlkraul.entity.Wizard(120, 50, "brown"));
+    this.m_wizards.push(new howlkraul.entity.Wizard(220, 70, "green"));
+    this.m_wizards.push(new howlkraul.entity.Wizard(300, 50, "red"));
 
-    brownWiz.changeColor("brown");
-    greenWiz.changeColor("green");
-    redWiz.changeColor("red");
-
-    this.m_wizards.push(blueWiz);
-    this.m_wizards.push(brownWiz);
-    this.m_wizards.push(greenWiz);
-    this.m_wizards.push(redWiz);
-
-    for (let i = 0; i < this.m_wizards.length; i++) {
-      console.log(this.m_wizards[i])
+    for (var i = 0; i < this.m_wizards.length; i++) {
       this.stage.addChild(this.m_wizards[i]);
       this.m_wizards[i].manabar.visible = false;
     }
@@ -488,7 +454,7 @@ howlkraul.scene.CharacterSelection.prototype.m_initWizards = function () {
 };
 
 /**
-* Initializes all wizzards in different colors.
+* Initializes selectors.
 * 
 * @private
 * @returns {undefined}
@@ -576,8 +542,9 @@ howlkraul.scene.CharacterSelection.prototype.m_disposeEnvironment = function () 
  * @ignore
  */
 howlkraul.scene.CharacterSelection.prototype.m_disposeWizards = function () {
-  if (this.m_wizards) {
-    for (let i = 0; i < this.m_wizards.length; i++) {
+  if (this.m_wizards.length >= 0) {
+
+    for (var i = 0; i < this.m_wizards.length; i++) {
       this.stage.removeChild(this.m_wizards[i], true);
     }
 
@@ -594,7 +561,7 @@ howlkraul.scene.CharacterSelection.prototype.m_disposeWizards = function () {
  */
 howlkraul.scene.CharacterSelection.prototype.m_disposeSpellGroup = function () {
   if (this.m_spells) {
-    this.m_spells.removeChildren(true);
+    this.m_spells.removeMembers(true);
     this.m_spells = null;
   }
 };

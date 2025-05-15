@@ -1,26 +1,82 @@
+//------------------------------------------------------------------------------
+// Constructor scope
+//------------------------------------------------------------------------------
+
+/**
+ * Abstract Enemy class.
+ * 
+ * @constructor
+ * @extends howlkraul.entity.Entity
+ * 
+ * @param {number} x  - Spawn point on X-axis.
+ * @param {number} y  - Spawn point on Y-axis.
+ * @param {number} height  - The sprites height.
+ * @param {number} width  - The sprites width.
+ * @param {string} texture  - the name of the resource.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Abstract class reprecenting a Enemy.
+ * Inherit from this class to create enemies.
+ */
 howlkraul.entity.Enemy = function (x, y, width, height, texture) {
+  //--------------------------------------------------------------------------
+  // Super Call
+  //--------------------------------------------------------------------------
+
   howlkraul.entity.Entity.call(this, x, y, width, height, texture);
 
+  //--------------------------------------------------------------------------
+  // Overide Properties (BASIC STATS)
+  //--------------------------------------------------------------------------
+
   /**
-   * Character health.
-   * 
-   * @protected
+   * @inheritdoc
    */
   this.hp = 100;
 
-  this.closestPlayer = null;
-  this.distanceToClosestPlayer = 0;
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
 
-  // Flags 
-  this.m_horizontalMovement = false;
+  /**
+   * The closest player to the enemy
+   * 
+   * @private
+   * @type {howlkraul.entity.Wizard}
+   */
+  this.m_closestPlayer = null;
+
+  /**
+   * The distance to the closest player.
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_distanceToClosestPlayer = 0;
+
+  /**
+   * Flag to check if enemy is attacking.
+   * 
+   * @private
+   * @type {boolean}
+   */
   this.m_isAttacking = false;
 
-  this.m_frameCounter = 0;
+  /**
+   * Flag to check if enemy is moving horizontal.
+   * 
+   * @private
+   * @type {boolean}
+   */
+  this.m_horizontalMovement = false;
 }
 
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.entity.Enemy.prototype = Object.create(howlkraul.entity.Entity.prototype);
 howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 
@@ -28,9 +84,57 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 // Getter and setters
 //--------------------------------------------------------------------------
 
+/**
+ * Flag checking if enemy is currently attacking.
+ *
+ * @member {boolean} isAttacking
+ * @memberof howlkraul.entity.Enemy
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.entity.Enemy.prototype, "isAttacking", {
+  /**
+   * @this howlkraul.entity.Enemy
+   * @ignore
+   */
   get: function () {
     return this.m_isAttacking;
+  }
+});
+
+/**
+ * The closest player to the enemy.
+ *
+ * @member {howlkraul.entity.Wizard} closestPlayer
+ * @memberof howlkraul.entity.Enemy
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Enemy.prototype, "closestPlayer", {
+  /**
+   * @this howlkraul.entity.Enemy
+   * @ignore
+   */
+  get: function () {
+    return this.m_closestPlayer;
+  }
+});
+
+/**
+ * The distance to the closest player.
+ *
+ * @member {number} distanceToClosestPlayer
+ * @memberof howlkraul.entity.Enemy
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Enemy.prototype, "distanceToClosestPlayer", {
+  /**
+   * @this howlkraul.entity.Enemy
+   * @ignore
+   */
+  get: function () {
+    return this.m_distanceToClosestPlayer;
   }
 });
 
@@ -39,37 +143,31 @@ Object.defineProperty(howlkraul.entity.Enemy.prototype, "isAttacking", {
 //--------------------------------------------------------------------------
 
 /**
- * Take damage and lower hp. 
- * If hp is lower then 0 die.
- * 
- * @protected
- * @returns {undefined}
+ * @inheritdoc
+ * @overide
  */
 howlkraul.entity.Enemy.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
-  this.closestPlayer = this.getClosestPlayer();
+  this.getClosestPlayer();
   this.initAnimationScripts();
 };
 
 /**
- * Take damage and lower hp. 
- * If hp is lower then 0 die.
- * 
- * @protected
- * @returns {undefined}
+ * @inheritdoc
+ * @overide
  */
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
 
-  this.m_frameCounter++;
-
-  if (this.m_frameCounter % 10 === 0) {
-    this.closestPlayer = this.getClosestPlayer();
-    this.setState();
-  }
+  this.getClosestPlayer();
+  this.setState();
 };
 
+/**
+ * @inheritdoc
+ * @overide
+ */
 howlkraul.entity.Enemy.prototype.dispose = function () {
   if (this.numChildren > 0) {
     this.removeChildren(true);
@@ -84,6 +182,7 @@ howlkraul.entity.Enemy.prototype.dispose = function () {
 
 /**
  * @inheritdoc
+ * @override
  */
 howlkraul.entity.Enemy.prototype.initStates = function () {
   this.states.load([
@@ -94,12 +193,21 @@ howlkraul.entity.Enemy.prototype.initStates = function () {
   ]);
 }
 
+/**
+ * @inheritdoc
+ * @override
+ */
 howlkraul.entity.Enemy.prototype.moveRight = function () {
   howlkraul.entity.Entity.prototype.moveRight.call(this);
+
   this.facing = "side";
   this.m_setRunningAnimation();
 }
 
+/**
+ * @inheritdoc
+ * @override
+ */
 howlkraul.entity.Enemy.prototype.moveLeft = function () {
   howlkraul.entity.Entity.prototype.moveLeft.call(this);
 
@@ -107,6 +215,10 @@ howlkraul.entity.Enemy.prototype.moveLeft = function () {
   this.m_setRunningAnimation();
 }
 
+/**
+ * @inheritdoc
+ * @override
+ */
 howlkraul.entity.Enemy.prototype.moveUp = function () {
   howlkraul.entity.Entity.prototype.moveUp.call(this);
 
@@ -122,6 +234,10 @@ howlkraul.entity.Enemy.prototype.moveUp = function () {
   this.m_setRunningAnimation();
 }
 
+/**
+ * @inheritdoc
+ * @override
+ */
 howlkraul.entity.Enemy.prototype.moveDown = function () {
   howlkraul.entity.Entity.prototype.moveDown.call(this);
 
@@ -190,6 +306,7 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
  */
 howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
   var players = this.application.scenes.selected.players;
+
   if (players.numMembers === 0) return;
 
   var m_this = this;
@@ -205,8 +322,8 @@ howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
   });
 
   var distance = rune.util.Math.distance(this.centerX, this.centerY, allPlayers[0].centerX, allPlayers[0].centerY)
-  this.distanceToClosestPlayer = Math.round(distance);
-  return allPlayers[0];
+  this.m_distanceToClosestPlayer = Math.round(distance);
+  this.m_closestPlayer = allPlayers[0];
 };
 
 //--------------------------------------------------------------------------

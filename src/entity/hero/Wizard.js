@@ -1,48 +1,170 @@
+//------------------------------------------------------------------------------
+// Constructor scope
+//------------------------------------------------------------------------------
+
 /**
  * Creates a new Wizard instance.
  *
  * @constructor
  * @extends howlkraul.entity.Entity
  *
- * @param {number} [x] The x position of the object.
- * @param {number} [y] The y position of the object.
- * 
+ * @param {number} [x=30] - The x position of the object.
+ * @param {number} [y=50] - The y position of the object.
+ * @param {string} [color="blue"] - The color of the wizard. Options: red, brown, green, blue. Default: "blue".
+ * @param {howlkraul.handler.InputHandler} [input=null] - An instance of an InputHandler. Optional but the wizard can't move without it.
+ * @param {howlkraul.ui.PlayerHud} [hud=null] - An instance of PlayerHud. Optional.
+ *
  * @class
  * @classdesc
- * 
- * The Wizard class represents an animated Wizard sprite.
+ *
+ * The Wizard class represents an animated Wizard sprite. 
+ * The wizard is the game's playable character and can therefore be controlled.
  */
-howlkraul.entity.Wizard = function (x, y, input, hud) {
+howlkraul.entity.Wizard = function (x, y, color, input, hud) {
+  //--------------------------------------------------------------------------
+  // Super call
+  //--------------------------------------------------------------------------
   howlkraul.entity.Entity.call(this, x || 30, y || 50, 27, 34, "Wizard_27x34");
 
-  // Default Stats
-  this.m_hp = 6;
+  //--------------------------------------------------------------------------
+  // Overide Properties (BASIC STATS)
+  //--------------------------------------------------------------------------
+
+  /**
+   * @inheritdoc
+   */
+  this.hp = 6;
+
+  /**
+   * @inheritdoc
+   */
   this.maxHp = 6;
-  this.power = 50;
+
+  /**
+   * @inheritdoc
+   */
   this.speed = 1.2;
-  this.m_energy = 100;
-  this.energyRegenSpeed = 0.7;
-  this.energyCost = 20;
 
-  // Ui
-  this.m_energybar = null;
+  //--------------------------------------------------------------------------
+  // Private Properties (BASIC STATS)
+  //--------------------------------------------------------------------------
 
-  // Timers
+  /**
+   * The wizards shoot power.
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_power = 50;
+
+  /**
+   * The wizards mana.
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_mana = 100;
+
+  /**
+   * How much mana that is added every tick.
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_manaRegenSpeed = 0.7;
+
+  /**
+   * How much each spell costs in mana. 
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_spellCost = 20;
+
+  /**
+   * The color of the wizard. 
+   * Default: "blue".
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_color = color || "blue";
+
+  //--------------------------------------------------------------------------
+  // Private Properties (TIMES)
+  //--------------------------------------------------------------------------
+
+  /**
+   * Last time the wizard took damage in ms.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_lastDamageHit = 0;
+
+  /**
+   * How many ms the wizard is hurt and cant take damage.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_damageHitCoolDown = 1000;
 
-  // Flags
+  //--------------------------------------------------------------------------
+  // Private Properties (FLAGS)
+  //--------------------------------------------------------------------------
+
+  /**
+   * If the player is dead (0 hp) or not.
+   * 
+   * @private
+   * @type {boolean}
+   */
   this.m_isDead = false;
-  this.m_isAttacking = false;
+
+  /**
+   * If mana is currently empty.
+   * 
+   * @private
+   * @type {boolean}
+   */
   this.m_energyEmpty = false;
+
+  /**
+   * If the wizard is reviving. 
+   * 
+   * @private
+   * @type {boolean}
+   */
   this.m_isReviving = false;
 
-  // INPUT
+  //--------------------------------------------------------------------------
+  // Private Properties (OTHER OBJECTS)
+  //--------------------------------------------------------------------------
+
+  /**
+   * Reference to the input handler, used to bind gamepad and keyboard with wizard.
+   * 
+   * @private
+   * @type {howlkraul.handler.InputHandler}
+   */
   this.m_input = input;
 
+  /**
+   * Reference to the player HUD connected to the player.
+   * 
+   * @private
+   * @type {howlkraul.ui.PlayerHud}
+   */
   this.m_hud = hud;
 
-  this.m_color = "blue";
+  /**
+   * Reference to the manabar object. 
+   * 
+   * @private
+   * @type {howlkraul.ui.Manabar}
+   */
+  this.m_manabar = null;
 };
 
 //------------------------------------------------------------------------------
@@ -56,23 +178,25 @@ howlkraul.entity.Wizard.prototype.constructor = howlkraul.entity.Wizard;
 // Getters and Setters
 //------------------------------------------------------------------------------
 
+/**
+ * If the wizard is dead or not.
+ *
+ * @member {boolean} isDead
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ */
 Object.defineProperty(howlkraul.entity.Wizard.prototype, "isDead", {
   /**
-   * Check if charecter is alive.
-   * 
-   * @public
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   get: function () {
     return this.m_isDead;
   },
 
   /**
-   * Set if character is dead or not.
-   * 
-   * @public
-   * @param {bolean}
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   set: function (value) {
     return this.m_isDead = value;
@@ -80,23 +204,25 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "isDead", {
 
 })
 
+/**
+ * If the wizard is in the process of reviving.
+ *
+ * @member {boolean} isReviving
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ */
 Object.defineProperty(howlkraul.entity.Wizard.prototype, "isReviving", {
   /**
-   * Check if player is reviving.
-   * 
-   * @public
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   get: function () {
     return this.m_isReviving;
   },
 
   /**
-   * 
-   * 
-   * @public
-   * @param {bolean}
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   set: function (value) {
     return this.m_isReviving = value;
@@ -104,88 +230,169 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "isReviving", {
 
 })
 
-Object.defineProperty(howlkraul.entity.Wizard.prototype, "hp", {
+/**
+ * The wizards mana.
+ *
+ * @member {boolean} mana
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "mana", {
   /**
-   * gets players hp
-   * 
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   get: function () {
-    return this.m_hp;
-  },
-})
-
-Object.defineProperty(howlkraul.entity.Wizard.prototype, "energy", {
-  /**
-   * gets players m_energy
-   * 
-   * @returns {boolean}
-   */
-  get: function () {
-    return this.m_energy;
+    return this.m_mana;
   }
 });
 
+
+/**
+ * The wizards power/shoot damage.
+ *
+ * @member {boolean} power
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ */
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "power", {
+  /**
+   * @this howlkraul.entity.Wizard
+   * @ignore
+   */
+  get: function () {
+    return this.m_power;
+  },
+
+  /**
+   * @this howlkraul.entity.Wizard
+   * @ignore
+   */
+  set: function (value) {
+    this.m_power = value;
+  }
+});
+
+/**
+ * The gontroller/gamepad connected to the wizard.
+ * Useful for haptic feedback.
+ *
+ * @member {boolean} controller
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.entity.Wizard.prototype, "controller", {
   /**
-   * gets controller controlling to character
-   * 
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   get: function () {
     return this.m_input.controller;
   }
 });
 
+/**
+ * The PlayerHud object assosiated with the wizard.
+ *
+ * @member {howkraul.ui.PlayerHud} HUD
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ */
 Object.defineProperty(howlkraul.entity.Wizard.prototype, "HUD", {
   /**
-   * gets controller controlling to character
-   * 
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   get: function () {
     return this.m_hud;
   }
 });
 
+/**
+ * The color of the wizard. 
+ *
+ * @member {boolean} color
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.entity.Wizard.prototype, "color", {
   /**
-   * gets controller controlling to character
-   * 
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   get: function () {
     return this.m_color;
   }
 });
 
+/**
+ * The ManaBar object asosiated with the wizard.
+ * Usefull for hiding and showing it.
+ *
+ * @member {boolean} manabar
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.entity.Wizard.prototype, "manabar", {
   /**
-   * gets controller controlling to character
-   * 
-   * @returns {boolean}
+   * @this howlkraul.entity.Wizard
+   * @ignore
    */
   get: function () {
-    return this.m_energybar;
+    return this.m_manabar;
   }
 });
 
 //--------------------------------------------------------------------------
-// Override public prototype methods
+// Override Rune Methods
 //--------------------------------------------------------------------------
 
 /**
+ * @inheritdoc
  * @override
  */
 howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
-  this.hitbox.set(5, (this.height - 10), (this.width - 10), 9);
-  this.m_initEnergybar();
+  this.hitbox.set(5, 24, 17, 9);
+  this.m_changeColor();
+  this.m_initManabar();
 };
 
 /**
+ * @inheritdoc
+ * @override
+ */
+howlkraul.entity.Wizard.prototype.update = function (step) {
+  howlkraul.entity.Entity.prototype.update.call(this, step);
+
+  this.m_handleInput();
+  this.m_regenEnergy();
+};
+
+/**
+ * @inheritdoc
+ * @override
+ */
+howlkraul.entity.Wizard.prototype.dispose = function () {
+  this.m_disposeInputHandler();
+  this.m_disposeHUD();
+  this.m_disposeManabar();
+
+  howlkraul.entity.Entity.prototype.update.call(this);
+};
+
+//--------------------------------------------------------------------------
+// Overide Entity Methods
+//--------------------------------------------------------------------------
+
+/**
  * @overide
+ * @inheritdoc
 */
 howlkraul.entity.Wizard.prototype.initAnimations = function () {
   // IDLE
@@ -211,33 +418,148 @@ howlkraul.entity.Wizard.prototype.initAnimations = function () {
   this.animation.create("res", [90, 91, 92, 93, 94, 95, 96, 97, 98, 99], 8, true);
 };
 
-/**
- * @override
- */
-howlkraul.entity.Wizard.prototype.update = function (step) {
-  howlkraul.entity.Entity.prototype.update.call(this, step);
-  this.m_checkInput();
-  this.m_regenEnergy();
-};
-
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
-howlkraul.entity.Wizard.prototype.move = function () {
+/**
+ * Shoots a magic spell in the direction the wizard is facing.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.shoot = function () {
+  if (this.m_energyEmpty || this.m_isDead) return;
+
+  var cordinates = this.m_setSpellStartingPosition();
+  this.m_setShootingAnimation();
+  this.m_takeEnergy();
+  var spell = new howlkraul.projectile.Spell(cordinates.x, cordinates.y, this);
+  spell.shootInDirection(this.facing, 0.9, this.application.scenes.selected.spells);
+
+}
+
+/**
+ * Take damage and looses 1 hp if the call is done after the last hit + the damage cooldown.
+ * Die method is called if player has less then 0 hp.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.takeDamage = function () {
+  var now = Date.now();
+
+  if (now > this.m_lastDamageHit && this.hp > 0) {
+    this.hp -= 1;
+    this.m_lastDamageHit = now + this.m_damageHitCoolDown;
+
+    this.flicker.start(this.m_damageHitCoolDown);
+    this.m_input.controller.vibrate(500);
+    if (this.m_hud) this.m_hud.updateHealth(this.hp);
+  }
+
+  if (this.hp <= 0) this.die();
+};
+
+/**
+ * Switches to death animation and stops movement.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.die = function () {
+  if (this.m_isDead) return;
+
+  this.m_isDead = true;
+  this.animation.gotoAndPlay("dead");
+  this.movementAllowed = false;
+  this.m_manabar.visible = false;
+};
+
+/**
+ * Raises the wizard from dead by regenerating 2 hp. 
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.raiseFromDead = function () {
+  if (this.hp !== 0 || this.hp === this.maxHp) return;
+
+  this.m_isDead = false;
+  this.movementAllowed = true;
+  this.hp = 2;
+  this.m_manabar.visible = true;
+  if (this.m_hud) this.m_hud.updateHealth(this.hp);
+}
+
+/**
+ * Raises the hp by the provided amount. 
+ * But not over the max hp.
+ * 
+ * @public
+ * @param {number} amount - how much hp that should be added. 
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.regenHealth = function (amount) {
+  if (this.hp === this.maxHp) return;
+
+  this.hp += amount;
+  this.hp = rune.util.Math.clamp(this.hp, 0, this.maxHp);
+
+  if (this.m_hud) {
+    this.m_hud.updateHealth(this.hp);
+  }
+}
+
+/**
+ * Binds a PlayerHud to Wizard.
+ * 
+ * @public
+ * @param {howlkraul.ui.PlayerHud} hud - The hud that should be assosiated with the wizard
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.bindHUD = function (hud) {
+  this.m_disposeHUD();
+  this.m_hud = hud;
+}
+
+/**
+ * Binds a input handler with wizard.
+ * 
+ * @public
+ * @param {howlkraul.handler.InputHandler} controlls - The Inputhandler that should be assosiated with the wizard.
+ * @returns {undefined}
+*/
+howlkraul.entity.Wizard.prototype.bindControlls = function (controlls) {
+  this.m_disposeInputHandler();
+  this.m_input = controlls;
+}
+
+//--------------------------------------------------------------------------
+// Private Methods (LOGIC)
+//--------------------------------------------------------------------------
+
+/**
+ * Checks and handles user input.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_handleInput = function () {
   if (this.m_isDead || !this.m_input) return;
+
+  this.m_isReviving = false;  // @note reset Reviving flag every step. FIX LATER.
 
   var input = this.m_input.currentInput();
 
-  this.m_isReviving = false;
   this.m_setFacingDirection(input);
-  this.m_setAnimation(input);
+  this.m_setRunningAnimation(input);
 
   if (input.up) this.moveUp();
   if (input.down) this.moveDown();
   if (input.left) this.moveLeft();
   if (input.right) this.moveRight();
-  if (input.shoot) this.attack();
+  if (input.shoot) this.shoot();
 
   if (input.hold) {
     this.m_isReviving = true;
@@ -247,176 +569,79 @@ howlkraul.entity.Wizard.prototype.move = function () {
   }
 };
 
-howlkraul.entity.Wizard.prototype.attack = function () {
-  if (!this.m_energyEmpty && !this.m_isDead) {
-
-    var scene = this.application.scenes.selected;
-    var cordinates = this.m_setSpellStartingPosition();
-
-    this.m_setShootingAnimation();
-    this.takeEnergy();
-    var spell = new howlkraul.projectile.Spell(cordinates.x, cordinates.y, this);
-    spell.shootInDirection(this.facing, 0.9, scene.spells);
-  };
-}
-
-howlkraul.entity.Wizard.prototype.takeDamage = function () {
-  var now = Date.now();
-
-  if (now > this.m_lastDamageHit && this.m_hp > 0) {
-    this.m_hp -= 1;
-    this.flicker.start(this.m_damageHitCoolDown);
-    this.m_lastDamageHit = now + this.m_damageHitCoolDown;
-    this.m_input.controller.vibrate(500);
-    if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
-  }
-
-  if (this.m_hp <= 0) this.die();
-};
-
-howlkraul.entity.Wizard.prototype.die = function () {
-  if (this.m_isDead) return;
-
-  this.m_isDead = true;
-  this.animation.gotoAndPlay("dead");
-  this.movementAllowed = false;
-  this.m_energybar.visible = false;
-};
-
-howlkraul.entity.Wizard.prototype.takeEnergy = function () {
+/**
+ * Take energy 
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.m_takeEnergy = function () {
   if (this.m_energyEmpty) return;
 
-  this.m_energy -= this.energyCost;
-  this.m_energybar.progress = this.m_energy / 100;
+  this.m_mana -= this.m_spellCost;
+  this.m_manabar.progress = this.m_mana / 100;
 
-  if (this.m_energy <= 0) {
+  if (this.m_mana <= 0) {
     this.m_energyEmpty = true;
-    this.m_energy = 0;
+    this.m_mana = 0;
   }
 }
 
-howlkraul.entity.Wizard.prototype.raiseFromDead = function () {
-  if (this.m_hp !== 0 || this.m_hp === this.maxHp) return;
-
-  this.m_isDead = false;
-  this.movementAllowed = true;
-  this.m_hp = 2;
-  this.m_energybar.visible = true;
-  if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
-}
-
-howlkraul.entity.Wizard.prototype.regenHealth = function (amount) {
-  if (this.m_hp === this.maxHp) return;
-
-  if (this.m_hp === this.maxHp - 1) {
-    this.m_hp = this.maxHp;
-  } else {
-    this.m_hp += amount;
-  }
-
-  if (this.m_hud) this.m_hud.updateHealth(this.m_hp);
-
-}
-
-howlkraul.entity.Wizard.prototype.bindHUD = function (hud) {
-  this.m_hud = hud;
-}
-
-howlkraul.entity.Wizard.prototype.bindControlls = function (controlls) {
-  this.m_input = controlls;
-}
-
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
-
 /**
- * Checks for user input
+ * Method is run every update tick and regens the mana based on the mana regenSpeed.
  * 
- * @returns {undefined}
  * @private
-*/
-howlkraul.entity.Wizard.prototype.m_checkInput = function () {
-  this.move();
-};
-
-/**
- * Init manabar
- * 
  * @returns {undefined}
- * @private
-*/
-howlkraul.entity.Wizard.prototype.m_initEnergybar = function () {
-  this.m_energybar = new howlkraul.ui.Manabar(this);
-  this.stage.addChild(this.m_energybar);
-};
-
+ */
 howlkraul.entity.Wizard.prototype.m_regenEnergy = function () {
-  if (this.m_energy < 100) {
-    this.m_energy = Math.round(this.m_energy + this.energyRegenSpeed);
+  if (this.m_mana < 100) {
+    this.m_mana = Math.round(this.m_mana + this.m_manaRegenSpeed);
   }
 
-  if (this.m_energy >= 100) {
+  if (this.m_mana >= 100) {
     this.m_energyEmpty = false;
-    this.m_energy = 100;
+    this.m_mana = 100;
   }
 };
 
-howlkraul.entity.Wizard.prototype.m_setAnimation = function () {
-  // Cancel animation update if shootins 
-  var now = Date.now();
-  if (now < this.m_lastShot) return;
-
-  if (!this.velocity.x && !this.velocity.y) {
-    this.m_setIdleAnimation();
-    return;
+/**
+ * Adjust from where the spell should spawn in reletion to the wizards position.
+ * 
+ * @private
+ * @returns {object}
+ */
+howlkraul.entity.Wizard.prototype.m_setSpellStartingPosition = function () {
+  var cords = {
+    x: 0,
+    y: 0
   }
 
-  switch (this.facing) {
-    case "up":
-      this.animation.gotoAndPlay("r-up");
-      break;
-    case "up-left":
-    case "up-right":
-      this.animation.gotoAndPlay("r-up-side");
-      break;
-    case "down":
-      this.animation.gotoAndPlay("r-down");
-      break;
-    case "down-left":
-    case "down-right":
-      this.animation.gotoAndPlay("r-down-side");
-      break;
-    case "right":
-    case "left":
-      this.animation.gotoAndPlay("r-sideways");
-      break;
-    default:
-      this.animation.gotoAndPlay("r-down");
+  if (this.facing === "up") {
+    cords.x = this.topLeft.x;
+    cords.y = this.topLeft.y;
+  } else if (this.facing.includes("down")) {
+    cords.x = this.centerX - 12;
+    cords.y = this.centerY;
+  } else {
+    cords.x = this.flippedX ? this.x - 12 : this.x + 12;
+    cords.y = this.flippedX ? this.y + 5 : this.y + 10;
   }
+
+  return cords;
 }
 
-howlkraul.entity.Wizard.prototype.m_setIdleAnimation = function () {
-  switch (this.facing) {
-    case "up":
-    case "up-left":
-    case "up-right":
-      this.animation.gotoAndPlay("idle-up");
-      break;
-    case "down":
-    case "down-left":
-    case "down-right":
-      this.animation.gotoAndPlay("idle-down");
-      break;
-    case "right":
-    case "left":
-      this.animation.gotoAndPlay("idle-sideways");
-      break;
-    default:
-      this.animation.gotoAndPlay("idle-down");
-  }
-}
 
+
+//--------------------------------------------------------------------------
+// Private Methods (ANIMATIONS)
+//--------------------------------------------------------------------------
+
+/**
+ * Sets the facing direction based on user input.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.entity.Wizard.prototype.m_setFacingDirection = function (input) {
   if (input.up) {
     if (input.left) {
@@ -453,6 +678,78 @@ howlkraul.entity.Wizard.prototype.m_setFacingDirection = function (input) {
   }
 }
 
+/**
+ * Sets the correct running animation based on facing direction.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.m_setRunningAnimation = function () {
+  var now = Date.now();
+  if (now < this.m_lastShot) return;
+
+  if (!this.velocity.x && !this.velocity.y) {
+    this.m_setIdleAnimation();
+    return;
+  }
+
+  switch (this.facing) {
+    case "up":
+      this.animation.gotoAndPlay("r-up");
+      break;
+    case "up-left":
+    case "up-right":
+      this.animation.gotoAndPlay("r-up-side");
+      break;
+    case "down":
+      this.animation.gotoAndPlay("r-down");
+      break;
+    case "down-left":
+    case "down-right":
+      this.animation.gotoAndPlay("r-down-side");
+      break;
+    case "right":
+    case "left":
+      this.animation.gotoAndPlay("r-sideways");
+      break;
+    default:
+      this.animation.gotoAndPlay("r-down");
+  }
+}
+
+/**
+ * Sets the correct idle animation based on facing direction.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.m_setIdleAnimation = function () {
+  switch (this.facing) {
+    case "up":
+    case "up-left":
+    case "up-right":
+      this.animation.gotoAndPlay("idle-up");
+      break;
+    case "down":
+    case "down-left":
+    case "down-right":
+      this.animation.gotoAndPlay("idle-down");
+      break;
+    case "right":
+    case "left":
+      this.animation.gotoAndPlay("idle-sideways");
+      break;
+    default:
+      this.animation.gotoAndPlay("idle-down");
+  }
+}
+
+/**
+ * Sets the correct shooting animotion based on facing direction.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.entity.Wizard.prototype.m_setShootingAnimation = function () {
   var now = Date.now();
 
@@ -480,37 +777,18 @@ howlkraul.entity.Wizard.prototype.m_setShootingAnimation = function () {
   }
 }
 
-howlkraul.entity.Wizard.prototype.m_setSpellStartingPosition = function () {
-  var cords = {
-    x: 0,
-    y: 0
-  }
-
-  if (this.facing === "up") {
-    cords.x = this.topLeft.x;
-    cords.y = this.topLeft.y;
-  } else if (this.facing.includes("down")) {
-    cords.x = this.centerX - 12;
-    cords.y = this.centerY;
-  } else {
-    cords.x = this.flippedX ? this.x - 12 : this.x + 12;
-    cords.y = this.flippedX ? this.y + 5 : this.y + 10;
-  }
-
-  return cords;
-}
+//--------------------------------------------------------------------------
+// Private Methods (INIT)
+//--------------------------------------------------------------------------
 
 /**
  * Change color of character.
- * Overide this method if you wanna implement color changing.
  * 
- * @abstract
- * @protected
- * @param {string} color - The color to make the character as a string. 
+ * @private
  * @returns {undefined}
  */
-howlkraul.entity.Wizard.prototype.changeColor = function (color) {
-  this.m_color = color;
+howlkraul.entity.Wizard.prototype.m_changeColor = function () {
+  if (this.m_color === "blue") return;
 
   // LIGHTEST
   var originalC1 = new rune.color.Color24(178, 206, 219);
@@ -545,7 +823,7 @@ howlkraul.entity.Wizard.prototype.changeColor = function (color) {
   var originalC9 = new rune.color.Color24(37, 56, 89);
   var newC9 = null;
 
-  switch (color) {
+  switch (this.m_color) {
     case "brown":
       newC1 = new rune.color.Color24(196, 176, 158);
       newC2 = new rune.color.Color24(150, 110, 90);
@@ -579,9 +857,9 @@ howlkraul.entity.Wizard.prototype.changeColor = function (color) {
       newC8 = new rune.color.Color24(55, 25, 25);
       newC9 = new rune.color.Color24(70, 35, 35);
       break;
-
+    default:
+      return
   }
-
 
   this.texture.replaceColor(originalC1, newC1);
   this.texture.replaceColor(originalC2, newC2);
@@ -593,3 +871,63 @@ howlkraul.entity.Wizard.prototype.changeColor = function (color) {
   this.texture.replaceColor(originalC8, newC8);
   this.texture.replaceColor(originalC9, newC9);
 }
+
+/**
+ * Initalizes manabar and adds it to stage.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_initManabar = function () {
+  this.m_disposeManabar();
+
+  if (!this.m_manabar) {
+    this.m_manabar = new howlkraul.ui.Manabar(this);
+    this.stage.addChild(this.m_manabar);
+  }
+};
+
+//--------------------------------------------------------------------------
+// Private Methods (DISPOSE)
+//--------------------------------------------------------------------------
+
+/**
+ * Dispose manabar and removes it to stage.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_disposeManabar = function () {
+  if (this.m_manabar) {
+    if (this.stage && this.stage.hasChild(this.m_manabar)) {
+      this.stage.removeChild(this.m_manabar, true);
+    }
+    this.m_manabar = null;
+  }
+};
+
+/**
+ * Dispose input handler.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_disposeInputHandler = function () {
+  if (this.m_input) {
+    this.m_input.dispose();
+    this.m_input = null;
+  }
+};
+
+/**
+ * Dispose hud.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_disposeHUD = function () {
+  if (this.m_hud) {
+    this.m_hud.dispose();
+    this.m_hud = null;
+  }
+};

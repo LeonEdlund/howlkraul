@@ -38,7 +38,7 @@ howlkraul.ui.Manabar.prototype.setHeart = function (state) {
 howlkraul.ui.Manabar.prototype.init = function () {
   rune.ui.Progressbar.prototype.init.call(this);
 
-  this.progress = this.m_character.energy / 100;
+  this.progress = this.m_character.mana / 100;
 };
 
 /**
@@ -74,16 +74,16 @@ howlkraul.ui.Manabar.prototype.m_followPlayer = function () {
 };
 
 howlkraul.ui.Manabar.prototype.m_handleEmptyMana = function () {
-  if (this.m_character && this.m_character.energy <= 1) {
+  if (this.m_character && this.m_character.mana <= 1) {
     this.forgroundColor = "red";
   }
 }
 
 howlkraul.ui.Manabar.prototype.m_regenBar = function () {
   if (this.m_character) {
-    this.progress = this.m_character.energy / 100;
+    this.progress = this.m_character.mana / 100;
 
-    if (this.m_character.energy >= 100) {
+    if (this.m_character.mana >= 100) {
       if (this.forgroundColor !== "#6697c4") {
         this.forgroundColor = "#6697c4";
       }

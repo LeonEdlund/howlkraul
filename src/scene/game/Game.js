@@ -7,7 +7,7 @@
  *
  * @constructor
  * @extends rune.scene.Scene
- * @param {bool} twoPlayer  - how many players that should be instantiated.
+ * @param {array<howlkraul.entity.Wizard>} selectedPlayers  - An array of all selected players.
  * 
  * @class
  * @classdesc
@@ -28,14 +28,6 @@ howlkraul.scene.Game = function (selectedPlayers) {
     //--------------------------------------------------------------------------
     // Private properties
     //--------------------------------------------------------------------------
-
-    /**
-     * The amount of players that should be instantiated
-     * 
-     * @private
-     * @type {number}
-     */
-    // this.m_twoPlayer = twoPlayer || false;
 
     /**
      * The playable characters that should be added to the scene.
@@ -398,7 +390,7 @@ howlkraul.scene.Game.prototype.dispose = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_spawnEnemies = function () {
-    randomFunc = rune.util.Math.randomInt;
+    random = rune.util.Math.randomInt;
     var minX = 200;
     var maxX = this.application.width - 50;
 
@@ -408,25 +400,25 @@ howlkraul.scene.Game.prototype.m_spawnEnemies = function () {
     for (var i = 0; i < this.m_round; i++) {
         // Goblin
         if (rune.util.Math.chance(50)) {
-            this.m_enemies.addMember(new howlkraul.entity.Goblin(randomFunc(minX, maxX), randomFunc(minY, maxY)));
+            this.m_enemies.addMember(new howlkraul.entity.Goblin(random(minX, maxX), random(minY, maxY)));
         }
 
         // Slimes
         if (rune.util.Math.chance(80)) {
-            this.m_enemies.addMember(new howlkraul.entity.Slime(randomFunc(minX, maxX), randomFunc(minY, maxY)));
+            this.m_enemies.addMember(new howlkraul.entity.Slime(random(minX, maxX), random(minY, maxY)));
         }
 
         // Troll
         if (rune.util.Math.chance(65)) {
-            this.m_enemies.addMember(new howlkraul.entity.Troll(randomFunc(minX, maxX), randomFunc(minY, maxY)));
+            this.m_enemies.addMember(new howlkraul.entity.Troll(random(minX, maxX), random(minY, maxY)));
         }
     }
 
     // Big Troll
     if (rune.util.Math.chance(60) && this.m_round > 5) {
         this.m_enemies.addMember(new howlkraul.entity.BigTroll(
-            randomFunc(minX, this.application.width - 80),
-            randomFunc(minY, this.application.height - 80)
+            random(minX, this.application.width - 80),
+            random(minY, this.application.height - 80)
         ));
     }
 
@@ -457,9 +449,9 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
 
     for (var i = 0; i < this.m_players.numMembers; i++) {
         if (this.m_players.getMemberAt(i).topLeft.x > this.application.width && !this.m_roundTransition) {
-            this.cameras.getCameraAt(0).fade.out(100);
             this.m_roundTransition = true;
 
+            this.cameras.getCameraAt(0).fade.out(100);
             this.m_transitionTimer = this.timers.create({
                 duration: 1000,
                 onComplete: this.m_loadNewRound,
@@ -478,24 +470,16 @@ howlkraul.scene.Game.prototype.m_handleRoundWin = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_loadNewRound = function () {
-    this.m_roundTransition = false;
     this.m_disposeBetweenRound();
 
+    this.m_roundTransition = false;
     this.m_round++;
     this.m_room.closeDoor();
-    this.cameras.getCameraAt(0).fade.in(100);
-
     this.m_room.randomizeColors();
     this.m_room.placeFurniture();
     this.m_spawnEnemies();
-
-    // move players
-    var spawnPoint = 10;
-    this.m_players.forEachMember(function (player) {
-        spawnPoint += 20;
-        player.moveTo(spawnPoint, 130);
-        if (player.hp === 0) player.raiseFromDead();
-    }, this);
+    this.m_movePlayersToEntrance()
+    this.cameras.getCameraAt(0).fade.in(100);
 };
 
 /**
@@ -538,6 +522,23 @@ howlkraul.scene.Game.prototype.m_initRoom = function () {
 };
 
 /**
+ * Moves players to the entrance.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Game.prototype.m_movePlayersToEntrance = function () {
+    // move players
+    var spawnPoint = 10;
+    this.m_players.forEachMember(function (player) {
+        spawnPoint += 20;
+        player.moveTo(spawnPoint, 130);
+        if (player.hp === 0) player.raiseFromDead();
+    }, this);
+};
+
+
+/**
  * Initializes the money counter.
  * 
  * @private
@@ -569,10 +570,11 @@ howlkraul.scene.Game.prototype.m_initPlayers = function () {
         for (var i = 0; i < this.m_selectedPlayers.length; i++) {
             var player = this.m_selectedPlayers[i];
             this.m_players.addMember(player);
-            player.moveTo(30 + (i * 10), 123);
             this.stage.addChild(player.HUD);
             player.HUD.changeColor(player.color);
         }
+
+        this.m_movePlayersToEntrance();
     }
 };
 

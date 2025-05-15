@@ -10,6 +10,18 @@ Object.defineProperty(howlkraul.handler.InputHandler.prototype, "controller", {
   }
 })
 
+/**
+ * Clean up resources.
+ * 
+ * @public
+ * @returns {object}
+ */
+howlkraul.handler.InputHandler.prototype.dispose = function () {
+  this.m_controller = null;
+  this.m_keyboard = null;
+  this.m_keys = null;
+}
+
 
 /**
  * Returns the current inputs.
