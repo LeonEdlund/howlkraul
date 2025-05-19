@@ -182,6 +182,10 @@ howlkraul.scene.CharacterSelection.prototype.init = function () {
   this.m_initWizards();
   this.m_initSpellGroup();
   this.m_initSort();
+
+  this.m_sound = this.application.sounds.sound.get("music_characterSelect");
+  this.m_sound.loop = true;
+  this.m_sound.play();
 };
 
 /**

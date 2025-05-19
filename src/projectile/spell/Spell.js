@@ -12,10 +12,24 @@ howlkraul.projectile.Spell.prototype.constructor = howlkraul.projectile.Spell;
 /**
  * @inheritdoc
  */
-howlkraul.projectile.Spell.prototype.dispose = function () {
-  howlkraul.projectile.Projectile.prototype.dispose.call(this);
+howlkraul.projectile.Spell.prototype.init = function () {
+  howlkraul.projectile.Projectile.prototype.init.call(this);
 
+  this.m_sound = this.application.sounds.sound.get("sfx_spell", true);
+  this.m_sound.play();
+};
+
+/**
+ * @inheritdoc
+ */
+howlkraul.projectile.Spell.prototype.dispose = function () {
+  //this.m_sound.stop();
+  //this.m_sound = this.application.sounds.sound.remove(this.m_sound, true);
+
+  this.m_sound = null;
   this.castedBy = null;
+
+  howlkraul.projectile.Projectile.prototype.dispose.call(this);
 };
 
 /**
@@ -30,4 +44,10 @@ howlkraul.projectile.Spell.prototype.m_initAnimation = function () {
  */
 howlkraul.projectile.Spell.prototype.m_initHitbox = function () {
   this.hitbox.set(10, 10, 10, 10);
+};
+
+/**
+ * @inheritdoc
+ */
+howlkraul.projectile.Spell.prototype.m_initSounds = function () {
 };
