@@ -24,3 +24,12 @@ howlkraul.entity.Slime.prototype.init = function () {
 howlkraul.entity.Slime.prototype.initAnimations = function () {
   this.animation.create("r", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
 };
+
+/**
+ * @inheritdoc
+*/
+howlkraul.entity.Slime.prototype.initSounds = function () {
+  // Death Sound
+  this.deathSounds.push(this.application.sounds.sound.get("sfx_slime_death1"));
+  this.deathSounds.push(this.application.sounds.sound.get("sfx_slime_death2"));
+};

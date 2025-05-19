@@ -72,6 +72,23 @@ howlkraul.entity.Troll.prototype.initAnimations = function () {
 };
 
 /**
+ * @inheritdoc
+*/
+howlkraul.entity.Troll.prototype.initSounds = function () {
+  // Damage Sound
+  this.damageSounds.push(this.application.sounds.sound.get("sfx_troll_hit1"));
+  this.damageSounds.push(this.application.sounds.sound.get("sfx_troll_hit2"));
+  this.damageSounds.push(this.application.sounds.sound.get("sfx_troll_hit3"));
+
+  // Death Sound
+  this.deathSounds.push(this.application.sounds.sound.get("sfx_troll_death1"));
+  this.deathSounds.push(this.application.sounds.sound.get("sfx_troll_death2"));
+  this.deathSounds.push(this.application.sounds.sound.get("sfx_troll_death3"));
+  this.deathSounds.push(this.application.sounds.sound.get("sfx_troll_death4"));
+  this.deathSounds.push(this.application.sounds.sound.get("sfx_troll_death5"));
+};
+
+/**
  * @override
  */
 howlkraul.entity.Troll.prototype.initAnimationScripts = function () {

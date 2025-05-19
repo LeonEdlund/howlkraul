@@ -78,6 +78,22 @@ howlkraul.entity.Entity = function (x, y, height, width, texture) {
   * @type {boolean}
   */
   this.m_movementAllowed = true;
+
+  /**
+  * array of different damage sounds.
+  * 
+  * @private
+  * @type {array}
+  */
+  this.m_damageSounds = [];
+
+  /**
+  * array of different death sounds.
+  * 
+  * @private
+  * @type {array}
+  */
+  this.m_deathSounds = [];
 }
 
 //--------------------------------------------------------------------------
@@ -286,6 +302,83 @@ Object.defineProperty(howlkraul.entity.Entity.prototype, "drag", {
   }
 });
 
+/**
+ * The array of damage sounds. 
+ * Can be used to add sounds to the entity.
+ * 
+ * @member {array} damageSounds
+ * @memberof howlkraul.entity.Entity
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Entity.prototype, "damageSounds", {
+  /**
+   * @this howlkraul.entity.Entity
+   * @ignore
+   */
+  get: function () {
+    return this.m_damageSounds;
+  }
+});
+
+/**
+ * Returns a random damage sound that can be used when a entity takes damage.
+ * 
+ * @member {rune.media.Sound} damageSound
+ * @memberof howlkraul.entity.Entity
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Entity.prototype, "damageSound", {
+  /**
+   * @this howlkraul.entity.Entity
+   * @ignore
+   */
+  get: function () {
+    var i = rune.util.Math.randomInt(0, (this.m_damageSounds.length - 1));
+    return this.m_damageSounds[i] || null;
+  }
+});
+
+/**
+ * The array of death sounds. 
+ * Can be used to add sounds to the entity.
+ * 
+ * @member {array} deathSounds
+ * @memberof howlkraul.entity.Entity
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Entity.prototype, "deathSounds", {
+  /**
+   * @this howlkraul.entity.Entity
+   * @ignore
+   */
+  get: function () {
+    return this.m_deathSounds;
+  }
+});
+
+/**
+ * Returns a random death sound that can be used when a entity dies.
+ * 
+ * @member {rune.media.Sound} deathSound
+ * @memberof howlkraul.entity.Entity
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Entity.prototype, "deathSound", {
+  /**
+   * @this howlkraul.entity.Entity
+   * @ignore
+   */
+  get: function () {
+    var i = rune.util.Math.randomInt(0, (this.m_deathSounds.length - 1));
+    console.log(this.m_deathSounds);
+    return this.m_deathSounds[i] || null;
+  }
+});
+
 //--------------------------------------------------------------------------
 // Overide Methods
 //--------------------------------------------------------------------------
@@ -302,6 +395,7 @@ howlkraul.entity.Entity.prototype.init = function () {
 
   this.initAnimations();
   this.initStates();
+  this.initSounds();
   this.m_initPhysics();
 }
 
@@ -388,7 +482,7 @@ howlkraul.entity.Entity.prototype.initAnimations = function () {
 
 /**
  * Override to add states to entity.
- * Runs when a entity is instasiated. 
+ * Runs when a entity is instantiated. 
  * 
  * @abstract
  * @protected
@@ -397,3 +491,61 @@ howlkraul.entity.Entity.prototype.initAnimations = function () {
 howlkraul.entity.Entity.prototype.initStates = function () {
   // OVERIDE
 };
+
+/**
+ * Override to add sounds to entity.
+ * Runs when a entity is instantiated. 
+ * 
+ * @abstract
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Entity.prototype.initSounds = function () {
+  // OVERIDE
+};
+
+/**
+ * Override to pick.
+ * Runs when a entity takes damage.
+ * 
+ * @abstract
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Entity.prototype.playDeathSound = function () {
+  if (this.deathSound) {
+    var pan = this.getPaningValue();
+    this.deathSound.pan = pan;
+    this.deathSound.volume = 0.6;
+    this.deathSound.play();
+  }
+};
+
+/**
+ * Override to pick.
+ * Runs when a entity takes damage.
+ * 
+ * @abstract
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Entity.prototype.playDamageSound = function () {
+  if (this.damageSound) {
+    var pan = this.getPaningValue();
+    this.damageSound.pan = pan;
+    this.damageSound.volume = 0.6;
+    this.damageSound.play();
+  }
+};
+
+/**
+ * Get´s a value between -1 and 1 based on the entitys position in relation to the screen.
+ * Used for panning sounds.
+ * 
+ * @private
+ * @returns {number}
+ */
+howlkraul.entity.Entity.prototype.getPaningValue = function () {
+  return (this.centerX - this.application.screen.centerX) / this.application.screen.centerX;
+};
+

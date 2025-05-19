@@ -272,6 +272,7 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
     this.die();
   } else {
     this.application.scenes.selected.enemies.bleed(this);
+    this.playDamageSound();
   }
 };
 
@@ -282,6 +283,7 @@ howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.die = function () {
+  this.playDeathSound();
   this.dropCoin();
   this.application.scenes.selected.enemies.explode(this);
   this.application.scenes.selected.enemies.removeMember(this, true);

@@ -75,6 +75,8 @@ howlkraul.drops.Bombs.prototype.explode = function (cordinates) {
   this.m_cloudEmitter.emit(10);
 
   this.application.scenes.selected.cameras.getCameraAt(0).shake.start(200);
+
+  this.application.sounds.sound.get("sfx_bomb").play(true);
 }
 
 //--------------------------------------------------------------------------
@@ -95,6 +97,7 @@ howlkraul.drops.Bombs.prototype.init = function () {
  */
 howlkraul.drops.Bombs.prototype.update = function (step) {
   rune.display.DisplayGroup.prototype.update.call(this, step);
+
   this.hitTestAndSeparateGroup(this.m_scene.room.walls);
   if (this.m_emitter.numParticles) {
     var particles = this.m_emitter.getParticles(true)
@@ -107,13 +110,13 @@ howlkraul.drops.Bombs.prototype.update = function (step) {
  * @override
  */
 howlkraul.drops.Bombs.prototype.dispose = function () {
-  rune.display.DisplayGroup.prototype.dispose.call(this);
-
   this.m_scene.stage.removeChild(this.m_emitter, true);
   this.m_scene.stage.removeChild(this.m_smokeEmitter, true);
   this.m_scene.stage.removeChild(this.m_cloudEmitter, true);
   this.m_scene = null;
   this.m_emitter = null;
+
+  rune.display.DisplayGroup.prototype.dispose.call(this);
 }
 
 //--------------------------------------------------------------------------

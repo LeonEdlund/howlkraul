@@ -19,7 +19,18 @@ howlkraul.projectile.Projectile.prototype.constructor = howlkraul.projectile.Pro
 howlkraul.projectile.Projectile.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
   this.m_initAnimation();
+  this.m_initSounds();
   this.m_initHitbox();
+};
+
+/** 
+ * @override
+ */
+howlkraul.projectile.Projectile.prototype.update = function () {
+  rune.display.Sprite.prototype.update.call(this);
+  if (this.m_isOutOfBounds()) {
+    this.dispose();
+  }
 };
 
 /**
@@ -119,6 +130,40 @@ howlkraul.projectile.Projectile.prototype.shootAtPoint = function (point, group)
 }
 
 //--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Check if projectile is outside of map.
+ * 
+ * @private
+ * @return {boolean}
+ */
+howlkraul.projectile.Projectile.prototype.m_isOutOfBounds = function () {
+  // RIGHT
+  if (this.centerX > this.application.screen.right) {
+    return true;
+  }
+
+  // LEFT
+  if (this.centerX < 0) {
+    return true;
+  }
+
+  // BOTTOM
+  if (this.centerY > this.application.screen.height) {
+    return true;
+  }
+
+  // TOP
+  if (this.centerY < 0) {
+    return true;
+  }
+
+  return false;
+}
+
+//--------------------------------------------------------------------------
 // Abstract Methods
 //--------------------------------------------------------------------------
 
@@ -139,5 +184,15 @@ howlkraul.projectile.Projectile.prototype.m_initAnimation = function () {
  * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.m_initHitbox = function () {
+  // OVERIDE IN SUB CLASS
+};
+
+/**
+ * Initialize sounds
+ * 
+ * @protected
+ * @return {undefined}
+ */
+howlkraul.projectile.Projectile.prototype.m_initSounds = function () {
   // OVERIDE IN SUB CLASS
 };

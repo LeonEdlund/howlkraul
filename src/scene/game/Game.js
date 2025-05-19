@@ -38,7 +38,15 @@ howlkraul.scene.Game = function (selectedPlayers) {
     this.m_selectedPlayers = selectedPlayers || [];
 
     /**
-     * Refers to 
+     * The background song.
+     * 
+     * @private
+     * @type {rune.media.Sound}
+     */
+    this.m_song = null;
+
+    /**
+     * Refers to the room object.
      * 
      * @private
      * @type {howlkraul.room.Room}
@@ -324,6 +332,7 @@ Object.defineProperty(howlkraul.scene.Game.prototype, "moneyCounter", {
 howlkraul.scene.Game.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
 
+    this.m_initMusic();
     this.m_initRoom();
     this.m_initMoneyCounter();
     this.m_initPlayers();
@@ -504,6 +513,20 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
 //--------------------------------------------------------------------------
 // Private Methods (INIT)
 //--------------------------------------------------------------------------
+
+/**
+ * Initializes the background music.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.Game.prototype.m_initMusic = function () {
+    this.m_song = this.application.sounds.music.get("music_playing");
+    this.m_song.loop = true;
+    this.m_song.volume = 0.6;
+    this.m_song.play();
+};
 
 /**
  * Initializes the room.
@@ -718,6 +741,7 @@ howlkraul.scene.Game.prototype.m_initSort = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_disposeBetweenRound = function () {
+    this.application.sounds.sound.clear();
     this.m_enemies.removeMembers(true);
     this.m_spells.removeMembers(true);
     this.m_enemyProjectiles.removeMembers(true);
