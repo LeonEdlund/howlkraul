@@ -38,12 +38,12 @@ howlkraul.scene.GameOver = function (score) {
   this.m_score = score;
 
   /**
-   * Referse to the BitmapField of the title.
+   * Game over grapic.
    * 
    * @private 
    * @type {rune.text.BitmapField}
    */
-  this.m_title = null;
+  this.m_graphic = null;
 
   /**
    * Referse to the BitmapField of the score text.
@@ -75,17 +75,8 @@ howlkraul.scene.GameOver.prototype.constructor = howlkraul.scene.GameOver;
 howlkraul.scene.GameOver.prototype.init = function () {
   rune.scene.Scene.prototype.init.call(this);
 
-  this.m_title = new rune.text.BitmapField("GAME OVER");
-  this.m_title.autoSize = true;
-  this.m_title.center = this.application.screen.center;
-
-  this.m_scoreText = new rune.text.BitmapField("SCORE: " + this.m_score);
-  this.m_scoreText.autoSize = true;
-  this.m_scoreText.center = this.application.screen.center;
-  this.m_scoreText.y += 20;
-
-  this.stage.addChild(this.m_title);
-  this.stage.addChild(this.m_scoreText);
+  this.m_initGrapic();
+  this.m_initScore();
 };
 
 /**
@@ -100,7 +91,7 @@ howlkraul.scene.GameOver.prototype.update = function (step) {
   rune.scene.Scene.prototype.update.call(this, step);
 
   if (this.keyboard.justPressed("enter") || this.gamepads.get(0).justPressed(9) || this.gamepads.get(0).justPressed(9)) {
-    this.application.scenes.load([new howlkraul.scene.Menu()]);
+    this.application.scenes.load([new howlkraul.scene.CharacterSelection()]);
   }
 };
 
@@ -110,14 +101,67 @@ howlkraul.scene.GameOver.prototype.update = function (step) {
  * exist when the scene is destroyed. The process is performed in order to 
  * avoid memory leaks.
  *
+ * @public
  * @returns {undefined}
  */
 howlkraul.scene.GameOver.prototype.dispose = function () {
-  this.stage.removeChild(this.m_title, true);
+  this.stage.removeChild(this.m_graphic, true);
   this.stage.removeChild(this.m_scoreText, true);
+  this.stage.removeChildren(true);
 
-  this.m_title = null;
+  this.m_graphic = null;
   this.m_scoreText = null;
 
   rune.scene.Scene.prototype.dispose.call(this);
+};
+
+//--------------------------------------------------------------------------
+// Private Methods (INIT)
+//--------------------------------------------------------------------------
+
+/**
+ * Initializes and fades in game over graphic
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.m_initGrapic = function () {
+  this.m_graphic = new rune.display.Graphic(0, 0, 218, 152, "death_screen_218x152");
+  this.m_graphic.center = this.application.screen.center;
+  this.m_graphic.alpha = 0;
+  this.stage.addChild(this.m_graphic);
+
+  this.tweens.create({
+    target: this.m_graphic,
+    scope: this,
+    duration: 1000,
+    args: {
+      alpha: 1,
+    }
+  });
+};
+
+/**
+ * Initializes and fades in score text.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.m_initScore = function () {
+  this.m_scoreText = new rune.text.BitmapField("SCORE: " + this.m_score);
+  this.m_scoreText.autoSize = true;
+  this.m_scoreText.center = this.application.screen.center;
+  this.m_scoreText.y += 90;
+  this.m_scoreText.alpha = 0;
+
+  this.stage.addChild(this.m_scoreText);
+
+  this.tweens.create({
+    target: this.m_scoreText,
+    scope: this,
+    duration: 1000,
+    args: {
+      alpha: 1,
+    }
+  });
 };
