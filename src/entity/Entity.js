@@ -374,7 +374,6 @@ Object.defineProperty(howlkraul.entity.Entity.prototype, "deathSound", {
    */
   get: function () {
     var i = rune.util.Math.randomInt(0, (this.m_deathSounds.length - 1));
-    console.log(this.m_deathSounds);
     return this.m_deathSounds[i] || null;
   }
 });
@@ -517,7 +516,7 @@ howlkraul.entity.Entity.prototype.playDeathSound = function () {
     var pan = this.getPaningValue();
     this.deathSound.pan = pan;
     this.deathSound.volume = 0.6;
-    this.deathSound.play();
+    this.deathSound.play(true);
   }
 };
 
@@ -534,7 +533,7 @@ howlkraul.entity.Entity.prototype.playDamageSound = function () {
     var pan = this.getPaningValue();
     this.damageSound.pan = pan;
     this.damageSound.volume = 0.6;
-    this.damageSound.play();
+    this.damageSound.play(true);
   }
 };
 

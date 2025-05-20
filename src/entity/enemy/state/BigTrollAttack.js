@@ -32,7 +32,6 @@ howlkraul.entity.BigTrollAttack.prototype.constructor = howlkraul.entity.BigTrol
  * @override
 */
 howlkraul.entity.BigTrollAttack.prototype.onEnter = function () {
-  console.log("throw")
   this.owner.speed = 0;
   this.owner.animation.gotoAndPlay("throw", [0]);
 };

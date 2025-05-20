@@ -25,6 +25,7 @@ howlkraul.entity.BigTroll.prototype.constructor = howlkraul.entity.BigTroll;
  */
 howlkraul.entity.BigTroll.prototype.init = function () {
   howlkraul.entity.Troll.prototype.init.call(this);
+  
   this.scaleX = 1.5;
   this.scaleY = 1.5;
 };

@@ -58,7 +58,6 @@ howlkraul.scene.Menu.prototype.constructor = howlkraul.scene.Menu;
  */
 howlkraul.scene.Menu.prototype.init = function () {
     rune.scene.Scene.prototype.init.call(this);
-
     this.m_initMenu();
 };
 
