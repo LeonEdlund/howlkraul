@@ -443,7 +443,7 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP1 = function () {
 */
 howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP2 = function () {
   this.m_playerTwo = this.m_wizards[this.m_p2Choice];
-  this.m_playerOne.manabar.visible = true;
+  this.m_playerTwo.manabar.visible = true;
 
   var p2Input = new howlkraul.handler.InputHandler(
     this.gamepads.get(1),

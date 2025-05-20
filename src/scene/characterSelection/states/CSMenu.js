@@ -55,29 +55,3 @@ howlkraul.scene.CSMenu.prototype.init = function () {
 howlkraul.scene.CSMenu.prototype.onExit = function () {
   this.owner.stage.removeChild(this.m_menu);
 };
-
-/**
- * ... 
- * 
- * @returns {undefined}
-*/
-howlkraul.scene.CSMenu.prototype.update = function () {
-  if (this.owner.keyboard.justPressed("up")) {
-
-    this.m_menu.m_menu.up();
-
-  } else if (this.owner.keyboard.justPressed("down")) {
-
-    this.m_menu.m_menu.down();
-
-  } else if (this.owner.keyboard.justPressed("enter")) {
-
-    var selectedOption = this.m_menu.m_menu.select();
-
-    if (selectedOption === "two player") {
-      this.owner.twoPlayer = true
-    };
-
-    this.owner.states.select("CSPlaying");
-  }
-};

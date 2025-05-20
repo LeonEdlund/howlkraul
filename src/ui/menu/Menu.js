@@ -63,6 +63,7 @@ howlkraul.ui.Menu.prototype.constructor = howlkraul.ui.Menu;
  */
 howlkraul.ui.Menu.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
+
   this.m_initMenuOptions();
   this.m_initTweens();
 };
@@ -95,12 +96,23 @@ howlkraul.ui.Menu.prototype.down = function () {
 };
 
 howlkraul.ui.Menu.prototype.select = function () {
-  return this.m_options[this.m_choice].text.toLowerCase();
+  return this.m_options[this.m_choice];
 };
+
+
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
+
+howlkraul.ui.Menu.prototype.m_onSelect = function () {
+  switch (this.m_options[this.m_choice]) {
+    case "one player":
+      this.application.scenes.selected.states.select("CSPlaying");
+  }
+
+  return this.m_options[this.m_choice].text.toLowerCase();
+};
 
 /**
  * Creates a new overlay and add it to display group.

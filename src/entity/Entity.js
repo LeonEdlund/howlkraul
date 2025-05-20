@@ -374,7 +374,6 @@ Object.defineProperty(howlkraul.entity.Entity.prototype, "deathSound", {
    */
   get: function () {
     var i = rune.util.Math.randomInt(0, (this.m_deathSounds.length - 1));
-    console.log(this.m_deathSounds);
     return this.m_deathSounds[i] || null;
   }
 });

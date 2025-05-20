@@ -36,23 +36,21 @@ howlkraul.ui.MainMenu = function () {
    * @type {howlkraul.ui.Menu}
    */
   this.m_menu = null;
+
+  /**
+   * reference to the graphical highscore
+   * 
+   * @type {howlkraul.ui.Highscore}
+   */
+  this.m_highscore = null;
 }
 
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.ui.MainMenu.prototype = Object.create(rune.display.DisplayObjectContainer.prototype);
 howlkraul.ui.MainMenu.prototype.constructor = howlkraul.ui.MainMenu;
-
-//--------------------------------------------------------------------------
-// Getters and setters
-//--------------------------------------------------------------------------
-
-// Object.defineProperty(howlkraul.ui.ScoreCounter.prototype, "score", {
-//   get: function () {
-//     return this.m_score;
-//   }
-// })
 
 //--------------------------------------------------------------------------
 // Overide Rune Methods
@@ -68,9 +66,11 @@ howlkraul.ui.MainMenu.prototype.constructor = howlkraul.ui.MainMenu;
 howlkraul.ui.MainMenu.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
 
+  this.m_initStates();
   this.m_initOverlay();
   this.m_initLogo();
   this.m_initMenu();
+  this.m_initHighscore();
 };
 
 /**
@@ -82,13 +82,22 @@ howlkraul.ui.MainMenu.prototype.dispose = function () {
   this.removeChildren(true);
 };
 
-//--------------------------------------------------------------------------
-// Public Methods
-//--------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------
 // Private Methods (INIT)
 //--------------------------------------------------------------------------
+
+/**
+ * Creates a new overlay and add it to display group.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.ui.MainMenu.prototype.m_initStates = function () {
+  this.states.load([
+    new howlkraul.ui.MenuIdle()
+  ])
+};
 
 /**
  * Creates a new overlay and add it to display group.
@@ -128,4 +137,15 @@ howlkraul.ui.MainMenu.prototype.m_initMenu = function () {
   this.addChild(this.m_menu);
 };
 
-
+/**
+ * Method that initializes the visual display of the highscore.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.ui.MainMenu.prototype.m_initHighscore = function () {
+  this.m_highscore = new howlkraul.ui.HighScore();
+  this.addChild(this.m_highscore);
+  this.m_highscore.moveTo(255, 90)
+};

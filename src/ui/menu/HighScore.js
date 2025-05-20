@@ -51,9 +51,8 @@ howlkraul.ui.HighScore.prototype.constructor = howlkraul.ui.HighScore;
 howlkraul.ui.HighScore.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
 
-  this.m_initOverlay();
-  this.m_initLogo();
-  this.m_initMenu();
+  this.m_initBackground();
+  this.m_initList();
 };
 
 /**
@@ -69,6 +68,17 @@ howlkraul.ui.HighScore.prototype.dispose = function () {
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Updates the list based on amount of players.
+ * 
+ * @public
+ * @param {boolean} nrPlayers - what list should be used.
+ * @returns {undefined}
+ */
+howlkraul.ui.HighScore.prototype.updateList = function (nrPlayers) {
+
+};
+
 //--------------------------------------------------------------------------
 // Private Methods (INIT)
 //--------------------------------------------------------------------------
@@ -79,36 +89,19 @@ howlkraul.ui.HighScore.prototype.dispose = function () {
  * @private
  * @returns {undefined}
  */
-howlkraul.ui.HighScore.prototype.m_initOverlay = function () {
-  this.m_overlay = new rune.display.Graphic(0, 0, this.width, this.height);
-  this.m_overlay.backgroundColor = "black";
-  this.m_overlay.alpha = 0.7;
-  this.addChild(this.m_overlay);
+howlkraul.ui.HighScore.prototype.m_initBackground = function () {
+  var background = new rune.display.Graphic(0, 0, 93, 120, "highscore_93x120");
+  this.addChild(background);
 };
 
 /**
- * Adds logo to menu.
+ * Initialises the highscore-list.
  * 
  * @private
  * @returns {undefined}
  */
-howlkraul.ui.HighScore.prototype.m_initLogo = function () {
-  this.m_logo = new rune.display.Graphic(0, 0, 314, 82, "howlkraul_314x82");
-  this.m_logo.centerX = this.centerX;
-  this.m_logo.y = 5;
-  this.addChild(this.m_logo);
-};
+howlkraul.ui.HighScore.prototype.m_initList = function () {
 
-/**
- * Method that initializes the menu object with options and adds it to the stage.
- * 
- * @private
- * @returns {undefined}
- * @ignore
- */
-howlkraul.ui.HighScore.prototype.m_initMenu = function () {
-  this.m_menu = new howlkraul.ui.Menu();
-  this.addChild(this.m_menu);
 };
 
 
