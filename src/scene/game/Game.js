@@ -499,14 +499,19 @@ howlkraul.scene.Game.prototype.m_loadNewRound = function () {
  */
 howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     var deadPlayers = 0;
+
     this.m_players.forEachMember(function (player) {
         if (player.hp === 0) {
             deadPlayers += 1;
         }
     }, this);
 
-    if (deadPlayers >= this.m_players.numMembers) {
-        this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score)])
+    if (deadPlayers >= this.m_players.numMembers && !this.m_gameOver) {
+        this.m_gameOver = true;
+
+        this.cameras.getCameraAt(0).fade.out(800, function () {
+            this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score)])
+        }, this);
     }
 };
 

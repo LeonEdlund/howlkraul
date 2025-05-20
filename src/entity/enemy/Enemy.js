@@ -318,6 +318,8 @@ howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
     return player.hp > 0;
   });
 
+  if (!allPlayers.length) return;
+
   // Sort by the closest player
   allPlayers.sort(function (a, b) {
     return m_this.distance(a) - m_this.distance(b);
