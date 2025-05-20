@@ -132,6 +132,22 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
    * @type {boolean}
    */
   this.m_roundTransition = false;
+
+  /**
+   * The main Menu
+   * 
+   * @private
+   * @type {howlkraul.ui.MainMenu}
+   */
+  this.m_menu = null;
+
+  /**
+   * The main Menu
+   * 
+   * @private
+   * @type {howlkraul.ui.MainMenu}
+   */
+  this.m_menuIsOpen = true;
 };
 
 //------------------------------------------------------------------------------
@@ -163,6 +179,85 @@ Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "spells", {
   }
 });
 
+/**
+* Referes to the enviroment object
+*
+* @member {rune.display.DisplayGroup} enviroment
+* @memberof howlkraul.scene.CharacterSelection
+* @instance
+* @readonly
+*/
+Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "enviroment", {
+  /**
+   * @this rune.scene.Scene
+   * @ignore
+   */
+  get: function () {
+    return this.m_enviroment;
+  }
+});
+
+/**
+* True if the game should be 2 player. False if 1 player mode.
+*
+* @member {boolean} twoPlayer
+* @memberof howlkraul.scene.CharacterSelection
+* @instance
+*/
+Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "twoPlayer", {
+  /**
+   * @this rune.scene.Scene
+   * @ignore
+   */
+  get: function () {
+    return this.m_twoPlayer;
+  },
+
+  /**
+ * @this rune.scene.Scene
+ * @ignore
+ */
+  set: function (value) {
+    this.m_twoPlayer = value;
+  }
+});
+
+/**
+* refers to playerOne.
+*
+* @member {howlkraul.entity.Wizard} playerOne
+* @memberof howlkraul.scene.CharacterSelection
+* @instance
+* @readonly
+*/
+Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "playerOne", {
+  /**
+   * @this rune.scene.Scene
+   * @ignore
+   */
+  get: function () {
+    return this.m_playerOne;
+  }
+});
+
+/**
+* refers to playerTwo.
+*
+* @member {howlkraul.entity.Wizard} playerTwo
+* @memberof howlkraul.scene.CharacterSelection
+* @instance
+* @readonly
+*/
+Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "playerTwo", {
+  /**
+   * @this rune.scene.Scene
+   * @ignore
+   */
+  get: function () {
+    return this.m_playerTwo;
+  }
+});
+
 //------------------------------------------------------------------------------
 // Override rune methods
 //------------------------------------------------------------------------------
@@ -177,15 +272,13 @@ Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "spells", {
 howlkraul.scene.CharacterSelection.prototype.init = function () {
   rune.scene.Scene.prototype.init.call(this);
 
+  this.m_initStates();
+  this.m_initSounds();
   this.m_initEnvironment();
-  this.m_initSelectors();
+  //this.m_initSelectors();
   this.m_initWizards();
   this.m_initSpellGroup();
   this.m_initSort();
-
-  this.m_sound = this.application.sounds.sound.get("music_characterSelect");
-  this.m_sound.loop = true;
-  this.m_sound.play();
 };
 
 /**
@@ -199,20 +292,13 @@ howlkraul.scene.CharacterSelection.prototype.init = function () {
 howlkraul.scene.CharacterSelection.prototype.update = function (step) {
   rune.scene.Scene.prototype.update.call(this, step);
 
-  if (!this.m_playerOne) {
-    this.m_moveP1Selector();
+  if (this.m_menuIsOpen) {
+    if (this.keyboard.justPressed("escape")) {
+      this.states.select("CSPlaying");
+    }
+    return;
   }
 
-  if (this.m_twoPlayer && !this.m_playerTwo) {
-    this.m_moveP2Selector();
-  }
-
-  if (this.m_playerOne && !this.m_twoPlayer || this.m_playerOne && this.m_playerTwo) {
-    this.m_enviroment.openDoor();
-    this.m_checkIfGameStarted();
-  }
-
-  this.m_enviroment.borders.hitTestAndSeparateContentOf(this.m_allActivePlayers, this);
 };
 
 /**
@@ -229,8 +315,31 @@ howlkraul.scene.CharacterSelection.prototype.dispose = function () {
   this.m_disposeSelectors();
   this.m_disposeSpellGroup();
   this.stage.removeChildren(true);
-
   rune.scene.Scene.prototype.dispose.call(this);
+};
+
+//--------------------------------------------------------------------------
+// Public Methods
+//--------------------------------------------------------------------------
+
+/**
+* Initializes selectors.
+* 
+* @public
+* @returns {undefined}
+*/
+howlkraul.scene.CharacterSelection.prototype.initSelectors = function () {
+  this.m_disposeSelectors();
+
+  if (!this.m_p1Selector) {
+    this.m_p1Selector = new rune.display.Graphic(0, 0, 37, 19, "player_selection_p1_37x19");
+    this.stage.addChild(this.m_p1Selector);
+  }
+
+  if (this.m_twoPlayer && !this.m_p2Selector) {
+    this.m_p2Selector = new rune.display.Graphic(0, 0, 37, 19, "player_selection_p2_37x19");
+    this.stage.addChild(this.m_p2Selector);
+  }
 };
 
 //--------------------------------------------------------------------------
@@ -269,6 +378,7 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
 * @ignore
 */
 howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
+  console.log("Hello")
   if (this.keyboard.justPressed("right") || this.gamepads.get(1).stickLeftJustRight) {
     this.m_p2Choice++;
   } else if (this.keyboard.justPressed("left") || this.gamepads.get(1).stickLeftJustLeft) {
@@ -392,10 +502,6 @@ howlkraul.scene.CharacterSelection.prototype.m_checkIfGameStarted = function () 
   }
 };
 
-//--------------------------------------------------------------------------
-// Private Methods (INIT)
-//--------------------------------------------------------------------------
-
 /**
 * Initializes the HUD for a player.
 * 
@@ -409,6 +515,40 @@ howlkraul.scene.CharacterSelection.prototype.m_bindHUD = function (player, hud) 
   player.bindHUD(hud);
   this.stage.addChild(hud);
   hud.changeColor(player.color);
+};
+
+//--------------------------------------------------------------------------
+// Private Methods (INIT)
+//--------------------------------------------------------------------------
+
+/**
+* Initializes states.
+* 
+* @private
+* @returns {undefined}
+* @ignore
+*/
+howlkraul.scene.CharacterSelection.prototype.m_initStates = function () {
+  this.states.load([
+    new howlkraul.scene.CSMenu(),
+    new howlkraul.scene.CSPlaying(),
+  ]);
+
+  this.states.select("CSMenu");
+};
+
+/**
+* Initializes sounds.
+* 
+* @private
+* @returns {undefined}
+* @ignore
+*/
+howlkraul.scene.CharacterSelection.prototype.m_initSounds = function () {
+  this.m_sound = this.application.sounds.music.get("music_characterSelect");
+  this.m_sound.loop = true;
+  this.m_sound.volume = 0;
+  this.m_sound.play();
 };
 
 /**
@@ -458,27 +598,6 @@ howlkraul.scene.CharacterSelection.prototype.m_initWizards = function () {
 };
 
 /**
-* Initializes selectors.
-* 
-* @private
-* @returns {undefined}
-* @ignore
-*/
-howlkraul.scene.CharacterSelection.prototype.m_initSelectors = function () {
-  this.m_disposeSelectors();
-
-  if (!this.m_p1Selector) {
-    this.m_p1Selector = new rune.display.Graphic(0, 0, 37, 19, "player_selection_p1_37x19");
-    this.stage.addChild(this.m_p1Selector);
-  }
-
-  if (this.m_twoPlayer && !this.m_p2Selector) {
-    this.m_p2Selector = new rune.display.Graphic(0, 0, 37, 19, "player_selection_p2_37x19");
-    this.stage.addChild(this.m_p2Selector);
-  }
-};
-
-/**
  * Initializes spell group.
  * 
  * @private
@@ -490,6 +609,20 @@ howlkraul.scene.CharacterSelection.prototype.m_initSpellGroup = function () {
 
   if (!this.m_spells) {
     this.m_spells = this.groups.create(this.stage);
+  }
+};
+
+/**
+ * Initializes spell group.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.scene.CharacterSelection.prototype.m_initMainMenu = function () {
+  if (!this.m_menu) {
+    this.m_menu = new howlkraul.ui.MainMenu();
+    this.stage.addChild(this.m_menu);
   }
 };
 

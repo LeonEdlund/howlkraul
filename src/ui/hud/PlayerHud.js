@@ -192,7 +192,7 @@ howlkraul.ui.PlayerHud.prototype.m_initBackground = function () {
 
 howlkraul.ui.PlayerHud.prototype.m_initHearts = function () {
   for (var i = 0; i < 3; i++) {
-    this.m_hearts["heart" + i] = new howlkraul.ui.Heart(28 + (i * (11 + 2)), 10, "heart" + i);
+    this.m_hearts["heart" + i] = new howlkraul.ui.Heart(28 + (i * 12), 10, "heart" + i);
     this.addChild(this.m_hearts["heart" + i]);
   }
 };

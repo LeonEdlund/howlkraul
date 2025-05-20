@@ -1,0 +1,83 @@
+/**
+ * Represents a state where the main menu overlayes the character selection.
+ *
+ * @constructor
+ * @extends rune.state.State
+ *
+ * @class
+ * @classdesc
+ *
+ * The menu over character selection. 
+ */
+howlkraul.scene.CSMenu = function () {
+
+  //--------------------------------------------------------------------------
+  // Super call
+  //--------------------------------------------------------------------------
+
+  rune.state.State.call(this, "CSMenu");
+
+  /**
+   * Main Menu
+   * 
+   * @private
+   * @type {howlkraul.ui.MainMenu}
+   */
+  this.m_menu = null;
+}
+
+//--------------------------------------------------------------------------
+// Inheritance
+//--------------------------------------------------------------------------
+
+howlkraul.scene.CSMenu.prototype = Object.create(rune.state.State.prototype);
+howlkraul.scene.CSMenu.prototype.constructor = howlkraul.scene.CSMenu;
+
+//--------------------------------------------------------------------------
+// Overide rune methods
+//--------------------------------------------------------------------------
+
+/**
+ * ... 
+ * 
+ * @returns {undefined}
+*/
+howlkraul.scene.CSMenu.prototype.init = function () {
+  this.m_menu = new howlkraul.ui.MainMenu();
+  this.owner.stage.addChild(this.m_menu);
+};
+
+/**
+ * ... 
+ * 
+ * @returns {undefined}
+*/
+howlkraul.scene.CSMenu.prototype.onExit = function () {
+  this.owner.stage.removeChild(this.m_menu);
+};
+
+/**
+ * ... 
+ * 
+ * @returns {undefined}
+*/
+howlkraul.scene.CSMenu.prototype.update = function () {
+  if (this.owner.keyboard.justPressed("up")) {
+
+    this.m_menu.m_menu.up();
+
+  } else if (this.owner.keyboard.justPressed("down")) {
+
+    this.m_menu.m_menu.down();
+
+  } else if (this.owner.keyboard.justPressed("enter")) {
+
+    var selectedOption = this.m_menu.m_menu.select();
+
+    if (selectedOption === "two player") {
+      this.owner.twoPlayer = true
+    };
+
+    this.owner.states.select("CSPlaying");
+  }
+};
