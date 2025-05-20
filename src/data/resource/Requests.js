@@ -55,6 +55,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("coin_11x26", "./../asset/img/drops/coin_11x26.png");
 	this.add("health_potion_14x20", "./../asset/img/drops/health_potion_14x20.png");
 	this.add("font_480x45", "./../asset/img/fonts/font_480x45.png");
+	this.add("small_font_256x24", "./../asset/img/fonts/small_font_256x24.png");
 	this.add("blood1", "./../asset/img/gore/blood1.png");
 	this.add("blood2", "./../asset/img/gore/blood2.png");
 	this.add("blood3", "./../asset/img/gore/blood3.png");
@@ -77,6 +78,8 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("troll_gore3_19x18", "./../asset/img/gore/troll/troll_gore3_19x18.png");
 	this.add("troll_gore4_19x18", "./../asset/img/gore/troll/troll_gore4_19x18.png");
 	this.add("troll_gore5_19x18", "./../asset/img/gore/troll/troll_gore5_19x18.png");
+	this.add("death_screen", "./../asset/img/hud/dead screen/death_screen.png");
+	this.add("player_x_died", "./../asset/img/hud/dead screen/player_x_died.png");
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
 	this.add("Player_hud_69x31", "./../asset/img/hud/hud components/Player_hud_69x31.png");
