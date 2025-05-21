@@ -30,8 +30,10 @@ howlkraul.scene.GameOverIdle.prototype.constructor = howlkraul.scene.GameOverIdl
 //--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Runs every frame. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.scene.GameOverIdle.prototype.update = function (step) {
@@ -40,7 +42,15 @@ howlkraul.scene.GameOverIdle.prototype.update = function (step) {
   var gamepad2 = this.owner.gamepads.get(1);
 
   if (keyboard.justPressed("enter") || gamepad1.justPressed(9) || gamepad2.justPressed(9)) {
-    this.owner.states.select("GameOverHighscore");
+    var list = this.owner.twoPlayer ? 1 : 0;
+    var isHighscore = this.owner.application.highscores.test(this.owner.score, list);
+    console.log(isHighscore)
+
+    if (isHighscore !== -1) {
+      this.owner.states.select("GameOverHighscore");
+    } else {
+      this.owner.fadeToMainMenu();
+    }
   }
 };
 

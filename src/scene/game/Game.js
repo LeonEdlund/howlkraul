@@ -510,7 +510,8 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
         this.m_gameOver = true;
 
         this.cameras.getCameraAt(0).fade.out(800, function () {
-            this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score)])
+            var twoPlayer = (this.m_selectedPlayers.length === 2) ? true : false;
+            this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score, twoPlayer)])
         }, this);
     }
 };

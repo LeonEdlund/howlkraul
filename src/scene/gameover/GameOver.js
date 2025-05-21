@@ -14,7 +14,7 @@
  * 
  * GameOver scene.
  */
-howlkraul.scene.GameOver = function (score) {
+howlkraul.scene.GameOver = function (score, twoPlayer) {
 
   //--------------------------------------------------------------------------
   // Super call
@@ -28,6 +28,14 @@ howlkraul.scene.GameOver = function (score) {
   //--------------------------------------------------------------------------
   // Private properties
   //--------------------------------------------------------------------------
+
+  /**
+   * flag if game is in 2 player mode.
+   * 
+   * @private 
+   * @type {boolean}
+   */
+  this.m_twoPlayer = twoPlayer || false;
 
   /**
    * The total score from the last played game.
@@ -83,6 +91,24 @@ Object.defineProperty(howlkraul.scene.GameOver.prototype, "score", {
   }
 });
 
+/**
+ * Flag if the game is in 2 player mode or not.
+ *
+ * @member {number} twoPlayer
+ * @memberof howlkraul.scene.GameOver
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.GameOver.prototype, "twoPlayer", {
+  /**
+   * @this howlkraul.scene.GameOver
+   * @ignore
+   */
+  get: function () {
+    return this.m_twoPlayer;
+  }
+});
+
 
 //------------------------------------------------------------------------------
 // Override rune methods
@@ -134,6 +160,16 @@ howlkraul.scene.GameOver.prototype.dispose = function () {
 
   rune.scene.Scene.prototype.dispose.call(this);
 };
+
+//--------------------------------------------------------------------------
+// Public Methods
+//--------------------------------------------------------------------------
+
+howlkraul.scene.GameOver.prototype.fadeToMainMenu = function () {
+  this.cameras.getCameraAt(0).fade.out(1000, function () {
+    this.application.scenes.load([new howlkraul.scene.CharacterSelection()]);
+  }, this);
+}
 
 //--------------------------------------------------------------------------
 // Private Methods (INIT)

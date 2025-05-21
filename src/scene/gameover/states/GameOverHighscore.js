@@ -100,10 +100,7 @@ howlkraul.scene.GameOverHighscore.prototype.onExit = function () {
  * @returns {undefined}
 */
 howlkraul.scene.GameOverHighscore.prototype.m_saveHighscore = function (name) {
-
-  this.owner.application.highscores.send(this.owner.score, name, 0);
-
-  this.owner.cameras.getCameraAt(0).fade.out(1000, function () {
-    this.owner.application.scenes.load([new howlkraul.scene.CharacterSelection()]);
-  }, this)
+  var list = this.owner.twoPlayer ? 1 : 0;
+  this.owner.application.highscores.send(this.owner.score, name, list);
+  this.owner.fadeToMainMenu();
 };
