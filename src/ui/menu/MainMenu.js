@@ -121,7 +121,7 @@ howlkraul.ui.MainMenu.prototype.m_initOverlay = function () {
 howlkraul.ui.MainMenu.prototype.m_initLogo = function () {
   this.m_logo = new rune.display.Graphic(0, 0, 314, 82, "howlkraul_314x82");
   this.m_logo.centerX = this.centerX;
-  this.m_logo.y = 5;
+  this.m_logo.y = 1;
   this.addChild(this.m_logo);
 };
 

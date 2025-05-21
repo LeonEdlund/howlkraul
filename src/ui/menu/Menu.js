@@ -44,11 +44,11 @@ howlkraul.ui.Menu.prototype.constructor = howlkraul.ui.Menu;
 // Getters and setters
 //--------------------------------------------------------------------------
 
-// Object.defineProperty(howlkraul.ui.ScoreCounter.prototype, "score", {
-//   get: function () {
-//     return this.m_score;
-//   }
-// })
+Object.defineProperty(howlkraul.ui.Menu.prototype, "hoveredItem", {
+  get: function () {
+    return this.m_options[this.m_choice].text.toLowerCase();
+  }
+})
 
 //--------------------------------------------------------------------------
 // Overide Rune Methods
