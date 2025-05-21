@@ -121,12 +121,12 @@ howlkraul.ui.HighScore.prototype.m_initItems = function () {
     score.autoSize = true;
 
     item.x = defaultXName;
-    score.x = defaultXScore;
+    score.x = defaultXScore - score.width;
 
     item.y = currentY;
     score.y = currentY;
 
-    currentY += 31;
+    currentY += 29;
 
     this.m_hsItems.push(item);
     this.m_hsScores.push(score);
@@ -143,7 +143,7 @@ howlkraul.ui.HighScore.prototype.m_initItems = function () {
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.m_initBackground = function () {
-  this.m_background = new rune.display.Graphic(0, 0, 93, 125, "highscore_v2_93x125");
+  this.m_background = new rune.display.Graphic(0, 0, 93, 125, "highscore_v3_93x123");
   this.addChild(this.m_background);
 };
 
@@ -154,11 +154,11 @@ howlkraul.ui.HighScore.prototype.m_initBackground = function () {
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.m_renderList = function () {
-  console.log(this.m_hsScores);
+  var defaultXScore = 80;
 
   for (var i = 0; i < this.m_hsList.length; i++) {
     this.m_hsItems[i].text = this.m_hsList[i].name.toUpperCase();
     this.m_hsScores[i].text = this.m_hsList[i].score.toString();
+    this.m_hsScores[i].x = defaultXScore - this.m_hsScores[i].width;
   }
-
 };

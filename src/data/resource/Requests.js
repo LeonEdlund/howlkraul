@@ -82,8 +82,8 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("player_x_died", "./../asset/img/hud/dead screen/player_x_died.png");
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
-	this.add("Player_hud_69x31", "./../asset/img/hud/hud components/Player_hud_69x31.png");
 	this.add("coin_hud_12x18", "./../asset/img/hud/hud components/coin_hud_12x18.png");
+	this.add("player_hud_69x31", "./../asset/img/hud/hud components/player_hud_69x31.png");
 	this.add("player_selection_p1_37x19", "./../asset/img/hud/selectors/player_selection_p1_37x19.png");
 	this.add("player_selection_p2_37x19", "./../asset/img/hud/selectors/player_selection_p2_37x19.png");
 	this.add("controller_30x31", "./../asset/img/hud/start screen/controller_30x31.png");
@@ -91,6 +91,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("highscoreV1_167x182", "./../asset/img/hud/start screen/highscoreV1_167x182.png");
 	this.add("highscore_93x120", "./../asset/img/hud/start screen/highscore_93x120.png");
 	this.add("highscore_v2_93x125", "./../asset/img/hud/start screen/highscore_v2_93x125.png");
+	this.add("highscore_v3_93x123", "./../asset/img/hud/start screen/highscore_v3_93x123.png");
 	this.add("howlkraul_314x82", "./../asset/img/hud/start screen/howlkraul_314x82.png");
 	this.add("info_30x31", "./../asset/img/hud/start screen/info_30x31.png");
 	this.add("tutorial_text_114x61", "./../asset/img/hud/start screen/tutorial_text_114x61.png");
