@@ -24,15 +24,16 @@ howlkraul.ui.HighScore = function () {
   //--------------------------------------------------------------------------
 
   /**
-   * Overlay with opacity. 
+   * The background
    * 
    * @type {rune.display.Graphic}
    */
-  this.m_overlay = null;
+  this.m_background = null;
 
   this.m_hsList = [];
 
   this.m_hsItems = [];
+  this.m_hsScores = [];
 }
 
 //--------------------------------------------------------------------------
@@ -108,17 +109,30 @@ howlkraul.ui.HighScore.prototype.updateList = function (nrPlayers) {
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.m_initItems = function () {
-  var currentX = 17;
-  var currentY = 53;
+  var defaultXName = 10;
+  var defaultXScore = 70;
+  var currentY = 51;
 
   for (var i = 0; i < 3; i++) {
-    var item = new rune.text.BitmapField("AA", "small_font_256x24");
+    var item = new rune.text.BitmapField("a", "small_font_256x24");
+    var score = new rune.text.BitmapField("a", "small_font_256x24");
+
     item.autoSize = true;
-    item.x = currentX;
+    score.autoSize = true;
+
+    item.x = defaultXName;
+    score.x = defaultXScore;
+
     item.y = currentY;
-    currentY += 28
+    score.y = currentY;
+
+    currentY += 31;
+
     this.m_hsItems.push(item);
+    this.m_hsScores.push(score);
+
     this.addChild(item);
+    this.addChild(score);
   }
 };
 
@@ -129,8 +143,8 @@ howlkraul.ui.HighScore.prototype.m_initItems = function () {
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.m_initBackground = function () {
-  var background = new rune.display.Graphic(0, 0, 93, 120, "highscore_93x120");
-  this.addChild(background);
+  this.m_background = new rune.display.Graphic(0, 0, 93, 125, "highscore_v2_93x125");
+  this.addChild(this.m_background);
 };
 
 /**
@@ -140,7 +154,11 @@ howlkraul.ui.HighScore.prototype.m_initBackground = function () {
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.m_renderList = function () {
+  console.log(this.m_hsScores);
+
   for (var i = 0; i < this.m_hsList.length; i++) {
-    this.m_hsItems[i].text = this.m_hsList[i].name + " " + this.m_hsList[i].score;
+    this.m_hsItems[i].text = this.m_hsList[i].name.toUpperCase();
+    this.m_hsScores[i].text = this.m_hsList[i].score.toString();
   }
+
 };
