@@ -275,7 +275,6 @@ howlkraul.scene.CharacterSelection.prototype.init = function () {
   this.m_initStates();
   this.m_initSounds();
   this.m_initEnvironment();
-  //this.m_initSelectors();
   this.m_initWizards();
   this.m_initSpellGroup();
   this.m_initSort();
@@ -547,7 +546,7 @@ howlkraul.scene.CharacterSelection.prototype.m_initStates = function () {
 howlkraul.scene.CharacterSelection.prototype.m_initSounds = function () {
   this.m_sound = this.application.sounds.music.get("music_characterSelect");
   this.m_sound.loop = true;
-  this.m_sound.volume = 0;
+  //this.m_sound.volume = 0;
   this.m_sound.play();
 };
 
