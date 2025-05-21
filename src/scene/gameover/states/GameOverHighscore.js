@@ -41,15 +41,15 @@ howlkraul.scene.GameOverHighscore.prototype.update = function (step) {
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
 
-  if (keyboard.justPressed("d") || gamepad1.justPressed(9) || gamepad2.justPressed(9)) {
+  if (keyboard.justPressed("d") || gamepad1.stickLeftJustRight || gamepad2.stickLeftJustRight) {
     this.m_keyboard.moveRight();
   }
 
-  if (keyboard.justPressed("a") || gamepad1.justPressed(9) || gamepad2.justPressed(9)) {
+  if (keyboard.justPressed("a") || gamepad1.stickLeftJustLeft || gamepad2.stickLeftJustLeft) {
     this.m_keyboard.moveLeft();
   }
 
-  if (keyboard.justPressed("enter") || gamepad1.justPressed(9) || gamepad2.justPressed(9)) {
+  if (keyboard.justPressed("enter") || gamepad1.justPressed(0) || gamepad2.justPressed(0)) {
     var selectedKey = this.m_keyboard.select();
 
     if (selectedKey === "BACK") {
