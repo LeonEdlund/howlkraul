@@ -66,12 +66,14 @@ howlkraul.ui.MenuIdle.prototype.update = function () {
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
 
-  if (keyboard.justPressed("up") || gamepad1.stickLeftJustUp || gamepad2.stickLeftJustUp) {
+  if (keyboard.justPressed("w") || gamepad1.stickLeftJustUp || gamepad2.stickLeftJustUp) {
     this.owner.m_menu.up();
+    this.m_updateHighscoreForCurrentItem();
   }
 
-  if (keyboard.justPressed("down") || gamepad1.stickLeftJustDown || gamepad2.stickLeftJustDown) {
+  if (keyboard.justPressed("s") || gamepad1.stickLeftJustDown || gamepad2.stickLeftJustDown) {
     this.owner.m_menu.down();
+    this.m_updateHighscoreForCurrentItem();
   }
 
   if (keyboard.justPressed("enter") || gamepad1.justPressed(0) || gamepad2.justPressed(0)) {
@@ -114,4 +116,21 @@ howlkraul.ui.MenuIdle.prototype.m_onSelect = function (choice) {
 
     }
   }, this);
+};
+
+/**
+ * Updates the highscore list based on current menu selection
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.ui.MenuIdle.prototype.m_updateHighscoreForCurrentItem = function () {
+  var currentItem = this.owner.m_menu.hoveredItem;
+
+  // Update highscore based on current selection
+  if (currentItem === "one player") {
+    this.owner.m_highscore.updateList(1);
+  } else if (currentItem === "two player") {
+    this.owner.m_highscore.updateList(2);
+  }
 };

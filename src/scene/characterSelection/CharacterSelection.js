@@ -385,7 +385,7 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
     this.m_p2Choice--;
   }
 
-  this.m_p2Choice = rune.util.Math.wrap(this.m_p2Choice, 0, this.m_wizards.length - 1)
+  this.m_p2Choice = rune.util.Math.wrap(this.m_p2Choice, 0, this.m_wizards.length - 1);
   this.m_p2Selector.centerY = this.m_wizards[this.m_p2Choice].centerY + 14;
   this.m_p2Selector.centerX = this.m_wizards[this.m_p2Choice].centerX;
 
