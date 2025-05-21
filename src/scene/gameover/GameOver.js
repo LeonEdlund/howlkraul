@@ -35,7 +35,7 @@ howlkraul.scene.GameOver = function (score) {
    * @private 
    * @type {number}
    */
-  this.m_score = score;
+  this.m_score = score || 0;
 
   /**
    * Game over grapic.
@@ -62,6 +62,29 @@ howlkraul.scene.GameOver.prototype = Object.create(rune.scene.Scene.prototype);
 howlkraul.scene.GameOver.prototype.constructor = howlkraul.scene.GameOver;
 
 //------------------------------------------------------------------------------
+// Getters and Setters
+//------------------------------------------------------------------------------
+
+/**
+ * The total score from the game 
+ *
+ * @member {number} score
+ * @memberof howlkraul.scene.GameOver
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.GameOver.prototype, "score", {
+  /**
+   * @this howlkraul.scene.GameOver
+   * @ignore
+   */
+  get: function () {
+    return this.m_score;
+  }
+});
+
+
+//------------------------------------------------------------------------------
 // Override rune methods
 //------------------------------------------------------------------------------
 
@@ -75,6 +98,7 @@ howlkraul.scene.GameOver.prototype.constructor = howlkraul.scene.GameOver;
 howlkraul.scene.GameOver.prototype.init = function () {
   rune.scene.Scene.prototype.init.call(this);
 
+  this.m_initStates();
   this.m_initGrapic();
   this.m_initScore();
 };
@@ -89,10 +113,6 @@ howlkraul.scene.GameOver.prototype.init = function () {
  */
 howlkraul.scene.GameOver.prototype.update = function (step) {
   rune.scene.Scene.prototype.update.call(this, step);
-
-  if (this.keyboard.justPressed("enter") || this.gamepads.get(0).justPressed(9) || this.gamepads.get(0).justPressed(9)) {
-    this.application.scenes.load([new howlkraul.scene.CharacterSelection()]);
-  }
 };
 
 /**
@@ -118,6 +138,20 @@ howlkraul.scene.GameOver.prototype.dispose = function () {
 //--------------------------------------------------------------------------
 // Private Methods (INIT)
 //--------------------------------------------------------------------------
+
+/**
+ * Initializes states for GameOver
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.m_initStates = function () {
+  this.states.load([
+    new howlkraul.scene.GameOverIdle(),
+    //new howlkraul.scene.GameOverStats(),
+    new howlkraul.scene.GameOverHighscore(),
+  ]);
+};
 
 /**
  * Initializes and fades in game over graphic

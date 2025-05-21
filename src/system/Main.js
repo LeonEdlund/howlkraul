@@ -25,12 +25,14 @@ howlkraul.system.Main = function () {
         developer: "se.lnu",
         app: "howlkraul",
         build: "0.0.0",
-        scene: howlkraul.scene.CharacterSelection,
+        scene: howlkraul.scene.GameOver,
         resources: howlkraul.data.Requests,
         useGamepads: true,
         useKeyboard: true,
         framerate: 60,
-        debug: true
+        debug: true,
+        numHighscores: 3,
+        numHighscoreTables: 2
     });
 };
 
