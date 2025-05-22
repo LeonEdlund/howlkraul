@@ -128,6 +128,15 @@ var howlkraul = function () {
     */
     m_this.ui = {};
 
+    /**
+    * This package contains all util classes.
+    *
+    * @namespace ui
+    * @memberof howlkraul
+    * @since 1.0
+    */
+    m_this.utils = {};
+
     //--------------------------------------------------------------------------
     // Return public scope object
     //--------------------------------------------------------------------------

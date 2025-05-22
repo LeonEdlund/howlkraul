@@ -504,10 +504,8 @@ howlkraul.entity.Entity.prototype.initSounds = function () {
 };
 
 /**
- * Override to pick.
- * Runs when a entity takes damage.
+ * Plays a death sound when a entity dies.
  * 
- * @abstract
  * @protected
  * @returns {undefined}
  */
@@ -522,10 +520,8 @@ howlkraul.entity.Entity.prototype.playDeathSound = function () {
 };
 
 /**
- * Override to pick.
- * Runs when a entity takes damage.
+ * Plays a damage sound when a entity takes damage.
  * 
- * @abstract
  * @protected
  * @returns {undefined}
  */

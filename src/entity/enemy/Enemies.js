@@ -59,7 +59,7 @@ howlkraul.entity.Enemies.prototype.constructor = howlkraul.entity.Enemies;
 //--------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------
-// Overide Methods
+// Overide rune Methods
 //--------------------------------------------------------------------------
 
 /**
@@ -143,11 +143,20 @@ howlkraul.entity.Enemies.prototype.m_initEmitters = function () {
 /**
  * Callback function for hits.
  * 
+ * @param {}
  * @private
  * @returns {undefined}
  */
 howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
   enemy.takeDamage(spell.castedBy.power);
+
+  if (enemy.hp <= 0) {
+    enemy.die();
+    spell.castedBy.stats.addKill();
+  } else {
+    this.bleed(enemy);
+  }
+
   spell.castedBy.controller.vibrate(100, 0.3, 0.6);
   this.m_scene.cameras.getCameraAt(0).shake.start(300, 1, 1);
   this.m_scene.spells.removeMember(spell, true);

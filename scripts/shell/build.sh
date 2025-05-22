@@ -9,6 +9,7 @@ npx google-closure-compiler \
 --js "./../../lib/rune.js" \
 --js "./../../src/scope/Manifest.js" \
 --js "./../../src/data/resource/Requests.js" \
+--js "./../../src/utils/StatCounter.js" \
 --js "./../../src/ui/keyboard/InputArea.js" \
 --js "./../../src/ui/keyboard/Key.js" \
 --js "./../../src/ui/keyboard/Keyboard.js" \

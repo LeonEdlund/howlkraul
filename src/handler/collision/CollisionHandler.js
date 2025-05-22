@@ -123,6 +123,8 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
 howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
   this.game.players.hitTestGroup(this.game.coins, function (player, coin) {
     coin.playSound();
+
+    player.stats.addCoin();
     this.game.moneyCounter.add(coin.worth);
     this.game.coins.removeMember(coin, true);
   }, this);
