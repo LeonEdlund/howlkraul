@@ -78,12 +78,17 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("troll_gore3_19x18", "./../asset/img/gore/troll/troll_gore3_19x18.png");
 	this.add("troll_gore4_19x18", "./../asset/img/gore/troll/troll_gore4_19x18.png");
 	this.add("troll_gore5_19x18", "./../asset/img/gore/troll/troll_gore5_19x18.png");
+	this.add("continue_24x24", "./../asset/img/hud/dead screen/continue_24x24.png");
 	this.add("death_screen_218x152", "./../asset/img/hud/dead screen/death_screen_218x152.png");
+	this.add("blue_card_94x136", "./../asset/img/hud/dead screen/player cards/blue_card_94x136.png");
+	this.add("brown_card_94x136", "./../asset/img/hud/dead screen/player cards/brown_card_94x136.png");
+	this.add("green_card_94x136", "./../asset/img/hud/dead screen/player cards/green_card_94x136.png");
+	this.add("red_card_94x136", "./../asset/img/hud/dead screen/player cards/red_card_94x136.png");
 	this.add("player_x_died", "./../asset/img/hud/dead screen/player_x_died.png");
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud characters/face_hud_22x25.png");
+	this.add("Player_hud_69x31", "./../asset/img/hud/hud components/Player_hud_69x31.png");
 	this.add("coin_hud_12x18", "./../asset/img/hud/hud components/coin_hud_12x18.png");
-	this.add("player_hud_69x31", "./../asset/img/hud/hud components/player_hud_69x31.png");
 	this.add("player_selection_p1_37x19", "./../asset/img/hud/selectors/player_selection_p1_37x19.png");
 	this.add("player_selection_p2_37x19", "./../asset/img/hud/selectors/player_selection_p2_37x19.png");
 	this.add("controller_30x31", "./../asset/img/hud/start screen/controller_30x31.png");
