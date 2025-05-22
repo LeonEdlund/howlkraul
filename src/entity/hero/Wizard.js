@@ -165,6 +165,14 @@ howlkraul.entity.Wizard = function (x, y, color, input, hud) {
    * @type {howlkraul.ui.Manabar}
    */
   this.m_manabar = null;
+
+  /**
+   * Reference to the manabar object. 
+   * 
+   * @private
+   * @type {howlkraul.utils.StatCounter}
+   */
+  this.m_statCounter = null;
 };
 
 //------------------------------------------------------------------------------
@@ -347,6 +355,25 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "manabar", {
   }
 });
 
+/**
+ * Reference to the statcounter. 
+ * Used to update the stas for the player during a game.
+ *
+ * @member {boolean} stats
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "stats", {
+  /**
+   * @this howlkraul.entity.Wizard
+   * @ignore
+   */
+  get: function () {
+    return this.m_statCounter;
+  }
+});
+
 //--------------------------------------------------------------------------
 // Override Rune Methods
 //--------------------------------------------------------------------------
@@ -359,6 +386,7 @@ howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
 
   this.hitbox.set(5, 24, 17, 9);
+  this.m_initStatCounter();
   this.m_changeColor();
   this.m_initManabar();
 };
@@ -379,6 +407,7 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
  * @override
  */
 howlkraul.entity.Wizard.prototype.dispose = function () {
+  this.m_disposeStatCounter();
   this.m_disposeInputHandler();
   this.m_disposeHUD();
   this.m_disposeManabar();
@@ -450,6 +479,7 @@ howlkraul.entity.Wizard.prototype.takeDamage = function () {
   var now = Date.now();
 
   if (now > this.m_lastDamageHit && this.hp > 0) {
+    this.m_statCounter.addHit();
     this.hp -= 1;
     this.m_lastDamageHit = now + this.m_damageHitCoolDown;
 
@@ -782,6 +812,20 @@ howlkraul.entity.Wizard.prototype.m_setShootingAnimation = function () {
 //--------------------------------------------------------------------------
 
 /**
+ * Initalizes the statCounter for the wizard.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_initStatCounter = function () {
+  this.m_disposeStatCounter();
+
+  if (!this.m_statCounter) {
+    this.m_statCounter = new howlkraul.utils.StatCounter(this.m_color);
+  }
+};
+
+/**
  * Change color of character.
  * 
  * @private
@@ -890,6 +934,18 @@ howlkraul.entity.Wizard.prototype.m_initManabar = function () {
 //--------------------------------------------------------------------------
 // Private Methods (DISPOSE)
 //--------------------------------------------------------------------------
+
+/**
+ * Dispose StatCounter
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_disposeStatCounter = function () {
+  if (this.m_statCounter) {
+    this.m_statCounter = null;
+  }
+};
 
 /**
  * Dispose manabar and removes it to stage.

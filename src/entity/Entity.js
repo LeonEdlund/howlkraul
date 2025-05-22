@@ -336,7 +336,7 @@ Object.defineProperty(howlkraul.entity.Entity.prototype, "damageSound", {
    */
   get: function () {
     var i = rune.util.Math.randomInt(0, (this.m_damageSounds.length - 1));
-    return this.m_damageSounds[i] || null;
+    return this.m_damageSounds[i] || "";
   }
 });
 
@@ -374,7 +374,7 @@ Object.defineProperty(howlkraul.entity.Entity.prototype, "deathSound", {
    */
   get: function () {
     var i = rune.util.Math.randomInt(0, (this.m_deathSounds.length - 1));
-    return this.m_deathSounds[i] || null;
+    return this.m_deathSounds[i] || "";
   }
 });
 
@@ -504,36 +504,34 @@ howlkraul.entity.Entity.prototype.initSounds = function () {
 };
 
 /**
- * Override to pick.
- * Runs when a entity takes damage.
+ * Plays a death sound when a entity dies.
  * 
- * @abstract
  * @protected
  * @returns {undefined}
  */
 howlkraul.entity.Entity.prototype.playDeathSound = function () {
   if (this.deathSound) {
+    var sound = this.application.sounds.sound.get(this.deathSound);
     var pan = this.getPaningValue();
-    this.deathSound.pan = pan;
-    this.deathSound.volume = 0.6;
-    this.deathSound.play(true);
+    sound.pan = pan;
+    sound.volume = 0.6;
+    sound.play(true);
   }
 };
 
 /**
- * Override to pick.
- * Runs when a entity takes damage.
+ * Plays a damage sound when a entity takes damage.
  * 
- * @abstract
  * @protected
  * @returns {undefined}
  */
 howlkraul.entity.Entity.prototype.playDamageSound = function () {
   if (this.damageSound) {
+    var sound = this.application.sounds.sound.get(this.damageSound);
     var pan = this.getPaningValue();
-    this.damageSound.pan = pan;
-    this.damageSound.volume = 0.6;
-    this.damageSound.play(true);
+    sound.pan = pan;
+    sound.volume = 0.6;
+    sound.play(true);
   }
 };
 

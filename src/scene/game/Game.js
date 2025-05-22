@@ -501,20 +501,35 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
     var deadPlayers = 0;
 
     this.m_players.forEachMember(function (player) {
-        if (player.hp === 0) {
-            deadPlayers += 1;
-        }
+        if (player.hp === 0) deadPlayers += 1;
     }, this);
 
     if (deadPlayers >= this.m_players.numMembers && !this.m_gameOver) {
         this.m_gameOver = true;
-
-        this.cameras.getCameraAt(0).fade.out(800, function () {
-            var twoPlayer = (this.m_selectedPlayers.length === 2) ? true : false;
-            this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score, twoPlayer)])
-        }, this);
+        this.m_handleGameOver();
     }
 };
+
+/**
+ * Handles game over.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.Game.prototype.m_handleGameOver = function () {
+    var twoPlayer = (this.m_selectedPlayers.length === 2) ? true : false;
+    var playerStats = [];
+
+    this.m_players.forEachMember(function (player) {
+        playerStats.push(player.stats);
+    }, this);
+
+    this.cameras.getCameraAt(0).fade.out(800, function () {
+        this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score, twoPlayer, playerStats)])
+    }, this);
+};
+
+
 
 //--------------------------------------------------------------------------
 // Private Methods (INIT)

@@ -267,13 +267,7 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
  */
 howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
   this.hp -= amount;
-
-  if (this.hp <= 0) {
-    this.die();
-  } else {
-    this.application.scenes.selected.enemies.bleed(this);
-    this.playDamageSound();
-  }
+  this.playDamageSound();
 };
 
 /**
