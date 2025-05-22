@@ -97,7 +97,7 @@ howlkraul.scene.GameOverStats.prototype.onExit = function () {
 */
 howlkraul.scene.GameOverStats.prototype.m_createCards = function () {
   for (var i = 0; i < this.owner.playerStats.length; i++) {
-    var card = new howlkraul.ui.PlayerCard(this.owner.playerStats);
+    var card = new howlkraul.ui.PlayerCard(this.owner.playerStats[i]);
     this.m_cards.push(card);
   }
 };
@@ -109,23 +109,26 @@ howlkraul.scene.GameOverStats.prototype.m_createCards = function () {
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
+  console.log(this.m_cards)
   if (!this.m_cards) return;
 
   if (this.m_cards.length === 1) {
     var card = this.m_cards[0];
     this.owner.stage.addChild(card);
-    card.center = this.owner.stage.center;
+    card.center = this.owner.application.screen.center;
   }
 
   if (this.m_cards.length === 2) {
     var card1 = this.m_cards[0];
-    var card2 = this.m_cards[0];
+    var card2 = this.m_cards[1];
 
     this.owner.stage.addChild(card1);
     this.owner.stage.addChild(card2);
 
-    card1.centerX = this.owner.stage.centerX - card1.width - 20;
-    card2.centerX = this.owner.stage.centerX + card2.width + 20;
-  }
+    card1.centerY = this.owner.application.screen.centerY;
+    card2.centerY = this.owner.application.screen.centerY;
 
+    card1.centerX = this.owner.application.screen.centerX - card1.width - 5;
+    card2.centerX = this.owner.application.screen.centerX + card2.width + 5;
+  }
 };
