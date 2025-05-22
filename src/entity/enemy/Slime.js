@@ -30,6 +30,8 @@ howlkraul.entity.Slime.prototype.initAnimations = function () {
 */
 howlkraul.entity.Slime.prototype.initSounds = function () {
   // Death Sound
-  this.deathSounds.push(this.application.sounds.sound.get("sfx_slime_death1"));
-  this.deathSounds.push(this.application.sounds.sound.get("sfx_slime_death2"));
+  // this.deathSounds.push(this.application.sounds.sound.get("sfx_slime_death1"));
+  // this.deathSounds.push(this.application.sounds.sound.get("sfx_slime_death2"));
+
+  this.deathSounds.push("sfx_slime_death1", "sfx_slime_death2")
 };

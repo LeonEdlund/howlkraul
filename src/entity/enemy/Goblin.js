@@ -69,18 +69,32 @@ howlkraul.entity.Goblin.prototype.initAnimations = function () {
 */
 howlkraul.entity.Goblin.prototype.initSounds = function () {
   // Damage Sound
-  this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit1"));
-  this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit2"));
-  this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit3"));
-  this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit4"));
-  this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit5"));
-  this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit6"));
+  // this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit1"));
+  // this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit2"));
+  // this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit3"));
+  // this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit4"));
+  // this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit5"));
+  // this.damageSounds.push(this.application.sounds.sound.get("sfx_goblin_hit6"));
+
+  this.deathSounds.push(
+    "sfx_goblin_hit1",
+    "sfx_goblin_hit2",
+    "sfx_goblin_hit3",
+    "sfx_goblin_hit4",
+  );
 
   // Death sounds
-  this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death1"));
-  this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death2"));
-  this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death3"));
-  this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death4"));
+  // this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death1"));
+  // this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death2"));
+  // this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death3"));
+  // this.deathSounds.push(this.application.sounds.sound.get("sfx_goblin_death4"));
+
+  this.deathSounds.push(
+    "sfx_goblin_death1",
+    "sfx_goblin_death2",
+    "sfx_goblin_death3",
+    "sfx_goblin_death4",
+  );
 };
 
 howlkraul.entity.Goblin.prototype.setState = function () {
