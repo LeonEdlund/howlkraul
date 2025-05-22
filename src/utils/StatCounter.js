@@ -156,7 +156,6 @@ howlkraul.utils.StatCounter.prototype.addKill = function () {
  */
 howlkraul.utils.StatCounter.prototype.addCoin = function () {
   this.m_coins++;
-  console.log("coins" + this.m_coins);
 };
 
 /**
