@@ -42,15 +42,7 @@ howlkraul.scene.GameOverIdle.prototype.update = function (step) {
   var gamepad2 = this.owner.gamepads.get(1);
 
   if (keyboard.justPressed("enter") || gamepad1.justPressed(0) || gamepad2.justPressed(0)) {
-    var list = this.owner.twoPlayer ? 1 : 0;
-    var isHighscore = this.owner.application.highscores.test(this.owner.score, list);
-    console.log(isHighscore)
-
-    if (isHighscore !== -1) {
-      this.owner.states.select("GameOverHighscore");
-    } else {
-      this.owner.fadeToMainMenu();
-    }
+    this.owner.states.select("GameOverStats");
   }
 };
 

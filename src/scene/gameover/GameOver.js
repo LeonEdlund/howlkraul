@@ -8,13 +8,15 @@
  * @constructor
  * @extends rune.scene.Scene
  * @param {number} score - the score that should be displayed. 
+ * @param {number} twoPlayer - The number of players.
+ * @param {array<howlkraul.utils.playerStats>} playerStats - an array with playerstats objects from the played game. 
  * 
  * @class
  * @classdesc
  * 
  * GameOver scene.
  */
-howlkraul.scene.GameOver = function (score, twoPlayer) {
+howlkraul.scene.GameOver = function (score, twoPlayer, playerStats) {
 
   //--------------------------------------------------------------------------
   // Super call
@@ -44,6 +46,14 @@ howlkraul.scene.GameOver = function (score, twoPlayer) {
    * @type {number}
    */
   this.m_score = score || 0;
+
+  /**
+   * The playerstat objects from each player.
+   * 
+   * @private 
+   * @type {array<howlkraul.utils.playerStats>}
+   */
+  this.m_playerStats = playerStats || [];
 
   /**
    * Game over grapic.
@@ -109,6 +119,23 @@ Object.defineProperty(howlkraul.scene.GameOver.prototype, "twoPlayer", {
   }
 });
 
+/**
+ * A list of player stats from the previusly played game.
+ *
+ * @member {array<howlkraul.utils.PlayerStats} playerStats
+ * @memberof howlkraul.scene.GameOver
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.GameOver.prototype, "playerStats", {
+  /**
+   * @this howlkraul.scene.GameOver
+   * @ignore
+   */
+  get: function () {
+    return this.m_playerStats;
+  }
+});
 
 //------------------------------------------------------------------------------
 // Override rune methods
@@ -184,7 +211,7 @@ howlkraul.scene.GameOver.prototype.fadeToMainMenu = function () {
 howlkraul.scene.GameOver.prototype.m_initStates = function () {
   this.states.load([
     new howlkraul.scene.GameOverIdle(),
-    //new howlkraul.scene.GameOverStats(),
+    new howlkraul.scene.GameOverStats(),
     new howlkraul.scene.GameOverHighscore(),
   ]);
 };
