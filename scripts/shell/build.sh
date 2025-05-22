@@ -23,6 +23,7 @@ npx google-closure-compiler \
 --js "./../../src/ui/manabar/Manabar.js" \
 --js "./../../src/ui/scorecounter/ScoreCounter.js" \
 --js "./../../src/ui/scorecounter/CounterCoin.js" \
+--js "./../../src/ui/playercard/PlayerCard.js" \
 --js "./../../src/handler/collision/CollisionHandler.js" \
 --js "./../../src/handler/input/InputHandler.js" \
 --js "./../../src/drops/Coin.js" \

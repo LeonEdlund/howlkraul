@@ -109,26 +109,44 @@ howlkraul.scene.GameOverStats.prototype.m_createCards = function () {
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
-  console.log(this.m_cards)
   if (!this.m_cards) return;
 
-  if (this.m_cards.length === 1) {
-    var card = this.m_cards[0];
+  var centerX = this.owner.application.screen.center.x;
+  var spacing = 70;
+
+  for (var i = 0; i < this.m_cards.length; i++) {
+    var card = this.m_cards[i];
     this.owner.stage.addChild(card);
-    card.center = this.owner.application.screen.center;
+
+    card.y = this.owner.application.screen.height + 20;
+    card.rotation = (i === 0) ? -45 : 45;
+
+    if (this.m_cards.length === 1) {
+      card.centerX = centerX;
+    } else {
+      card.centerX = centerX + (i === 0 ? -spacing : spacing);
+    }
+
+    this.m_animateCard(card);
   }
+};
 
-  if (this.m_cards.length === 2) {
-    var card1 = this.m_cards[0];
-    var card2 = this.m_cards[1];
 
-    this.owner.stage.addChild(card1);
-    this.owner.stage.addChild(card2);
-
-    card1.centerY = this.owner.application.screen.centerY;
-    card2.centerY = this.owner.application.screen.centerY;
-
-    card1.centerX = this.owner.application.screen.centerX - card1.width - 5;
-    card2.centerX = this.owner.application.screen.centerX + card2.width + 5;
-  }
+/**
+ * Apply tween animation to card.
+ * 
+ * @private
+ * @param {howlkraul.ui.PlayerCard}
+ * @returns {undefined}
+*/
+howlkraul.scene.GameOverStats.prototype.m_animateCard = function (card) {
+  this.owner.application.scenes.selected.tweens.create({
+    target: card,
+    scope: this,
+    duration: 1000,
+    args: {
+      centerY: this.owner.application.screen.centerY,
+      rotation: 0,
+    }
+  });
 };

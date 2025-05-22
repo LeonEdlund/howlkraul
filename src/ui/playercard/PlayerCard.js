@@ -48,9 +48,9 @@ howlkraul.ui.PlayerCard.prototype.init = function () {
  * @returns {undefined}
  */
 howlkraul.ui.PlayerCard.prototype.dispose = function () {
-  rune.display.Graphic.prototype.dispose.call(this);
-
   this.removeChildren(true);
+
+  rune.display.Graphic.prototype.dispose.call(this);
 };
 
 
@@ -94,6 +94,10 @@ howlkraul.ui.PlayerCard.prototype.m_setStats = function () {
   var hits = new rune.text.BitmapField(this.m_playerStats.hits.toString(), "small_font_256x24");
 
   this.m_scores.push(kills, coins, hits);
+
+  for (var i = 0; i < this.m_scores.length; i++) {
+    this.m_scores[i].autoSize = true;
+  }
 };
 
 /**
@@ -103,12 +107,12 @@ howlkraul.ui.PlayerCard.prototype.m_setStats = function () {
  * @returns {undefined}
  */
 howlkraul.ui.PlayerCard.prototype.m_renderScores = function () {
-  var defaultX = 67;
+  var defaultX = 77;
   var currentY = 84;
 
   for (var i = 0; i < this.m_scores.length; i++) {
     this.addChild(this.m_scores[i]);
-    this.m_scores[i].x = defaultX;
+    this.m_scores[i].x = defaultX - this.m_scores[i].width;
     this.m_scores[i].y = currentY;
     currentY += 20;
 
