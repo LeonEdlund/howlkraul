@@ -153,7 +153,6 @@ howlkraul.scene.GameOverStats.prototype.m_createCards = function () {
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
-
   var centerX = this.owner.application.screen.center.x;
   var spacing = 70;
 
@@ -170,7 +169,8 @@ howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
       card.centerX = centerX + (i === 0 ? -spacing : spacing);
     }
 
-    this.m_animateCard(card);
+    this.m_animateCard(i);
+
   }
 };
 
@@ -181,16 +181,30 @@ howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
  * @param {howlkraul.ui.PlayerCard}
  * @returns {undefined}
 */
-howlkraul.scene.GameOverStats.prototype.m_animateCard = function (card) {
-  this.owner.application.scenes.selected.tweens.create({
-    target: card,
-    scope: this,
-    duration: 400,
-    args: {
-      centerY: this.owner.application.screen.centerY,
-      rotation: 0,
-    }
-  });
+howlkraul.scene.GameOverStats.prototype.m_animateCard = function (index) {
+  var card = this.m_cards[index];
+
+  this.owner.timers.create({
+    duration: 300 + (index * 500),
+    onComplete: function () {
+      var sound = this.owner.application.sounds.sound.get("sfx_card" + (index + 1).toString());
+      sound.play();
+
+      this.owner.application.scenes.selected.tweens.create({
+        target: card,
+        scope: this,
+        duration: 400,
+        args: {
+          centerY: this.owner.application.screen.centerY,
+          rotation: 0,
+        }
+      });
+    },
+    scope: this
+  })
+
+
+
 };
 
 

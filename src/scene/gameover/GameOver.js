@@ -44,7 +44,7 @@ howlkraul.scene.GameOver = function (score, playerStats) {
    * @private 
    * @type {array<howlkraul.utils.playerStats>}
    */
-  this.m_playerStats = playerStats || [new howlkraul.utils.StatCounter("blue")];
+  this.m_playerStats = playerStats || [new howlkraul.utils.StatCounter("blue"), new howlkraul.utils.StatCounter("red")];
 
   /**
    * Gameover grapic.
@@ -253,7 +253,7 @@ howlkraul.scene.GameOver.prototype.addNextButton = function () {
     this.stage.addChild(this.m_nextButton);
 
     this.timers.create({
-      duration: 2000,
+      duration: 2500,
       onComplete: this.m_fadeInNextButton,
       scope: this
     }, true);

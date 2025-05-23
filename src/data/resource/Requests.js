@@ -153,6 +153,8 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("room_400x225", "./../asset/img/room/room_400x225.png");
 	this.add("music_characterSelect", "./../asset/sounds/music/music_characterSelect.wav");
 	this.add("music_playing", "./../asset/sounds/music/music_playing.wav");
+	this.add("sfx_card1", "./../asset/sounds/sfx/card/sfx_card1.mp3");
+	this.add("sfx_card2", "./../asset/sounds/sfx/card/sfx_card2.mp3");
 	this.add("sfx_bomb", "./../asset/sounds/sfx/drops/bomb/sfx_bomb.mp3");
 	this.add("sfx_coin", "./../asset/sounds/sfx/drops/coin/sfx_coin.mp3");
 	this.add("sfx_goblin_death1", "./../asset/sounds/sfx/enemies/goblin/sfx_goblin_death1.mp3");
