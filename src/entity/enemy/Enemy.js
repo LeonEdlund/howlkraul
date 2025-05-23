@@ -266,8 +266,14 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Enemy.prototype.takeDamage = function (amount) {
+  console.log("take damage " + "hp: " + this.hp);
   this.hp -= amount;
-  this.playDamageSound();
+
+  if (this.hp <= 0) {
+    this.die();
+  } else {
+    this.playDamageSound();
+  }
 };
 
 /**

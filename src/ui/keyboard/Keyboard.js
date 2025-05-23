@@ -3,7 +3,7 @@ howlkraul.ui.Keyboard = function () {
   // Super call
   //--------------------------------------------------------------------------
 
-  rune.display.DisplayObjectContainer.call(this, 0, 0, 400, 30);
+  rune.display.DisplayObjectContainer.call(this, 0, 0, 320, 30);
 
   /**
    * All keys in the keyboard.
@@ -54,7 +54,8 @@ howlkraul.ui.Keyboard.prototype.constructor = howlkraul.ui.Keyboard;
  * @returns {undefined}
  */
 howlkraul.ui.Keyboard.prototype.moveLeft = function () {
-  this.m_currentKey--;
+  (this.m_currentKey === this.m_keys.length - 1) ? this.m_currentKey = 0 : this.m_currentKey--;
+  this.m_currentKey = rune.util.Math.wrap(this.m_currentKey, 0, this.m_keys.length - 2);
   this.m_moveSelector();
 }
 
@@ -65,7 +66,31 @@ howlkraul.ui.Keyboard.prototype.moveLeft = function () {
  * @returns {undefined}
  */
 howlkraul.ui.Keyboard.prototype.moveRight = function () {
-  this.m_currentKey++;
+  console.log(this.m_currentKey === this.m_keys.length - 1);
+  (this.m_currentKey === this.m_keys.length - 1) ? this.m_currentKey = this.m_keys.length - 2 : this.m_currentKey++;
+  this.m_currentKey = rune.util.Math.wrap(this.m_currentKey, 0, this.m_keys.length - 2);
+  this.m_moveSelector();
+}
+
+/**
+ * Move selector to save button.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.ui.Keyboard.prototype.moveToSave = function () {
+  this.m_currentKey = this.m_keys.length - 1;
+  this.m_moveSelector();
+}
+
+/**
+ * Move selector to save button.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.ui.Keyboard.prototype.moveBackToKeyboard = function () {
+  this.m_currentKey = 13;
   this.m_moveSelector();
 }
 
@@ -94,7 +119,6 @@ howlkraul.ui.Keyboard.prototype.select = function () {
  */
 howlkraul.ui.Keyboard.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
-  this.debug = true;
 
   this.m_initKeys();
   this.m_initSelector();
@@ -111,9 +135,9 @@ howlkraul.ui.Keyboard.prototype.init = function () {
  * @returns {undefined}
  */
 howlkraul.ui.Keyboard.prototype.m_moveSelector = function () {
-  this.m_currentKey = rune.util.Math.wrap(this.m_currentKey, 0, this.m_keys.length - 1);
-  this.m_selector.width = this.m_keys[this.m_currentKey].width;
+  this.m_selector.width = this.m_keys[this.m_currentKey].width + 2;
   this.m_selector.center = this.m_keys[this.m_currentKey].center;
+  this.m_selector.centerY += 5;
 }
 
 /**
@@ -125,15 +149,16 @@ howlkraul.ui.Keyboard.prototype.m_moveSelector = function () {
 howlkraul.ui.Keyboard.prototype.m_initKeys = function () {
   if (this.m_keys.length === 0) {
 
-
     for (var i = 0; i < 26; i++) {
       var value = String.fromCharCode(97 + i).toUpperCase();
       this.m_createKey(value);
     }
 
-    this.m_createKey("BACK");
-    this.m_createKey("SAVE");
-
+    this.m_createKey("#");
+    this.m_createKey("$");
+    var save = this.m_createKey("SAVE");
+    save.centerX = this.centerX;
+    save.centerY = 20;
   }
 }
 
@@ -141,18 +166,19 @@ howlkraul.ui.Keyboard.prototype.m_initKeys = function () {
  * Creates a individual key.
  * 
  * @private
- * @returns {undefined}
+ * @returns {howlkraul.ui.Key}
 */
 howlkraul.ui.Keyboard.prototype.m_createKey = function (value) {
   var key = new howlkraul.ui.Key(value);
 
   key.autoSize = true;
-  key.centerY = this.centerY;
+  key.centerY = 5;
   key.x = this.m_currentX;
   this.m_currentX += key.width + 3;
 
   this.m_keys.push(key);
   this.addChild(key);
+  return key;
 }
 
 /**
@@ -163,10 +189,10 @@ howlkraul.ui.Keyboard.prototype.m_createKey = function (value) {
  */
 howlkraul.ui.Keyboard.prototype.m_initSelector = function () {
 
-  this.m_selector = new rune.display.Graphic(0, 0, 12, 15);
+  this.m_selector = new rune.display.Graphic(0, 0, 10, 1);
   this.m_selector.backgroundColor = "white";
-  this.m_selector.alpha = 0.5;
   this.m_selector.center = this.m_keys[0].center;
+  this.m_selector.centerY += 5;
 
   this.addChild(this.m_selector);
 }

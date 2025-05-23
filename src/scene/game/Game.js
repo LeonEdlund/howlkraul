@@ -517,7 +517,6 @@ howlkraul.scene.Game.prototype.m_checkGameOver = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_handleGameOver = function () {
-    var twoPlayer = (this.m_selectedPlayers.length === 2) ? true : false;
     var playerStats = [];
 
     this.m_players.forEachMember(function (player) {
@@ -525,7 +524,7 @@ howlkraul.scene.Game.prototype.m_handleGameOver = function () {
     }, this);
 
     this.cameras.getCameraAt(0).fade.out(800, function () {
-        this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score, twoPlayer, playerStats)])
+        this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score, playerStats)])
     }, this);
 };
 

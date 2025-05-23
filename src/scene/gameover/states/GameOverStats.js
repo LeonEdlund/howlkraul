@@ -49,20 +49,7 @@ howlkraul.scene.GameOverStats.prototype.constructor = howlkraul.scene.GameOverSt
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.update = function (step) {
-  var keyboard = this.owner.keyboard;
-  var gamepad1 = this.owner.gamepads.get(0);
-  var gamepad2 = this.owner.gamepads.get(1);
-
-  if (keyboard.justPressed("enter") || gamepad1.justPressed(0) || gamepad2.justPressed(0)) {
-    var list = this.owner.twoPlayer ? 1 : 0;
-    var isHighscore = this.owner.application.highscores.test(this.owner.score, list);
-
-    if (isHighscore !== -1) {
-      this.owner.states.select("GameOverHighscore");
-    } else {
-      this.owner.fadeToMainMenu();
-    }
-  }
+  this.m_handleInput();
 };
 
 /**
@@ -73,9 +60,11 @@ howlkraul.scene.GameOverStats.prototype.update = function (step) {
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.onEnter = function () {
+  this.m_initBackground();
   this.m_createCards();
   this.m_displayCards();
-
+  this.m_showHighscoreText();
+  this.owner.addNextButton();
 };
 
 /**
@@ -87,6 +76,61 @@ howlkraul.scene.GameOverStats.prototype.onEnter = function () {
 */
 howlkraul.scene.GameOverStats.prototype.onExit = function () {
   this.owner.stage.removeChildren(true);
+};
+
+//--------------------------------------------------------------------------
+// Private Methods (LOGIC)
+//--------------------------------------------------------------------------
+
+/**
+ * Handle input.
+ * 
+ * @private
+ * @returns {boolean}
+*/
+howlkraul.scene.GameOverStats.prototype.m_handleInput = function () {
+  var keyboard = this.owner.keyboard;
+  var gamepad1 = this.owner.gamepads.get(0);
+  var gamepad2 = this.owner.gamepads.get(1);
+
+  if (keyboard.justPressed("enter") || gamepad1.justPressed(0) || gamepad2.justPressed(0)) {
+    if (this.m_isHighscore()) {
+      this.owner.states.select("GameOverHighscore");
+    } else {
+      this.owner.fadeToMainMenu();
+    }
+  }
+};
+
+/**
+ * Checks if the score is a highscore
+ * 
+ * @private
+ * @returns {boolean}
+*/
+howlkraul.scene.GameOverStats.prototype.m_isHighscore = function () {
+  var list = this.owner.twoPlayer ? 1 : 0;
+  var isHighscore = this.owner.application.highscores.test(this.owner.score, list);
+
+  if (isHighscore === -1) {
+    return false;
+  }
+
+  return true;
+};
+
+//--------------------------------------------------------------------------
+// Private Methods (INIT)
+//--------------------------------------------------------------------------
+
+/**
+ * Creates the player cards. 
+ * 
+ * @private
+ * @returns {undefined}
+*/
+howlkraul.scene.GameOverStats.prototype.m_initBackground = function () {
+  this.owner.background = new rune.display.Graphic(0, 0, 400, 225, "dead_background_400x225");
 };
 
 /**
@@ -109,7 +153,6 @@ howlkraul.scene.GameOverStats.prototype.m_createCards = function () {
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
-  if (!this.m_cards) return;
 
   var centerX = this.owner.application.screen.center.x;
   var spacing = 70;
@@ -131,7 +174,6 @@ howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
   }
 };
 
-
 /**
  * Apply tween animation to card.
  * 
@@ -143,10 +185,39 @@ howlkraul.scene.GameOverStats.prototype.m_animateCard = function (card) {
   this.owner.application.scenes.selected.tweens.create({
     target: card,
     scope: this,
-    duration: 1000,
+    duration: 400,
     args: {
       centerY: this.owner.application.screen.centerY,
       rotation: 0,
+    }
+  });
+};
+
+
+/**
+ * Apply tween animation to card.
+ * 
+ * @private
+ * @param {howlkraul.ui.PlayerCard}
+ * @returns {undefined}
+*/
+howlkraul.scene.GameOverStats.prototype.m_showHighscoreText = function (card) {
+  if (!this.m_isHighscore()) return;
+
+  var text = new rune.text.BitmapField("NEW HIGHSCORE", "font_480x45");
+  text.autoSize = true;
+  text.centerX = this.owner.application.screen.centerX;
+  text.centerY = 20;
+  text.alpha = 0;
+  this.owner.stage.addChild(text);
+
+
+  this.owner.application.scenes.selected.tweens.create({
+    target: text,
+    scope: this,
+    duration: 400,
+    args: {
+      alpha: 1
     }
   });
 };

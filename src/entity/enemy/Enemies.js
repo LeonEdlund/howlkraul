@@ -111,7 +111,7 @@ howlkraul.entity.Enemies.prototype.m_initEmitters = function () {
     maxLifespan: 1200,
     minRotation: -2,
     maxRotation: 2,
-    capacity: 50,
+    capacity: 100,
     accelerationY: 0.05,
     maxVelocityX: 1.25,
     minVelocityX: -1.25,
@@ -120,7 +120,7 @@ howlkraul.entity.Enemies.prototype.m_initEmitters = function () {
   });
 
   this.m_goblinBodypartEmitter = new rune.particle.Emitter(this.x, this.y, 15, 15, {
-    capacity: 4,
+    capacity: 35,
     accelerationY: 0.05,
     maxVelocityX: 1.25,
     minVelocityX: -1.25,
@@ -151,7 +151,6 @@ howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
   enemy.takeDamage(spell.castedBy.power);
 
   if (enemy.hp <= 0) {
-    enemy.die();
     spell.castedBy.stats.addKill();
   } else {
     this.bleed(enemy);

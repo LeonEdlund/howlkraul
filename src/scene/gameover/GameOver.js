@@ -8,7 +8,6 @@
  * @constructor
  * @extends rune.scene.Scene
  * @param {number} score - the score that should be displayed. 
- * @param {number} twoPlayer - The number of players.
  * @param {array<howlkraul.utils.playerStats>} playerStats - an array with playerstats objects from the played game. 
  * 
  * @class
@@ -16,7 +15,7 @@
  * 
  * GameOver scene.
  */
-howlkraul.scene.GameOver = function (score, twoPlayer, playerStats) {
+howlkraul.scene.GameOver = function (score, playerStats) {
 
   //--------------------------------------------------------------------------
   // Super call
@@ -32,14 +31,6 @@ howlkraul.scene.GameOver = function (score, twoPlayer, playerStats) {
   //--------------------------------------------------------------------------
 
   /**
-   * flag if game is in 2 player mode.
-   * 
-   * @private 
-   * @type {boolean}
-   */
-  this.m_twoPlayer = twoPlayer || false;
-
-  /**
    * The total score from the last played game.
    * 
    * @private 
@@ -53,10 +44,10 @@ howlkraul.scene.GameOver = function (score, twoPlayer, playerStats) {
    * @private 
    * @type {array<howlkraul.utils.playerStats>}
    */
-  this.m_playerStats = playerStats || [];
+  this.m_playerStats = playerStats || [new howlkraul.utils.StatCounter("blue")];
 
   /**
-   * Game over grapic.
+   * Gameover grapic.
    * 
    * @private 
    * @type {rune.text.BitmapField}
@@ -64,12 +55,28 @@ howlkraul.scene.GameOver = function (score, twoPlayer, playerStats) {
   this.m_graphic = null;
 
   /**
-   * Referse to the BitmapField of the score text.
+   * Refers next button.
+   * 
+   * @private 
+   * @type {rune.display.Graphic}
+   */
+  this.m_background = null;
+
+  /**
+   * Refers to the BitmapField of the score text.
    * 
    * @private 
    * @type {rune.text.BitmapField}
    */
   this.m_scoreText = null;
+
+  /**
+   * Refers next button.
+   * 
+   * @private 
+   * @type {rune.display.Sprite}
+   */
+  this.m_nextButton = null;
 };
 
 //------------------------------------------------------------------------------
@@ -115,7 +122,7 @@ Object.defineProperty(howlkraul.scene.GameOver.prototype, "twoPlayer", {
    * @ignore
    */
   get: function () {
-    return this.m_twoPlayer;
+    return (this.m_playerStats.length === 2) ? true : false;
   }
 });
 
@@ -137,6 +144,33 @@ Object.defineProperty(howlkraul.scene.GameOver.prototype, "playerStats", {
   }
 });
 
+/**
+ * The background of the game over section.
+ *
+ * @member {rune.display.Graphic} background
+ * @memberof howlkraul.scene.GameOver
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.scene.GameOver.prototype, "background", {
+  /**
+   * @this howlkraul.scene.GameOver
+   * @ignore
+   */
+  get: function () {
+    return this.m_playerStats;
+  },
+
+  /**
+ * @this howlkraul.scene.GameOver
+ * @ignore
+ */
+  set: function (background) {
+    this.m_background = background;
+    this.stage.addChild(this.m_background);
+  }
+});
+
 //------------------------------------------------------------------------------
 // Override rune methods
 //------------------------------------------------------------------------------
@@ -153,6 +187,7 @@ howlkraul.scene.GameOver.prototype.init = function () {
 
   this.m_initStates();
   this.m_initGrapic();
+  this.addNextButton();
   this.m_initScore();
 };
 
@@ -198,9 +233,54 @@ howlkraul.scene.GameOver.prototype.fadeToMainMenu = function () {
   }, this);
 }
 
+/**
+ * Adds a next button to the stage.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.addNextButton = function () {
+  this.m_disposeNextButton()
+
+  if (!this.m_nextButton) {
+    this.m_nextButton = new rune.display.Sprite(0, 0, 24, 24, "continue_24x24");
+    this.m_nextButton.animation.create("blink", [0, 1], 2, true);
+
+    this.m_nextButton.centerX = 370;
+    this.m_nextButton.centerY = 200;
+    this.m_nextButton.alpha = 0;
+    this.stage.addChild(this.m_nextButton);
+
+    this.timers.create({
+      duration: 2000,
+      onComplete: this.m_fadeInNextButton,
+      scope: this
+    }, true);
+  }
+};
+
 //--------------------------------------------------------------------------
 // Private Methods (INIT)
 //--------------------------------------------------------------------------
+
+/**
+ * Fade in next button
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.m_fadeInNextButton = function () {
+  if (!this.m_nextButton) return;
+
+  this.tweens.create({
+    target: this.m_nextButton,
+    scope: this,
+    duration: 1000,
+    args: {
+      alpha: 1,
+    }
+  });
+};
 
 /**
  * Initializes states for GameOver
@@ -261,4 +341,21 @@ howlkraul.scene.GameOver.prototype.m_initScore = function () {
       alpha: 1,
     }
   });
+};
+
+//--------------------------------------------------------------------------
+// Private Methods (DISPOSE)
+//--------------------------------------------------------------------------
+
+/**
+ * Initializes and fades in score text.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.m_disposeNextButton = function () {
+  if (this.m_nextButton) {
+    this.stage.removeChild(this.m_nextButton, true);
+    this.m_nextButton = null;
+  }
 };
