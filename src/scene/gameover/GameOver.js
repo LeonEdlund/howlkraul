@@ -184,9 +184,10 @@ Object.defineProperty(howlkraul.scene.GameOver.prototype, "background", {
  */
 howlkraul.scene.GameOver.prototype.init = function () {
   rune.scene.Scene.prototype.init.call(this);
-
+  console.log(this.m_playerStats[0].killedBy)
   this.m_initStates();
   this.m_initGrapic();
+  this.m_initKilledByText();
   this.addNextButton();
   this.m_initScore();
 };
@@ -305,6 +306,7 @@ howlkraul.scene.GameOver.prototype.m_initStates = function () {
 howlkraul.scene.GameOver.prototype.m_initGrapic = function () {
   this.m_graphic = new rune.display.Graphic(0, 0, 218, 152, "death_screen_218x152");
   this.m_graphic.center = this.application.screen.center;
+  this.m_graphic.centerY -= 30;
   this.m_graphic.alpha = 0;
   this.stage.addChild(this.m_graphic);
 
@@ -325,10 +327,10 @@ howlkraul.scene.GameOver.prototype.m_initGrapic = function () {
  * @returns {undefined}
  */
 howlkraul.scene.GameOver.prototype.m_initScore = function () {
-  this.m_scoreText = new rune.text.BitmapField("SCORE: " + this.m_score);
+  this.m_scoreText = new rune.text.BitmapField("SCORE " + this.m_score, "small_font_256x24");
   this.m_scoreText.autoSize = true;
   this.m_scoreText.center = this.application.screen.center;
-  this.m_scoreText.y += 90;
+  this.m_scoreText.y += 57;
   this.m_scoreText.alpha = 0;
 
   this.stage.addChild(this.m_scoreText);
@@ -343,12 +345,94 @@ howlkraul.scene.GameOver.prototype.m_initScore = function () {
   });
 };
 
+/**
+ * Initializes and fades in killed by text.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.m_initKilledByText = function () {
+
+  var currentY = 73;
+  for (var i = 0; i < this.m_playerStats.length; i++) {
+    var killedByString = this.m_genKilledByText(this.m_playerStats[i].killedBy);
+    var text = new rune.text.BitmapField(killedByString, "small_font_256x24");
+    text.autoSize = true;
+    text.center = this.application.screen.center;
+    text.y += currentY;
+    currentY += 19;
+    text.alpha = 0;
+
+    var hat = new howlkraul.ui.MiniHat(text.x - 17, text.centerY - 8);
+    hat.replaceColor(this.m_playerStats[i].wizColor)
+    hat.alpha = 0;
+
+    this.stage.addChild(text);
+    this.stage.addChild(hat);
+
+    this.tweens.create({
+      target: text,
+      scope: this,
+      duration: 1000,
+      args: {
+        alpha: 1,
+      }
+    });
+
+    this.tweens.create({
+      target: hat,
+      scope: this,
+      duration: 1000,
+      args: {
+        alpha: 1,
+      }
+    });
+  }
+};
+
+/**
+ * Generates killed by text.
+ * 
+ * @private
+ * @param {string}
+ * @returns {string}
+ */
+howlkraul.scene.GameOver.prototype.m_genKilledByText = function (killedBy) {
+  console.log(killedBy)
+  var text = "";
+
+  switch (killedBy) {
+    case "slime":
+      text = "Was dissolved by a slime creature";
+      break;
+    case "troll":
+      text = "Was shanked by a troll";
+      break;
+    case "goblin":
+      text = "was murdered by a goblin";
+      break;
+    case "arrow":
+      text = "Was pierced by an arrow";
+      break;
+    case "bomb":
+      text = "Disintegrated by bomb";
+      break;
+    default:
+      text = "Died mysteriously";
+      break;
+  }
+
+  return text.toUpperCase();
+};
+
+
+
 //--------------------------------------------------------------------------
 // Private Methods (DISPOSE)
 //--------------------------------------------------------------------------
 
 /**
- * Initializes and fades in score text.
+ * dispose score text.
  * 
  * @private
  * @returns {undefined}

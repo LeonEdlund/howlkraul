@@ -53,7 +53,7 @@ howlkraul.utils.StatCounter = function (wizColor) {
   * 
   * @type {string}
   */
-  this.m_killedBy = "";
+  this.m_killedBy = "slime";
 }
 
 //--------------------------------------------------------------------------
@@ -132,6 +132,24 @@ Object.defineProperty(howlkraul.utils.StatCounter.prototype, "hits", {
   }
 });
 
+/**
+ * What or who the player got killed by.
+ *
+ * @member {string} killedBy
+ * @memberof howlkraul.utils.StatCounter
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.utils.StatCounter.prototype, "killedBy", {
+  /**
+   * @this howlkraul.utils.StatCounter
+   * @ignore
+   */
+  get: function () {
+    return this.m_killedBy;
+  }
+});
+
 
 //--------------------------------------------------------------------------
 // Public Methods
@@ -145,7 +163,6 @@ Object.defineProperty(howlkraul.utils.StatCounter.prototype, "hits", {
  */
 howlkraul.utils.StatCounter.prototype.addKill = function () {
   this.m_kills++;
-  console.log("kills" + this.m_kills);
 };
 
 /**
@@ -166,16 +183,39 @@ howlkraul.utils.StatCounter.prototype.addCoin = function () {
  */
 howlkraul.utils.StatCounter.prototype.addHit = function () {
   this.m_hits++;
-  console.log("hits" + this.m_hits);
 };
 
 /**
- * Adds 
+ * Adds who the player is killed by.
  * 
  * @public
- * @param {howlkraul.entity.Enemy}
+ * @param {howlkraul.entity.Enemy || howlkraul.projectile.Projectile || howlkraul.particle.BombFragment}
  * @returns {undefined}
  */
-howlkraul.utils.StatCounter.prototype.addKilledBy = function (enemy) {
-  console.log(enemy, "To Be implemented")
+howlkraul.utils.StatCounter.prototype.addKilledBy = function (killedBy) {
+
+  if (killedBy instanceof howlkraul.entity.Slime) {
+    this.m_killedBy = "slime";
+    return;
+  }
+
+  if (killedBy instanceof howlkraul.entity.Troll) {
+    this.m_killedBy = "troll";
+    return;
+  }
+
+  if (killedBy instanceof howlkraul.entity.Goblin) {
+    this.m_killedBy = "goblin";
+    return;
+  }
+
+  if (killedBy instanceof howlkraul.projectile.Arrow) {
+    this.m_killedBy = "arrow";
+    return;
+  }
+
+  if (killedBy instanceof howlkraul.particle.BombFragment) {
+    this.m_killedBy = "bomb";
+    return;
+  }
 };

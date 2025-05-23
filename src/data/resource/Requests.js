@@ -86,7 +86,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("brown_card_94x136", "./../asset/img/hud/deadscreen/player cards/brown_card_94x136.png");
 	this.add("green_card_94x136", "./../asset/img/hud/deadscreen/player cards/green_card_94x136.png");
 	this.add("red_card_94x136", "./../asset/img/hud/deadscreen/player cards/red_card_94x136.png");
-	this.add("player_x_died", "./../asset/img/hud/deadscreen/player_x_died.png");
+	this.add("player_x_died_12x13", "./../asset/img/hud/deadscreen/player_x_died_12x13.png");
 	this.add("hearts_11x12", "./../asset/img/hud/hearts/hearts_11x12.png");
 	this.add("face_hud_22x25", "./../asset/img/hud/hud-characters/face_hud_22x25.png");
 	this.add("coin_hud_12x18", "./../asset/img/hud/hud-components/coin_hud_12x18.png");

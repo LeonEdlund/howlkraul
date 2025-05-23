@@ -187,7 +187,7 @@ howlkraul.drops.Bombs.prototype.m_handleDamage = function (target, fragment) {
     console.log("Handle Damage");
     target.takeDamage(50);
   } else if (target instanceof howlkraul.entity.Wizard) {
-    target.takeDamage();
+    target.takeDamage(fragment);
   }
 
   this.m_emitter.parent.removeChild(fragment);

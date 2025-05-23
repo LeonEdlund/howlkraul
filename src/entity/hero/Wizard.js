@@ -473,9 +473,10 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
  * Die method is called if player has less then 0 hp.
  * 
  * @public
+ * @param {howlkraul.entity.Enemy || howlkraul.projectile.Projectile || howlkraul.particle.BombFragment}
  * @returns {undefined}
  */
-howlkraul.entity.Wizard.prototype.takeDamage = function () {
+howlkraul.entity.Wizard.prototype.takeDamage = function (damageBy) {
   var now = Date.now();
 
   if (now > this.m_lastDamageHit && this.hp > 0) {
@@ -488,19 +489,21 @@ howlkraul.entity.Wizard.prototype.takeDamage = function () {
     if (this.m_hud) this.m_hud.updateHealth(this.hp);
   }
 
-  if (this.hp <= 0) this.die();
+  if (this.hp <= 0) this.die(damageBy);
 };
 
 /**
  * Switches to death animation and stops movement.
  * 
  * @public
+ * @param {howlkraul.entity.Enemy || howlkraul.projectile.Projectile || howlkraul.particle.BombFragment}
  * @returns {undefined}
  */
-howlkraul.entity.Wizard.prototype.die = function () {
+howlkraul.entity.Wizard.prototype.die = function (killedBy) {
   if (this.m_isDead) return;
 
   this.m_isDead = true;
+  this.m_statCounter.addKilledBy(killedBy);
   this.animation.gotoAndPlay("dead");
   this.movementAllowed = false;
   this.m_manabar.visible = false;

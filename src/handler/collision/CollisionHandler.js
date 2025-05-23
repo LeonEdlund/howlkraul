@@ -94,7 +94,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleBorderCollision = function 
  */
 howlkraul.handler.CollisionHandler.prototype.m_handleDamageHit = function () {
   this.game.players.hitTestGroup(this.game.enemies, function (player, enemy) {
-    player.takeDamage();
+    player.takeDamage(enemy);
   }, this);
 }
 
@@ -108,7 +108,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
   this.game.players.hitTestGroup(this.game.enemyProjectiles, function (player, projectile) {
     if (player.hp === 0) return;
 
-    player.takeDamage();
+    player.takeDamage(projectile);
     this.game.enemyProjectiles.removeMember(projectile, true);
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
   }, this);
