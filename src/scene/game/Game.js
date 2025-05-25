@@ -678,7 +678,7 @@ howlkraul.scene.Game.prototype.m_initCoinGroup = function () {
     this.m_disposeCoinGroup();
 
     if (!this.m_coins) {
-        this.m_coins = this.groups.create(this.stage);
+        this.m_coins = this.groups.add(new howlkraul.drops.Coins(this));
     }
 };
 
@@ -761,7 +761,7 @@ howlkraul.scene.Game.prototype.m_initSort = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_disposeBetweenRound = function () {
-    this.application.sounds.sound.clear();
+    //this.application.sounds.sound.clear();
     this.m_enemies.removeMembers(true);
     this.m_spells.removeMembers(true);
     this.m_enemyProjectiles.removeMembers(true);

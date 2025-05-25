@@ -23,10 +23,6 @@ howlkraul.handler.CollisionHandler = function (game) {
 howlkraul.handler.CollisionHandler.prototype.update = function () {
   this.m_handleBorderCollision();
 
-  if (this.game.coins.numMembers > 0) {
-    this.m_handleCoinPickup();
-  }
-
   if (this.game.potions.numMembers > 0) {
     this.m_handlePotionPickup();
   }
@@ -111,22 +107,6 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
     player.takeDamage(projectile);
     this.game.enemyProjectiles.removeMember(projectile, true);
     this.game.cameras.getCameraAt(0).shake.start(300, 1, 1);
-  }, this);
-}
-
-/**
- * Handles player picking up coin.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.handler.CollisionHandler.prototype.m_handleCoinPickup = function () {
-  this.game.players.hitTestGroup(this.game.coins, function (player, coin) {
-    coin.playSound();
-
-    player.stats.addCoin();
-    this.game.moneyCounter.add(coin.worth);
-    this.game.coins.removeMember(coin, true);
   }, this);
 }
 

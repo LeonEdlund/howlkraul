@@ -28,6 +28,7 @@ howlkraul.projectile.Projectile.prototype.init = function () {
  */
 howlkraul.projectile.Projectile.prototype.update = function () {
   rune.display.Sprite.prototype.update.call(this);
+
   if (this.m_isOutOfBounds()) {
     this.dispose();
   }

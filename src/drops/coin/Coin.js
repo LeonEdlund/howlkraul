@@ -55,6 +55,14 @@ howlkraul.drops.Coin = function (x, y) {
    * @type {number}
    */
   this.m_flickerTime = 2000;
+
+  /**
+   * The sound effect.
+   * 
+   * @private
+   * @type {rune.sound.Sound}
+   */
+  this.m_sound = null;
 }
 
 //--------------------------------------------------------------------------
@@ -100,7 +108,6 @@ howlkraul.drops.Coin.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
 
   this.m_initAnimations();
-  this.m_initSounds();
 }
 
 /**
@@ -116,24 +123,10 @@ howlkraul.drops.Coin.prototype.update = function (step) {
  * @inheritdoc
  */
 howlkraul.drops.Coin.prototype.dispose = function () {
+  this.application.sounds.sound.remove(this.m_sound, true);
   this.m_scene = null;
+
   rune.display.Sprite.prototype.dispose.call(this);
-}
-
-//--------------------------------------------------------------------------
-// Public Methods
-//--------------------------------------------------------------------------
-
-/**
- * Play pickup sound
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.drops.Coin.prototype.playSound = function () {
-  if (this.m_sound) {
-    this.m_sound.play();
-  }
 }
 
 //--------------------------------------------------------------------------
@@ -149,16 +142,6 @@ howlkraul.drops.Coin.prototype.playSound = function () {
 howlkraul.drops.Coin.prototype.m_initAnimations = function () {
   this.animation.create("drop", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 10, true);
   this.animation.create("idle", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], 10, true);
-}
-
-/**
- * Initializes animation sequenses.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.drops.Coin.prototype.m_initSounds = function () {
-  this.m_sound = this.application.sounds.sound.get("sfx_coin", true);
 }
 
 /**

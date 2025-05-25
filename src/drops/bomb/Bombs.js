@@ -184,7 +184,6 @@ howlkraul.drops.Bombs.prototype.m_initEmitter = function () {
  */
 howlkraul.drops.Bombs.prototype.m_handleDamage = function (target, fragment) {
   if (target instanceof howlkraul.entity.Enemy) {
-    console.log("Handle Damage");
     target.takeDamage(50);
   } else if (target instanceof howlkraul.entity.Wizard) {
     target.takeDamage(fragment);

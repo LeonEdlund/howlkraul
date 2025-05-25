@@ -23,7 +23,6 @@ howlkraul.projectile.Spell.prototype.init = function () {
  * @inheritdoc
  */
 howlkraul.projectile.Spell.prototype.dispose = function () {
-  //this.m_sound.stop();
   //this.m_sound = this.application.sounds.sound.remove(this.m_sound, true);
 
   this.m_sound = null;
@@ -44,10 +43,4 @@ howlkraul.projectile.Spell.prototype.m_initAnimation = function () {
  */
 howlkraul.projectile.Spell.prototype.m_initHitbox = function () {
   this.hitbox.set(10, 10, 10, 10);
-};
-
-/**
- * @inheritdoc
- */
-howlkraul.projectile.Spell.prototype.m_initSounds = function () {
 };
