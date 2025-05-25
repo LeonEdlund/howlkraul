@@ -18,6 +18,7 @@ howlkraul.projectile.Projectile.prototype.constructor = howlkraul.projectile.Pro
  */
 howlkraul.projectile.Projectile.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
+  
   this.m_initAnimation();
   this.m_initSounds();
   this.m_initHitbox();

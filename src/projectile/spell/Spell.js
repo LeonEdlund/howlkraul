@@ -15,8 +15,8 @@ howlkraul.projectile.Spell.prototype.constructor = howlkraul.projectile.Spell;
 howlkraul.projectile.Spell.prototype.init = function () {
   howlkraul.projectile.Projectile.prototype.init.call(this);
 
-  this.m_sound = this.application.sounds.sound.get("sfx_spell", true);
-  this.m_sound.play();
+  // this.m_sound = this.application.sounds.sound.get("sfx_spell", true);
+  // this.m_sound.play();
 };
 
 /**

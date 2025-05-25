@@ -173,6 +173,8 @@ howlkraul.entity.Wizard = function (x, y, color, input, hud) {
    * @type {howlkraul.utils.StatCounter}
    */
   this.m_statCounter = null;
+
+  this.m_spellSound = null;
 };
 
 //------------------------------------------------------------------------------
@@ -387,8 +389,10 @@ howlkraul.entity.Wizard.prototype.init = function () {
 
   this.hitbox.set(5, 24, 17, 9);
   this.m_initStatCounter();
+  this.m_initSpellSounds();
   this.m_changeColor();
   this.m_initManabar();
+
 };
 
 /**
@@ -465,7 +469,7 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
   this.m_takeEnergy();
   var spell = new howlkraul.projectile.Spell(cordinates.x, cordinates.y, this);
   spell.shootInDirection(this.facing, 0.9, this.application.scenes.selected.spells);
-
+  this.m_spellSound.play(true);
 }
 
 /**
@@ -826,6 +830,16 @@ howlkraul.entity.Wizard.prototype.m_initStatCounter = function () {
   if (!this.m_statCounter) {
     this.m_statCounter = new howlkraul.utils.StatCounter(this.m_color);
   }
+};
+
+/**
+ * Initalizes spell sounds.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_initSpellSounds = function () {
+  this.m_spellSound = new howlkraul.utils.SoundPool(this.application, "sfx_spell", 10);
 };
 
 /**

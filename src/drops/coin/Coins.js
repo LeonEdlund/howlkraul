@@ -34,9 +34,9 @@ howlkraul.drops.Coins = function (scene) {
    * Pool of coin sounds.
    * 
    * @private
-   * @type {rune.particle.Emitter}
+   * @type {howlkraul.util.SoundPool}
    */
-  this.m_soundPool = [];
+  this.m_sound = [];
 
   /**
    * Current sound to play.
@@ -94,12 +94,7 @@ howlkraul.drops.Coins.prototype.update = function (step) {
  * @returns {undefined}
  */
 howlkraul.drops.Coins.prototype.dispose = function () {
-  var m_this = this;
-  // Remove sounds
-  this.m_soundPool.forEach(function (sound) {
-    m_this.application.sounds.sound.remove(sound, true);
-  });
-
+  this.m_sound = null;
   this.m_scene = null;
 
   rune.display.DisplayGroup.prototype.dispose.call(this);
@@ -116,12 +111,7 @@ howlkraul.drops.Coins.prototype.dispose = function () {
  * @returns {undefined}
  */
 howlkraul.drops.Coins.prototype.m_initSounds = function () {
-  if (this.m_soundPool.length > 10) return;
-
-  for (var i = 0; i < 10; i++) {
-    var sound = this.application.sounds.sound.get("sfx_coin", true);
-    this.m_soundPool.push(sound);
-  }
+  this.m_sound = new howlkraul.utils.SoundPool(this.application, "sfx_coin", 10)
 }
 
 /**
@@ -131,20 +121,8 @@ howlkraul.drops.Coins.prototype.m_initSounds = function () {
  * @returns {undefined}
  */
 howlkraul.drops.Coins.prototype.m_handlePickUp = function (player, coin) {
-  this.m_playSound();
+  this.m_sound.play(true);
   player.stats.addCoin();
   this.m_scene.moneyCounter.add(coin.worth);
   this.removeMember(coin, true);
-}
-
-/**
- * Plays coin pick up sound.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.drops.Coins.prototype.m_playSound = function () {
-  this.m_currentSoundIndex++;
-  this.m_currentSoundIndex = rune.util.Math.wrap(this.m_currentSoundIndex, 0, this.m_soundPool.length - 1);
-  this.m_soundPool[this.m_currentSoundIndex].play(true);
 }
