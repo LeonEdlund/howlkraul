@@ -1,11 +1,44 @@
+/**
+ * Creates a new Troll object
+ * 
+ * @constructor
+ * @extends howlkraul.entity.Enemy
+ * 
+ * @param {number} x  - Spawn point on X-axis.
+ * @param {number} y  - Spawn point on Y-axis.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Creates an instance of a troll enemy.
+ */
 howlkraul.entity.Troll = function (x, y) {
+
+  //--------------------------------------------------------------------------
+  // Super Call
+  //--------------------------------------------------------------------------
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "troll_29x29");
+
+  //--------------------------------------------------------------------------
+  // Overide protected Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * @inheritdoc
+   */
   this.hp = 150;
+
+  /**
+   * @inheritdoc
+   */
   this.speed = rune.util.Math.random(0.3, 0.4);
+
+  /**
+   * @inheritdoc
+   */
   this.defaultSpeed = this.speed;
   this.m_lastAttack = 0;
   this.m_attackCoolDown = 500;
-  this.m_isAttacking = false;
   this.m_clothes = [];
 }
 
@@ -21,40 +54,43 @@ howlkraul.entity.Troll.prototype.constructor = howlkraul.entity.Troll;
 //--------------------------------------------------------------------------
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
-  this.m_initClothes();
+  this.initClothes();
 };
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.update = function (step) {
   howlkraul.entity.Enemy.prototype.update.call(this, step);
 
-  this.m_updateClothingAnimation();
+  this.updateClothingAnimation();
 };
 
 //--------------------------------------------------------------------------
-// Overide Methods
+// Overide Enemy Methods
 //--------------------------------------------------------------------------
 
+/**
+ * @inheritdoc
+ */
 howlkraul.entity.Troll.prototype.attack = function () {
   var now = Date.now();
 
   if (now > this.m_lastAttack) {
-    this.m_isAttacking = true;
+    this.isAttacking = true;
     this.states.select("Attack");
     this.m_lastAttack = now + this.m_attackCoolDown;
   }
 };
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.initAnimations = function () {
   // IDLE
@@ -73,7 +109,7 @@ howlkraul.entity.Troll.prototype.initAnimations = function () {
 
 /**
  * @inheritdoc
-*/
+ */
 howlkraul.entity.Troll.prototype.initSounds = function () {
   this.damageSounds.push(
     "sfx_troll_hit1",
@@ -91,22 +127,22 @@ howlkraul.entity.Troll.prototype.initSounds = function () {
 };
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.initAnimationScripts = function () {
   var shootingDown = this.animation.find("s");
   var shootingSide = this.animation.find("s-side");
   var shootingUp = this.animation.find("s-up");
 
-  shootingDown.scripts.add(5, function () { this.m_isAttacking = false; }, this);
-  shootingSide.scripts.add(3, function () { this.m_isAttacking = false; }, this);
-  shootingUp.scripts.add(1, function () { this.m_isAttacking = false; }, this);
+  shootingDown.scripts.add(5, function () { this.isAttacking = false; }, this);
+  shootingSide.scripts.add(3, function () { this.isAttacking = false; }, this);
+  shootingUp.scripts.add(1, function () { this.isAttacking = false; }, this);
 };
 
 /**
  * @inheritdoc
  */
-howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
+howlkraul.entity.Troll.prototype.setRunningAnimation = function () {
   switch (this.facing) {
     case "up":
       this.animation.gotoAndPlay("r-up");
@@ -124,11 +160,11 @@ howlkraul.entity.Troll.prototype.m_setRunningAnimation = function () {
  * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.setState = function () {
-  if (this.m_isAttacking || !this.closestPlayer) return;
+  if (this.isAttacking || !this.closestPlayer) return;
 
   if (this.distanceToClosestPlayer < 12) {
     if (this.facing === "down") this.moveTo(this.x, (this.y + 1));
-    if (!this.m_isAttacking) this.attack();
+    if (!this.isAttacking) this.attack();
   } else if (this.distanceToClosestPlayer < 160) {
     this.states.select("FollowPlayer");
   } else {
@@ -141,9 +177,12 @@ howlkraul.entity.Troll.prototype.setState = function () {
 //--------------------------------------------------------------------------
 
 /**
+ * Adds clothes to the troll.
+ * 
  * @protected
+ * @returns {undefined}
  */
-howlkraul.entity.Troll.prototype.m_initClothes = function () {
+howlkraul.entity.Troll.prototype.initClothes = function () {
   var m_self = this;
 
   if (rune.util.Math.chance(50)) {
@@ -161,16 +200,16 @@ howlkraul.entity.Troll.prototype.m_initClothes = function () {
   });
 };
 
-//--------------------------------------------------------------------------
-// Private Methods
-//--------------------------------------------------------------------------
-
 /**
- * @inheritdoc
+ * Updates the clothing animation.
+ * 
+ * @protected
+ * @returns {undefined}
  */
-howlkraul.entity.Troll.prototype.m_updateClothingAnimation = function () {
+howlkraul.entity.Troll.prototype.updateClothingAnimation = function () {
   var m_self = this;
-  if (this.m_clothes) {
+
+  if (this.m_clothes && this.m_clothes.length > 0) {
     this.m_clothes.forEach(function (clothing) {
       clothing.setAnimation(m_self.animation.current.name);
     });

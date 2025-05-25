@@ -29,15 +29,22 @@ howlkraul.entity.FollowPlayerState.prototype.constructor = howlkraul.entity.Foll
 //--------------------------------------------------------------------------
 
 /**
+ * Runs every frame.
+ * 
  * @override
+ * @public
+ * @returns {undefined}
 */
 howlkraul.entity.FollowPlayerState.prototype.update = function () {
-  rune.state.State.prototype.update.call(this);
   this.m_followPlayer();
 };
 
 /**
+ * Runs when state is selected
+ * 
  * @override
+ * @public
+ * @returns {undefined}
 */
 howlkraul.entity.FollowPlayerState.prototype.onEnter = function () {
   this.owner.speed = this.owner.defaultSpeed;

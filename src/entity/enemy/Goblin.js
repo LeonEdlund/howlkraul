@@ -1,43 +1,91 @@
+/**
+ * Creates a new Goblin object
+ * 
+ * @constructor
+ * @extends howlkraul.entity.Enemy
+ * 
+ * @param {number} x  - Spawn point on X-axis.
+ * @param {number} y  - Spawn point on Y-axis.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Creates an instance of a Goblin enemy.
+ */
 howlkraul.entity.Goblin = function (x, y) {
+
+  //--------------------------------------------------------------------------
+  // Super call
+  //--------------------------------------------------------------------------
+
   howlkraul.entity.Enemy.call(this, x, y, 29, 29, "goblin_29x29");
 
+  //--------------------------------------------------------------------------
+  // Overide properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * @inheritdoc
+   */
+  this.hp = 100;
+
+  /**
+   * @inheritdoc
+   */
   this.speed = rune.util.Math.random(0.4, 0.5);
+
+  /**
+   * @inheritdoc
+   */
   this.defaultSpeed = this.speed;
 
-  // FLAGS
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * When the goblin last shot in ms.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_lastShot = Date.now() + rune.util.Math.randomInt(1500, 2500);
+
+  /**
+   * Flag for setting the shooting animation.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_lastShotAnimation = 0;
+
+  /**
+   * Time between shots.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_shootCooldown = rune.util.Math.randomInt(2000, 4000);
 }
+
+//--------------------------------------------------------------------------
+// Inheritance
+//--------------------------------------------------------------------------
 
 howlkraul.entity.Goblin.prototype = Object.create(howlkraul.entity.Enemy.prototype);
 howlkraul.entity.Goblin.prototype.constructor = howlkraul.entity.Goblin;
 
 //--------------------------------------------------------------------------
-// Overide Rune methods
+// Overide Rune Methods
 //--------------------------------------------------------------------------
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.Goblin.prototype.init = function () {
   howlkraul.entity.Enemy.prototype.init.call(this);
 
   this.hitbox.set(10, (this.height - 15), (this.width - 20), 14);
-};
-
-/**
- * @override
- */
-howlkraul.entity.Goblin.prototype.update = function (step) {
-  howlkraul.entity.Enemy.prototype.update.call(this, step);
-};
-
-/**
- * @override
- */
-howlkraul.entity.Goblin.prototype.dispose = function () {
-  howlkraul.entity.Enemy.prototype.dispose.call(this);
 };
 
 //--------------------------------------------------------------------------
@@ -61,6 +109,7 @@ howlkraul.entity.Goblin.prototype.initAnimations = function () {
   this.animation.create("s-side", [14, 15, 16], 10, false);
   this.animation.create("s-up", [24, 25, 26], 10, false);
   this.animation.create("dead", [10], 0, false);
+
   this.flippedX = true;
 };
 
@@ -68,15 +117,13 @@ howlkraul.entity.Goblin.prototype.initAnimations = function () {
  * @inheritdoc
 */
 howlkraul.entity.Goblin.prototype.initSounds = function () {
-  // Damage Sound
-  this.deathSounds.push(
+  this.damageSounds.push(
     "sfx_goblin_hit1",
     "sfx_goblin_hit2",
     "sfx_goblin_hit3",
     "sfx_goblin_hit4"
   );
 
-  // Death sounds
   this.deathSounds.push(
     "sfx_goblin_death1",
     "sfx_goblin_death2",
@@ -85,6 +132,9 @@ howlkraul.entity.Goblin.prototype.initSounds = function () {
   );
 };
 
+/**
+ * @inheritdoc
+ */
 howlkraul.entity.Goblin.prototype.setState = function () {
   if (!this.closestPlayer) return;
 
@@ -103,6 +153,9 @@ howlkraul.entity.Goblin.prototype.setState = function () {
   this.attack(this.closestPlayer);
 };
 
+/**
+ * @inheritdoc
+ */
 howlkraul.entity.Goblin.prototype.attack = function (player) {
   var scene = this.application.scenes.selected;
   var now = Date.now();
@@ -119,15 +172,19 @@ howlkraul.entity.Goblin.prototype.attack = function (player) {
   }
 }
 
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
 /**
- * Configures the animation sequence.
+ * Sets the correct shooting animation.
  * 
  * @returns {undefined}
  * @private
 */
 howlkraul.entity.Goblin.prototype.m_setShootingAnimation = function () {
   var now = Date.now();
-  this.m_lastShotAnimation = now + 200;
+  this.m_lastShotAnimation = now + 300;
 
   switch (this.facing) {
     case "up":
@@ -146,15 +203,12 @@ howlkraul.entity.Goblin.prototype.m_setShootingAnimation = function () {
 };
 
 /**
- * Configures the animation sequence.
- * 
- * @returns {undefined}
- * @private
+ * @inheritdoc
 */
-howlkraul.entity.Goblin.prototype.m_setRunningAnimation = function () {
+howlkraul.entity.Goblin.prototype.setRunningAnimation = function () {
   var now = Date.now();
-
   if (now < this.m_lastShotAnimation) return;
+
 
   switch (this.facing) {
     case "up":

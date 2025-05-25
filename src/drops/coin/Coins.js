@@ -23,10 +23,10 @@ howlkraul.drops.Coins = function (scene) {
   //--------------------------------------------------------------------------
 
   /**
-   * The scene.
+   * The scene that the group is part of.
    * 
-   * @protected
-   * @type {rune}
+   * @private
+   * @type {rune.scene.Scene}
   */
   this.m_scene = scene;
 
@@ -36,15 +36,7 @@ howlkraul.drops.Coins = function (scene) {
    * @private
    * @type {howlkraul.util.SoundPool}
    */
-  this.m_sound = [];
-
-  /**
-   * Current sound to play.
-   * 
-   * @private
-   * @type {number}
-   */
-  this.m_currentSoundIndex = 0;
+  this.m_sound = null;
 }
 
 //--------------------------------------------------------------------------
@@ -76,6 +68,7 @@ howlkraul.drops.Coins.prototype.init = function () {
  * 
  * @override
  * @public
+ * @param {number} step - The current tick.
  * @returns {undefined}
  */
 howlkraul.drops.Coins.prototype.update = function (step) {
@@ -105,7 +98,7 @@ howlkraul.drops.Coins.prototype.dispose = function () {
 //--------------------------------------------------------------------------
 
 /**
- * Initializes sounds and adding them to the sound pool
+ * Initializes sounds and adding them to the sound pool.
  * 
  * @private
  * @returns {undefined}
@@ -115,9 +108,11 @@ howlkraul.drops.Coins.prototype.m_initSounds = function () {
 }
 
 /**
- * Handle damage and removes particle from scene.
+ * Callback function when player walks over coin.
  * 
  * @private
+ * @param {howlkraul.entity.Wizard} player - the player.
+ * @param {howlkraul.drops.Coin} coin - the coin. 
  * @returns {undefined}
  */
 howlkraul.drops.Coins.prototype.m_handlePickUp = function (player, coin) {

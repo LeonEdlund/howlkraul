@@ -1,5 +1,5 @@
 /**
- * Represents a state where the enemy attacks the closest player on the scene. 
+ * Represents a state where the big troll throws a bomb
  *
  * @constructor
  * @extends rune.state.State
@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The Attack state is used to make enemies go in to attack mode. 
+ * The BigTrollAttack state is to make the big troll throw.
  */
 howlkraul.entity.BigTrollAttack = function () {
 
@@ -21,6 +21,7 @@ howlkraul.entity.BigTrollAttack = function () {
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.entity.BigTrollAttack.prototype = Object.create(rune.state.State.prototype);
 howlkraul.entity.BigTrollAttack.prototype.constructor = howlkraul.entity.BigTrollAttack;
 
@@ -29,7 +30,11 @@ howlkraul.entity.BigTrollAttack.prototype.constructor = howlkraul.entity.BigTrol
 //--------------------------------------------------------------------------
 
 /**
+ * Runs when state is selected
+ * 
  * @override
+ * @public
+ * @returns {undefined}
 */
 howlkraul.entity.BigTrollAttack.prototype.onEnter = function () {
   this.owner.speed = 0;

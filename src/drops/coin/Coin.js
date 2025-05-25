@@ -55,14 +55,6 @@ howlkraul.drops.Coin = function (x, y) {
    * @type {number}
    */
   this.m_flickerTime = 2000;
-
-  /**
-   * The sound effect.
-   * 
-   * @private
-   * @type {rune.sound.Sound}
-   */
-  this.m_sound = null;
 }
 
 //--------------------------------------------------------------------------
@@ -76,21 +68,25 @@ howlkraul.drops.Coin.prototype.constructor = howlkraul.drops.Coin;
 // Getters And Setters
 //--------------------------------------------------------------------------
 
+/**
+ * The coins worth.
+ *
+ * @member {number} worth
+ * @memberof howlkraul.drops.Coin
+ * @instance
+ */
 Object.defineProperty(howlkraul.drops.Coin.prototype, "worth", {
   /**
-   * The coins worth
-   * 
-   * @returns {number}
+   * @this howlkraul.drops.Coin
+   * @ignore
    */
   get: function () {
     return this.m_worth;
   },
 
   /**
-   * Set coins worth
-   * 
-   * @param {number} value
-   * @returns {number}
+   * @this howlkraul.drops.Coin
+   * @ignore
    */
   set: function (value) {
     this.m_worth = value;
@@ -102,7 +98,11 @@ Object.defineProperty(howlkraul.drops.Coin.prototype, "worth", {
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Runs when the object is instantiated.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.drops.Coin.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
@@ -111,7 +111,12 @@ howlkraul.drops.Coin.prototype.init = function () {
 }
 
 /**
- * @inheritdoc
+ * Runs when the object is instantiated.
+ * 
+ * @override
+ * @public
+ * @param {number} step - The current tick.
+ * @returns {undefined}
  */
 howlkraul.drops.Coin.prototype.update = function (step) {
   rune.display.Sprite.prototype.update.call(this, step);
@@ -120,10 +125,13 @@ howlkraul.drops.Coin.prototype.update = function (step) {
 }
 
 /**
- * @inheritdoc
+ * Cleans up resources.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.drops.Coin.prototype.dispose = function () {
-  this.application.sounds.sound.remove(this.m_sound, true);
   this.m_scene = null;
 
   rune.display.Sprite.prototype.dispose.call(this);

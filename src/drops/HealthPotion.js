@@ -44,21 +44,25 @@ howlkraul.drops.HealthPotion.prototype.constructor = howlkraul.drops.HealthPotio
 // Getters And Setters
 //--------------------------------------------------------------------------
 
+/**
+ * The potions healing power.
+ *
+ * @member {number} healingPower
+ * @memberof howlkraul.drops.HealthPotion
+ * @instance
+ */
 Object.defineProperty(howlkraul.drops.HealthPotion.prototype, "healingPower", {
   /**
-   * The potions worth
-   * 
-   * @returns {number}
+   * @this howlkraul.drops.HealthPotion
+   * @ignore
    */
   get: function () {
     return this.m_healingPower;
   },
 
   /**
-   * Set potions worth
-   * 
-   * @param {number} value
-   * @returns {number}
+   * @this howlkraul.drops.HealthPotion
+   * @ignore
    */
   set: function (value) {
     this.m_healingPower = value;
@@ -70,10 +74,15 @@ Object.defineProperty(howlkraul.drops.HealthPotion.prototype, "healingPower", {
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Runs when the object is instantiated.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.drops.HealthPotion.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
+
   this.m_initAnimations();
 }
 

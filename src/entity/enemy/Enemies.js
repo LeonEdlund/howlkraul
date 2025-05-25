@@ -54,16 +54,52 @@ howlkraul.entity.Enemies = function (scene) {
 howlkraul.entity.Enemies.prototype = Object.create(rune.display.DisplayGroup.prototype);
 howlkraul.entity.Enemies.prototype.constructor = howlkraul.entity.Enemies;
 
+
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
+
+/**
+ * Emits blood and gore from dead enemy.
+ * 
+ * @public
+ * @param {howlkraul.entity.Enemy} enemy - the enemy that died.
+ * @returns {undefined}
+ */
+howlkraul.entity.Enemies.prototype.explode = function (enemy) {
+  if (enemy instanceof howlkraul.entity.Slime || enemy instanceof howlkraul.entity.Troll) {
+    this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
+    this.m_bloodEmitter.emit(50);
+  } else if (enemy instanceof howlkraul.entity.Goblin) {
+    this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
+    this.m_bloodEmitter.emit(50);
+    this.m_goblinBodypartEmitter.moveTo(enemy.center.x, enemy.center.y);
+    this.m_goblinBodypartEmitter.emit(1);
+  }
+}
+
+/**
+ * Emitts small amount of blood from enemy.
+ * 
+ * @public
+ * @param {howlkraul.entity.Enemy} enemy - the enemy that died.
+ * @returns {undefined}
+ */
+howlkraul.entity.Enemies.prototype.bleed = function (enemy) {
+  this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
+  this.m_bloodEmitter.emit(5);
+}
 
 //--------------------------------------------------------------------------
 // Overide rune Methods
 //--------------------------------------------------------------------------
 
 /**
+ * Runs once when group is instantiated.
+ * 
  * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.entity.Enemies.prototype.init = function () {
   rune.display.DisplayGroup.prototype.init.call(this);
@@ -72,7 +108,12 @@ howlkraul.entity.Enemies.prototype.init = function () {
 }
 
 /**
+ * Runs every frame.
+ * 
  * @override
+ * @public
+ * @param {number} step - The current tick.
+ * @returns {undefined}
  */
 howlkraul.entity.Enemies.prototype.update = function (step) {
   rune.display.DisplayGroup.prototype.update.call(this, step);
@@ -81,17 +122,21 @@ howlkraul.entity.Enemies.prototype.update = function (step) {
 }
 
 /**
+ * Used to clean up resources.
+ * 
  * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.entity.Enemies.prototype.dispose = function () {
-  rune.display.DisplayGroup.prototype.dispose.call(this);
-
   this.m_scene.stage.removeChild(this.m_bloodEmitter, true);
   this.m_scene.stage.removeChild(this.m_goblinBodypartEmitter, true);
 
   this.m_scene = null;
   this.m_bloodEmitter = null;
   this.m_goblinBodypartEmitter = null;
+
+  rune.display.DisplayGroup.prototype.dispose.call(this);
 }
 
 //--------------------------------------------------------------------------
@@ -143,8 +188,9 @@ howlkraul.entity.Enemies.prototype.m_initEmitters = function () {
 /**
  * Callback function for hits.
  * 
- * @param {}
  * @private
+ * @param {howlkraul.entity.Enemy} enemy
+ * @param {howlkraul.projectile.Spell} spell
  * @returns {undefined}
  */
 howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
@@ -159,33 +205,4 @@ howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
   spell.castedBy.controller.vibrate(100, 0.3, 0.6);
   this.m_scene.cameras.getCameraAt(0).shake.start(300, 1, 1);
   this.m_scene.spells.removeMember(spell, true);
-}
-
-/**
- * Emitts debree based on furniture type.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.entity.Enemies.prototype.explode = function (enemy) {
-  if (enemy instanceof howlkraul.entity.Slime || enemy instanceof howlkraul.entity.Troll) {
-    this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
-    this.m_bloodEmitter.emit(50);
-  } else if (enemy instanceof howlkraul.entity.Goblin) {
-    this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
-    this.m_bloodEmitter.emit(50);
-    this.m_goblinBodypartEmitter.moveTo(enemy.center.x, enemy.center.y);
-    this.m_goblinBodypartEmitter.emit(1);
-  }
-}
-
-/**
- * Emitts debree based on furniture type.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.entity.Enemies.prototype.bleed = function (enemy) {
-  this.m_bloodEmitter.moveTo(enemy.center.x, enemy.center.y);
-  this.m_bloodEmitter.emit(5);
 }

@@ -10,6 +10,7 @@ npx google-closure-compiler \
 --js "./../../src/scope/Manifest.js" \
 --js "./../../src/data/resource/Requests.js" \
 --js "./../../src/utils/StatCounter.js" \
+--js "./../../src/utils/SoundPool.js" \
 --js "./../../src/ui/keyboard/InputArea.js" \
 --js "./../../src/ui/keyboard/Key.js" \
 --js "./../../src/ui/keyboard/Keyboard.js" \
@@ -23,10 +24,12 @@ npx google-closure-compiler \
 --js "./../../src/ui/manabar/Manabar.js" \
 --js "./../../src/ui/scorecounter/ScoreCounter.js" \
 --js "./../../src/ui/scorecounter/CounterCoin.js" \
+--js "./../../src/ui/mini_hat/MiniHat.js" \
 --js "./../../src/ui/playercard/PlayerCard.js" \
 --js "./../../src/handler/collision/CollisionHandler.js" \
 --js "./../../src/handler/input/InputHandler.js" \
---js "./../../src/drops/Coin.js" \
+--js "./../../src/drops/coin/Coins.js" \
+--js "./../../src/drops/coin/Coin.js" \
 --js "./../../src/drops/HealthPotion.js" \
 --js "./../../src/drops/bomb/Bombs.js" \
 --js "./../../src/drops/bomb/Bomb.js" \

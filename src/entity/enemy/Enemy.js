@@ -1,7 +1,3 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
  * Abstract Enemy class.
  * 
@@ -35,6 +31,15 @@ howlkraul.entity.Enemy = function (x, y, width, height, texture) {
    * @inheritdoc
    */
   this.hp = 100;
+
+  //--------------------------------------------------------------------------
+  // Protected Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * The default speed of the enemy.
+   */
+  this.m_defaultSpeed = 0;
 
   //--------------------------------------------------------------------------
   // Private Properties
@@ -83,6 +88,33 @@ howlkraul.entity.Enemy.prototype.constructor = howlkraul.entity.Enemy;
 //--------------------------------------------------------------------------
 // Getter and setters
 //--------------------------------------------------------------------------
+
+/**
+ * The default speed of the Enemy.
+ * Used to reset between different states. 
+ *
+ * @member {number} defaultSpeed
+ * @memberof howlkraul.entity.Enemy
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Enemy.prototype, "defaultSpeed", {
+  /**
+   * @this howlkraul.entity.Enemy
+   * @ignore
+   */
+  get: function () {
+    return this.m_defaultSpeed;
+  },
+
+  /**
+   * @this howlkraul.entity.Enemy
+   * @ignore
+   */
+  set: function (value) {
+    this.m_defaultSpeed = value;
+  }
+});
 
 /**
  * Flag checking if enemy is currently attacking.
@@ -144,7 +176,6 @@ Object.defineProperty(howlkraul.entity.Enemy.prototype, "distanceToClosestPlayer
 
 /**
  * @inheritdoc
- * @overide
  */
 howlkraul.entity.Enemy.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
@@ -155,7 +186,6 @@ howlkraul.entity.Enemy.prototype.init = function () {
 
 /**
  * @inheritdoc
- * @overide
  */
 howlkraul.entity.Enemy.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
@@ -166,12 +196,9 @@ howlkraul.entity.Enemy.prototype.update = function (step) {
 
 /**
  * @inheritdoc
- * @overide
  */
 howlkraul.entity.Enemy.prototype.dispose = function () {
-  if (this.numChildren > 0) {
-    this.removeChildren(true);
-  }
+  this.removeChildren(true);
 
   howlkraul.entity.Entity.prototype.dispose.call(this);
 };
@@ -182,7 +209,6 @@ howlkraul.entity.Enemy.prototype.dispose = function () {
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Enemy.prototype.initStates = function () {
   this.states.load([
@@ -195,29 +221,26 @@ howlkraul.entity.Enemy.prototype.initStates = function () {
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Enemy.prototype.moveRight = function () {
   howlkraul.entity.Entity.prototype.moveRight.call(this);
 
   this.facing = "side";
-  this.m_setRunningAnimation();
+  this.setRunningAnimation();
 }
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Enemy.prototype.moveLeft = function () {
   howlkraul.entity.Entity.prototype.moveLeft.call(this);
 
   this.facing = "side";
-  this.m_setRunningAnimation();
+  this.setRunningAnimation();
 }
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Enemy.prototype.moveUp = function () {
   howlkraul.entity.Entity.prototype.moveUp.call(this);
@@ -226,17 +249,16 @@ howlkraul.entity.Enemy.prototype.moveUp = function () {
 
   if (horizontal) {
     this.facing = "side";
-    this.m_setRunningAnimation();
+    this.setRunningAnimation();
     return;
   }
 
   this.facing = "up";
-  this.m_setRunningAnimation();
+  this.setRunningAnimation();
 }
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Enemy.prototype.moveDown = function () {
   howlkraul.entity.Entity.prototype.moveDown.call(this);
@@ -245,12 +267,12 @@ howlkraul.entity.Enemy.prototype.moveDown = function () {
 
   if (horizontal) {
     this.facing = "side";
-    this.m_setRunningAnimation();
+    this.setRunningAnimation();
     return;
   }
 
   this.facing = "down";
-  this.m_setRunningAnimation();
+  this.setRunningAnimation();
 }
 
 //--------------------------------------------------------------------------
@@ -304,7 +326,7 @@ howlkraul.entity.Enemy.prototype.dropCoin = function () {
  * Gets the closest player
  * 
  * @public
- * @returns {howlkraul.entity.PlayableCharacter}
+ * @returns {howlkraul.entity.Wizard}
  */
 howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
   var players = this.application.scenes.selected.players;
@@ -341,7 +363,7 @@ howlkraul.entity.Enemy.prototype.getClosestPlayer = function () {
  * @protected
  * @returns {undefined}
 */
-howlkraul.entity.Enemy.prototype.m_setRunningAnimation = function () {
+howlkraul.entity.Enemy.prototype.setRunningAnimation = function () {
   // OVERIDE IN CHILD CLASS
 };
 

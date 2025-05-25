@@ -1,7 +1,3 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
  * Abstract entity class.
  * 
@@ -17,7 +13,7 @@
  * @class
  * @classdesc
  * 
- * Abstract class reprecenting a entity.
+ * Abstract class representing a entity.
  * Use this class to creating moving entity sprites.
  */
 howlkraul.entity.Entity = function (x, y, height, width, texture) {
@@ -449,6 +445,42 @@ howlkraul.entity.Entity.prototype.moveDown = function () {
 }
 
 //--------------------------------------------------------------------------
+// Protected Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Plays a death sound when a entity dies.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Entity.prototype.playDeathSound = function () {
+  if (this.deathSound) {
+    var sound = this.application.sounds.sound.get(this.deathSound);
+    var pan = this.m_getPaningValue();
+    sound.pan = pan;
+    sound.volume = 0.6;
+    sound.play(true);
+  }
+};
+
+/**
+ * Plays a damage sound when a entity takes damage.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.entity.Entity.prototype.playDamageSound = function () {
+  if (this.damageSound) {
+    var sound = this.application.sounds.sound.get(this.damageSound);
+    var pan = this.m_getPaningValue();
+    sound.pan = pan;
+    sound.volume = 0.6;
+    sound.play(true);
+  }
+};
+
+//--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
 
@@ -462,6 +494,17 @@ howlkraul.entity.Entity.prototype.m_initPhysics = function () {
   this.velocity.drag.x = 0.1;
   this.velocity.drag.y = 0.1;
 }
+
+/**
+ * Get´s a value between -1 and 1 based on the entitys position in relation to the screen.
+ * Used for panning sounds.
+ * 
+ * @private
+ * @returns {number}
+ */
+howlkraul.entity.Entity.prototype.m_getPaningValue = function () {
+  return (this.centerX - this.application.screen.centerX) / this.application.screen.centerX;
+};
 
 //--------------------------------------------------------------------------
 // Abstract Protected Methods
@@ -501,48 +544,5 @@ howlkraul.entity.Entity.prototype.initStates = function () {
  */
 howlkraul.entity.Entity.prototype.initSounds = function () {
   // OVERIDE
-};
-
-/**
- * Plays a death sound when a entity dies.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.entity.Entity.prototype.playDeathSound = function () {
-  if (this.deathSound) {
-    var sound = this.application.sounds.sound.get(this.deathSound);
-    var pan = this.getPaningValue();
-    sound.pan = pan;
-    sound.volume = 0.6;
-    sound.play(true);
-  }
-};
-
-/**
- * Plays a damage sound when a entity takes damage.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.entity.Entity.prototype.playDamageSound = function () {
-  if (this.damageSound) {
-    var sound = this.application.sounds.sound.get(this.damageSound);
-    var pan = this.getPaningValue();
-    sound.pan = pan;
-    sound.volume = 0.6;
-    sound.play(true);
-  }
-};
-
-/**
- * Get´s a value between -1 and 1 based on the entitys position in relation to the screen.
- * Used for panning sounds.
- * 
- * @private
- * @returns {number}
- */
-howlkraul.entity.Entity.prototype.getPaningValue = function () {
-  return (this.centerX - this.application.screen.centerX) / this.application.screen.centerX;
 };
 
