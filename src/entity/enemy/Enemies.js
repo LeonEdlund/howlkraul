@@ -45,6 +45,8 @@ howlkraul.entity.Enemies = function (scene) {
    * @type {rune.particle.Emitter}
    */
   this.m_goblinBodypartEmitter = null;
+
+  this.m_enemyArrowHit = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -119,6 +121,7 @@ howlkraul.entity.Enemies.prototype.update = function (step) {
   rune.display.DisplayGroup.prototype.update.call(this, step);
 
   this.hitTestAndSeparateGroup(this.m_scene.spells, this.m_handleDamage, this);
+  this.hitTestGroup(this.m_scene.enemyProjectiles, this.m_handleArrowDamage, this);
 }
 
 /**
@@ -194,6 +197,7 @@ howlkraul.entity.Enemies.prototype.m_initEmitters = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
+
   enemy.takeDamage(spell.castedBy.power);
 
   if (enemy.hp <= 0) {
@@ -205,4 +209,26 @@ howlkraul.entity.Enemies.prototype.m_handleDamage = function (enemy, spell) {
   spell.castedBy.controller.vibrate(100, 0.3, 0.6);
   this.m_scene.cameras.getCameraAt(0).shake.start(300, 1, 1);
   this.m_scene.spells.removeMember(spell, true);
+}
+
+/**
+ * Callback function for enemy arrow hit.
+ * 
+ * @private
+ * @param {howlkraul.entity.Enemy} enemy
+ * @param {howlkraul.projectile.Spell} spell
+ * @returns {undefined}
+ */
+howlkraul.entity.Enemies.prototype.m_handleArrowDamage = function (enemy, arrow) {
+  var now = Date.now();
+  if (now < this.m_enemyArrowHit) return;
+  if (enemy instanceof howlkraul.entity.Goblin) return;
+
+  if (rune.util.Math.chance(10)) {
+    enemy.takeDamage(50);
+    this.bleed(enemy);
+    this.m_scene.cameras.getCameraAt(0).shake.start(300, 1, 1);
+    this.m_scene.enemyProjectiles.removeMember(arrow, true);
+    this.m_enemyArrowHit = now + 1000;
+  }
 }
