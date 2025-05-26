@@ -134,6 +134,22 @@ howlkraul.entity.Wizard = function (x, y, color, input, hud) {
    */
   this.m_isReviving = false;
 
+  /**
+   * Last dash in ms.
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_lastDash = 0;
+
+  /**
+   * Last dash in ms.
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_dashCooldown = 0;
+
   //--------------------------------------------------------------------------
   // Private Properties (OTHER OBJECTS)
   //--------------------------------------------------------------------------
@@ -403,6 +419,7 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
 
   this.m_handleInput();
+  this.m_resetDash();
   this.m_regenEnergy();
 };
 
@@ -464,7 +481,7 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
 
   var cordinates = this.m_setSpellStartingPosition();
   this.m_setShootingAnimation();
-  this.m_takeEnergy();
+  this.m_takeEnergy(this.m_spellCost);
   var spell = new howlkraul.projectile.Spell(cordinates.x, cordinates.y, this);
   spell.shootInDirection(this.facing, 0.9, this.application.scenes.selected.spells);
   this.m_spellSound.play(true);
@@ -530,6 +547,47 @@ howlkraul.entity.Wizard.prototype.raiseFromDead = function () {
 }
 
 /**
+ * Dash.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.dash = function () {
+  if (this.m_energyEmpty) return;
+
+  var now = Date.now();
+
+  if (now > this.m_lastDash) {
+
+    if (this.facing === "up-right" ||
+      this.facing === "up-left" ||
+      this.facing === "down-right" ||
+      this.facing === "down-left") {
+      this.speed = 2;
+    } else {
+      this.speed = 3;
+    }
+
+    this.m_lastDash = now + 200;
+    this.m_takeEnergy(50);
+  }
+}
+
+/**
+ * Reset Dash.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.entity.Wizard.prototype.m_resetDash = function () {
+  var now = Date.now();
+
+  if (now > this.m_lastDash && this.speed !== 1.2) {
+    this.speed = 1.2;
+  }
+}
+
+/**
  * Raises the hp by the provided amount. 
  * But not over the max hp.
  * 
@@ -586,7 +644,6 @@ howlkraul.entity.Wizard.prototype.m_handleInput = function () {
   if (this.m_isDead || !this.m_input) return;
 
   this.m_isReviving = false;  // @note reset Reviving flag every step. FIX LATER.
-
   var input = this.m_input.currentInput();
 
   this.m_setFacingDirection(input);
@@ -597,6 +654,7 @@ howlkraul.entity.Wizard.prototype.m_handleInput = function () {
   if (input.left) this.moveLeft();
   if (input.right) this.moveRight();
   if (input.shoot) this.shoot();
+  if (input.dash) this.dash();
 
   if (input.hold) {
     this.m_isReviving = true;
@@ -612,10 +670,10 @@ howlkraul.entity.Wizard.prototype.m_handleInput = function () {
  * @private
  * @returns {undefined}
  */
-howlkraul.entity.Wizard.prototype.m_takeEnergy = function () {
+howlkraul.entity.Wizard.prototype.m_takeEnergy = function (amount) {
   if (this.m_energyEmpty) return;
 
-  this.m_mana -= this.m_spellCost;
+  this.m_mana -= amount;
   this.m_manabar.progress = this.m_mana / 100;
 
   if (this.m_mana <= 0) {

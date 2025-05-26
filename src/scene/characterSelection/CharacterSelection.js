@@ -409,7 +409,8 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP1 = function () {
       up: "w",
       down: "s",
       shoot: "space",
-      hold: "shift",
+      hold: "control",
+      dash: "shift",
     });
 
   this.m_playerOne.bindControlls(p1Input);
@@ -445,8 +446,9 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP2 = function () {
       right: "right",
       up: "up",
       down: "down",
-      shoot: "m",
-      hold: "n",
+      shoot: "l",
+      hold: "k",
+      dash: "o",
     });
   this.m_playerTwo.bindControlls(p2Input);
   this.m_bindHUD(this.m_playerTwo, new howlkraul.ui.PlayerHud(310, 10, this.m_playerTwo));

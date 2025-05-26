@@ -37,5 +37,6 @@ howlkraul.handler.InputHandler.prototype.currentInput = function () {
     down: this.m_keyboard.pressed(this.m_keys.down) || this.m_controller.stickLeftDown,
     shoot: this.m_keyboard.justPressed(this.m_keys.shoot) || this.m_controller.justPressed(0),
     hold: this.m_keyboard.pressed(this.m_keys.hold) || this.m_controller.pressed(7),
+    dash: this.m_keyboard.justPressed(this.m_keys.dash) || this.m_controller.justPressed(6),
   }
 }
