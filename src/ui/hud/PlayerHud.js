@@ -180,6 +180,30 @@ howlkraul.ui.PlayerHud.prototype.changeColor = function (color) {
   this.m_head.texture.replaceColor(originalC7, newC7);
   this.m_head.texture.replaceColor(originalC8, newC8);
   this.m_head.texture.replaceColor(originalC9, newC9);
+
+  //--------------------------------------------------------------------------
+  //HUD Colors
+
+  //orignal (blue)
+    //Light: 163, 219, 229
+    //Mid: 143, 209, 221
+    //Dark: 111, 169, 180
+
+  //green
+    //Light: 179, 227, 181
+    //Mid: 141, 205, 145
+    //Dark: 104, 164, 107
+
+  //Red
+    //Light: 232, 179, 179
+    //Mid: 210, 140, 140
+    //Dark: 166, 101, 101
+
+  //Brown
+    //Light: 214, 194, 179
+    //Mid. 181, 148, 122
+    //Dark 140, 108, 79
+    
 }
 
 //--------------------------------------------------------------------------
