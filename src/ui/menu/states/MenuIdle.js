@@ -24,6 +24,14 @@ howlkraul.ui.MenuIdle = function () {
    * @type {howlkraul.ui.MainMenu}
    */
   this.m_menu = null;
+
+  /**
+   * Item selected.
+   * 
+   * @private
+   * @type {boolean}
+   */
+  this.m_itemSelected = false;
 }
 
 //--------------------------------------------------------------------------
@@ -44,7 +52,16 @@ howlkraul.ui.MenuIdle.prototype.constructor = howlkraul.ui.MenuIdle;
 */
 howlkraul.ui.MenuIdle.prototype.init = function () {
   rune.state.State.prototype.init.call(this);
+};
 
+/**
+ * ... 
+ * 
+ * @returns {undefined}
+*/
+howlkraul.ui.MenuIdle.prototype.onEnter = function () {
+  this.m_animateContent(true);
+  this.m_itemSelected = false;
 };
 
 /**
@@ -53,7 +70,7 @@ howlkraul.ui.MenuIdle.prototype.init = function () {
  * @returns {undefined}
 */
 howlkraul.ui.MenuIdle.prototype.onExit = function () {
-
+  this.m_animateContent();
 };
 
 /**
@@ -62,6 +79,8 @@ howlkraul.ui.MenuIdle.prototype.onExit = function () {
  * @returns {undefined}
 */
 howlkraul.ui.MenuIdle.prototype.update = function () {
+  if (this.m_itemSelected) return;
+
   var keyboard = this.owner.keyboard;
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
@@ -91,17 +110,18 @@ howlkraul.ui.MenuIdle.prototype.update = function () {
 howlkraul.ui.MenuIdle.prototype.m_onSelect = function (choice) {
   var scene = this.owner.application.scenes.selected;
   var text = choice.text.toLowerCase();
+  this.m_itemSelected = true;
 
   choice.flicker.start(500, 100, function () {
     switch (text) {
-      case "one player":
-      case "two player":
+      case "solo":
+      case "co-op":
         this.owner.application.scenes.selected.tweens.create({
           target: this.owner,
           scope: this,
           duration: 2000,
           onDispose: function (obj) {
-            if (text === "two player") scene.twoPlayer = true;
+            if (text === "co-op") scene.twoPlayer = true;
             scene.states.select("CSPlaying");
           },
           args: {
@@ -110,7 +130,7 @@ howlkraul.ui.MenuIdle.prototype.m_onSelect = function (choice) {
         })
         break;
       case "how to":
-
+        this.owner.states.select("MenuHowTo")
         break;
       case "credit":
 
@@ -128,9 +148,50 @@ howlkraul.ui.MenuIdle.prototype.m_updateHighscoreForCurrentItem = function () {
   var currentItem = this.owner.m_menu.hoveredItem;
 
   // Update highscore based on current selection
-  if (currentItem === "one player") {
+  if (currentItem === "solo") {
     this.owner.m_highscore.updateList(1);
-  } else if (currentItem === "two player") {
+  } else if (currentItem === "co-op") {
     this.owner.m_highscore.updateList(2);
   }
+};
+
+/**
+ * Animate content.
+ * 
+ * @private
+ * @param {boolean} reversed
+ * @returns {undefined}
+ */
+howlkraul.ui.MenuIdle.prototype.m_animateContent = function (reversed) {
+  this.owner.application.scenes.selected.tweens.create({
+    target: this.owner.menu,
+    scope: this,
+    duration: 1000,
+    args: {
+      x: reversed ? 30 : -200,
+      alpha: 1
+    }
+  });
+
+  this.owner.application.scenes.selected.tweens.create({
+    target: this.owner.highscore,
+    scope: this,
+    duration: 1000,
+    args: {
+      x: reversed ? 255 : 400,
+      alpha: 1
+    }
+  })
+
+  this.owner.application.scenes.selected.tweens.create({
+    target: this.owner.logo,
+    scope: this,
+    duration: 1000,
+    args: {
+      centerX: reversed ? this.owner.centerX : 280,
+      y: reversed ? 1 : 18,
+      scaleX: reversed ? 1 : 0.7,
+      scaleY: reversed ? 1 : 0.7,
+    }
+  })
 };

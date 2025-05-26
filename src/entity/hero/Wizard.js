@@ -1,7 +1,3 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
  * Creates a new Wizard instance.
  *
@@ -174,6 +170,12 @@ howlkraul.entity.Wizard = function (x, y, color, input, hud) {
    */
   this.m_statCounter = null;
 
+  /**
+   * Pool of spell sounds.
+   * 
+   * @private
+   * @type {howlkraul.util.SoundPool}
+   */
   this.m_spellSound = null;
 };
 
@@ -243,7 +245,7 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "isReviving", {
 /**
  * The wizards mana.
  *
- * @member {boolean} mana
+ * @member {number} mana
  * @memberof howlkraul.entity.Wizard
  * @instance
  * @readonly
@@ -262,7 +264,7 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "mana", {
 /**
  * The wizards power/shoot damage.
  *
- * @member {boolean} power
+ * @member {number} power
  * @memberof howlkraul.entity.Wizard
  * @instance
  */
@@ -288,7 +290,7 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "power", {
  * The gontroller/gamepad connected to the wizard.
  * Useful for haptic feedback.
  *
- * @member {boolean} controller
+ * @member {howlkraul.handler.InputHandler} controller
  * @memberof howlkraul.entity.Wizard
  * @instance
  * @readonly
@@ -323,7 +325,7 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "HUD", {
 /**
  * The color of the wizard. 
  *
- * @member {boolean} color
+ * @member {string} color
  * @memberof howlkraul.entity.Wizard
  * @instance
  * @readonly
@@ -342,7 +344,7 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "color", {
  * The ManaBar object asosiated with the wizard.
  * Usefull for hiding and showing it.
  *
- * @member {boolean} manabar
+ * @member {howlkraul.ui.Manabar} manabar
  * @memberof howlkraul.entity.Wizard
  * @instance
  * @readonly
@@ -361,7 +363,7 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "manabar", {
  * Reference to the statcounter. 
  * Used to update the stas for the player during a game.
  *
- * @member {boolean} stats
+ * @member {howlkraul.utils.StatCounter} stats
  * @memberof howlkraul.entity.Wizard
  * @instance
  * @readonly
@@ -382,7 +384,6 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "stats", {
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Wizard.prototype.init = function () {
   howlkraul.entity.Entity.prototype.init.call(this);
@@ -397,7 +398,6 @@ howlkraul.entity.Wizard.prototype.init = function () {
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Wizard.prototype.update = function (step) {
   howlkraul.entity.Entity.prototype.update.call(this, step);
@@ -408,7 +408,6 @@ howlkraul.entity.Wizard.prototype.update = function (step) {
 
 /**
  * @inheritdoc
- * @override
  */
 howlkraul.entity.Wizard.prototype.dispose = function () {
   this.m_disposeStatCounter();
@@ -424,9 +423,8 @@ howlkraul.entity.Wizard.prototype.dispose = function () {
 //--------------------------------------------------------------------------
 
 /**
- * @overide
  * @inheritdoc
-*/
+ */
 howlkraul.entity.Wizard.prototype.initAnimations = function () {
   // IDLE
   this.animation.create("idle-down", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 0, 0, 0, 17, 18, 17, 18, 17, 18, 0, 0, 0, 0], 13, true);
@@ -477,7 +475,8 @@ howlkraul.entity.Wizard.prototype.shoot = function () {
  * Die method is called if player has less then 0 hp.
  * 
  * @public
- * @param {howlkraul.entity.Enemy || howlkraul.projectile.Projectile || howlkraul.particle.BombFragment}
+ * @param {howlkraul.entity.Enemy || howlkraul.projectile.Projectile || howlkraul.particle.BombFragment} damageBy 
+ * - Who delt the damage.
  * @returns {undefined}
  */
 howlkraul.entity.Wizard.prototype.takeDamage = function (damageBy) {
@@ -500,7 +499,8 @@ howlkraul.entity.Wizard.prototype.takeDamage = function (damageBy) {
  * Switches to death animation and stops movement.
  * 
  * @public
- * @param {howlkraul.entity.Enemy || howlkraul.projectile.Projectile || howlkraul.particle.BombFragment}
+ * @param {howlkraul.entity.Enemy || howlkraul.projectile.Projectile || howlkraul.particle.BombFragment} killedBy 
+ * - who killed the wizard.  
  * @returns {undefined}
  */
 howlkraul.entity.Wizard.prototype.die = function (killedBy) {
@@ -666,8 +666,6 @@ howlkraul.entity.Wizard.prototype.m_setSpellStartingPosition = function () {
 
   return cords;
 }
-
-
 
 //--------------------------------------------------------------------------
 // Private Methods (ANIMATIONS)

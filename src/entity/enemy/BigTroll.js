@@ -1,11 +1,62 @@
+/**
+ * Creates a new BigTroll object
+ * 
+ * @constructor
+ * @extends howlkraul.entity.Enemy
+ * 
+ * @param {number} x  - Spawn point on X-axis.
+ * @param {number} y  - Spawn point on Y-axis.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Creates an instance of a BigTroll enemy.
+ */
 howlkraul.entity.BigTroll = function (x, y) {
+
+  //--------------------------------------------------------------------------
+  // Super Call
+  //--------------------------------------------------------------------------
   howlkraul.entity.Troll.call(this, x, y);
 
+  //--------------------------------------------------------------------------
+  // Overide Protected Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * @inheritdoc
+   */
   this.hp = 400;
+
+  /**
+   * @inheritdoc
+   */
   this.speed = 0.2;
+
+  /**
+   * @inheritdoc
+   */
   this.defaultSpeed = 0.2;
+
+  /**
+   * @inheritdoc
+   */
   this.mass = 20;
+
+  /**
+   * If the troll is throwing
+   * 
+   * @private
+   * @type {boolean}
+   */
   this.m_isThrowing = false;
+
+  /**
+   * Last time the troll threw in ms.
+   * 
+   * @private
+   * @type {boolean}
+   */
   this.m_lastThrow = Date.now() + 4000;
 }
 
@@ -21,21 +72,21 @@ howlkraul.entity.BigTroll.prototype.constructor = howlkraul.entity.BigTroll;
 //--------------------------------------------------------------------------
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.BigTroll.prototype.init = function () {
   howlkraul.entity.Troll.prototype.init.call(this);
-  
+
   this.scaleX = 1.5;
   this.scaleY = 1.5;
 };
 
 //--------------------------------------------------------------------------
-// Overide Methods
+// Overide Troll Methods
 //--------------------------------------------------------------------------
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.BigTroll.prototype.initAnimations = function () {
   howlkraul.entity.Troll.prototype.initAnimations.call(this);
@@ -44,7 +95,7 @@ howlkraul.entity.BigTroll.prototype.initAnimations = function () {
 };
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.BigTroll.prototype.initAnimationScripts = function () {
   howlkraul.entity.Troll.prototype.initAnimationScripts.call(this);
@@ -64,7 +115,7 @@ howlkraul.entity.BigTroll.prototype.initAnimationScripts = function () {
 };
 
 /**
- * @override
+ * @inheritdoc
  */
 howlkraul.entity.BigTroll.prototype.dropCoin = function () {
   for (var i = 0; i < 3; i++) {
@@ -72,13 +123,6 @@ howlkraul.entity.BigTroll.prototype.dropCoin = function () {
     var y = this.center.y + rune.util.Math.randomInt(-20, 20);
     this.application.scenes.selected.coins.addMember(new howlkraul.drops.Coin(x, y));
   }
-};
-
-/**
- * @inheritdoc
- */
-howlkraul.entity.BigTroll.prototype.m_initClothes = function () {
-
 };
 
 /**
@@ -113,3 +157,10 @@ howlkraul.entity.BigTroll.prototype.initStates = function () {
     new howlkraul.entity.BigTrollAttack(),
   ]);
 }
+
+/**
+ * @inheritdoc
+ */
+howlkraul.entity.BigTroll.prototype.initClothes = function () {
+  // OVERIDE SO NO CLOTHES ARE ADDED
+};

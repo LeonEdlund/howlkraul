@@ -21,6 +21,7 @@ howlkraul.entity.Attack = function () {
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.entity.Attack.prototype = Object.create(rune.state.State.prototype);
 howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.Attack;
 
@@ -29,7 +30,11 @@ howlkraul.entity.Attack.prototype.constructor = howlkraul.entity.Attack;
 //--------------------------------------------------------------------------
 
 /**
+ * Runs when state is selected
+ * 
  * @override
+ * @public
+ * @returns {undefined}
 */
 howlkraul.entity.Attack.prototype.onEnter = function () {
   switch (this.owner.facing) {

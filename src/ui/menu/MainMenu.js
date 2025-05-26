@@ -31,6 +31,13 @@ howlkraul.ui.MainMenu = function () {
   this.m_overlay = null;
 
   /**
+   * The logo.
+   * 
+   * @type {rune.display.Graphic}
+   */
+  this.m_logo = null;
+
+  /**
    * reference to the menu.
    * 
    * @type {howlkraul.ui.Menu}
@@ -43,6 +50,20 @@ howlkraul.ui.MainMenu = function () {
    * @type {howlkraul.ui.Highscore}
    */
   this.m_highscore = null;
+
+  /**
+   * reference to the how to text.
+   * 
+   * @type {rune.display.Graphic}
+   */
+  this.m_howToText = null;
+
+  /**
+   * reference to the how to controller.
+   * 
+   * @type {rune.display.Graphic}
+   */
+  this.m_controller = null;
 }
 
 //--------------------------------------------------------------------------
@@ -51,6 +72,40 @@ howlkraul.ui.MainMenu = function () {
 
 howlkraul.ui.MainMenu.prototype = Object.create(rune.display.DisplayObjectContainer.prototype);
 howlkraul.ui.MainMenu.prototype.constructor = howlkraul.ui.MainMenu;
+
+//--------------------------------------------------------------------------
+// Getters and setters
+//--------------------------------------------------------------------------
+
+Object.defineProperty(howlkraul.ui.MainMenu.prototype, "logo", {
+  get: function () {
+    return this.m_logo;
+  }
+});
+
+Object.defineProperty(howlkraul.ui.MainMenu.prototype, "menu", {
+  get: function () {
+    return this.m_menu;
+  }
+});
+
+Object.defineProperty(howlkraul.ui.MainMenu.prototype, "highscore", {
+  get: function () {
+    return this.m_highscore;
+  }
+});
+
+Object.defineProperty(howlkraul.ui.MainMenu.prototype, "howToText", {
+  get: function () {
+    return this.m_howToText;
+  }
+});
+
+Object.defineProperty(howlkraul.ui.MainMenu.prototype, "controller", {
+  get: function () {
+    return this.m_controller;
+  }
+});
 
 //--------------------------------------------------------------------------
 // Overide Rune Methods
@@ -71,6 +126,14 @@ howlkraul.ui.MainMenu.prototype.init = function () {
   this.m_initLogo();
   this.m_initMenu();
   this.m_initHighscore();
+
+};
+
+/**
+ * @inheritdoc
+*/
+howlkraul.ui.MainMenu.prototype.update = function (step) {
+  rune.display.DisplayObjectContainer.prototype.update.call(this, step);
 };
 
 /**
@@ -95,7 +158,8 @@ howlkraul.ui.MainMenu.prototype.dispose = function () {
  */
 howlkraul.ui.MainMenu.prototype.m_initStates = function () {
   this.states.load([
-    new howlkraul.ui.MenuIdle()
+    new howlkraul.ui.MenuIdle(),
+    new howlkraul.ui.MenuHowTo(),
   ])
 };
 
@@ -133,7 +197,7 @@ howlkraul.ui.MainMenu.prototype.m_initLogo = function () {
  * @ignore
  */
 howlkraul.ui.MainMenu.prototype.m_initMenu = function () {
-  this.m_menu = new howlkraul.ui.Menu();
+  this.m_menu = new howlkraul.ui.Menu(30, 90);
   this.addChild(this.m_menu);
 };
 

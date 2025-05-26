@@ -201,10 +201,7 @@ howlkraul.scene.GameOverStats.prototype.m_animateCard = function (index) {
       });
     },
     scope: this
-  })
-
-
-
+  });
 };
 
 
@@ -215,7 +212,7 @@ howlkraul.scene.GameOverStats.prototype.m_animateCard = function (index) {
  * @param {howlkraul.ui.PlayerCard}
  * @returns {undefined}
 */
-howlkraul.scene.GameOverStats.prototype.m_showHighscoreText = function (card) {
+howlkraul.scene.GameOverStats.prototype.m_showHighscoreText = function () {
   if (!this.m_isHighscore()) return;
 
   var text = new rune.text.BitmapField("NEW HIGHSCORE", "font_480x45");
@@ -226,7 +223,7 @@ howlkraul.scene.GameOverStats.prototype.m_showHighscoreText = function (card) {
   this.owner.stage.addChild(text);
 
 
-  this.owner.application.scenes.selected.tweens.create({
+  this.owner.tweens.create({
     target: text,
     scope: this,
     duration: 400,

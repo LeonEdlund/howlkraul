@@ -23,10 +23,10 @@ howlkraul.drops.Bombs = function (scene) {
   //--------------------------------------------------------------------------
 
   /**
-   * The scene.
+   * The scene that the group is part of.
    * 
-   * @protected
-   * @type {rune}
+   * @private
+   * @type {rune.scene.Scene}
   */
   this.m_scene = scene;
 
@@ -39,11 +39,11 @@ howlkraul.drops.Bombs = function (scene) {
   this.m_emitter = null;
 
   /**
- * Emitter for bomb fragments.
- * 
- * @private
- * @type {rune.particle.Emitter}
- */
+   * Emitter for bomb fragments.
+   * 
+   * @private
+   * @type {rune.particle.Emitter}
+   */
   this.m_smokeEmitter = null;
 }
 
@@ -59,7 +59,7 @@ howlkraul.drops.Bombs.prototype.constructor = howlkraul.drops.Bombs;
 //--------------------------------------------------------------------------
 
 /**
- * Emitt bombfragments.
+ * Emit bomb fragments.
  * 
  * @private
  * @param {rune.geom.Vector2D} cordinates - from where the emitter should explode.
@@ -75,7 +75,6 @@ howlkraul.drops.Bombs.prototype.explode = function (cordinates) {
   this.m_cloudEmitter.emit(10);
 
   this.application.scenes.selected.cameras.getCameraAt(0).shake.start(200);
-
   this.application.sounds.sound.get("sfx_bomb").play(true);
 }
 
@@ -84,7 +83,11 @@ howlkraul.drops.Bombs.prototype.explode = function (cordinates) {
 //--------------------------------------------------------------------------
 
 /**
+ * Runs once when group is instantiated.
+ * 
  * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.drops.Bombs.prototype.init = function () {
   rune.display.DisplayGroup.prototype.init.call(this);
@@ -93,7 +96,12 @@ howlkraul.drops.Bombs.prototype.init = function () {
 }
 
 /**
+ * Runs every frame.
+ * 
  * @override
+ * @public
+ * @param {number} step - The current tick.
+ * @returns {undefined}
  */
 howlkraul.drops.Bombs.prototype.update = function (step) {
   rune.display.DisplayGroup.prototype.update.call(this, step);
@@ -107,7 +115,11 @@ howlkraul.drops.Bombs.prototype.update = function (step) {
 }
 
 /**
+ * Used to clean up resources.
+ * 
  * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.drops.Bombs.prototype.dispose = function () {
   this.m_scene.stage.removeChild(this.m_emitter, true);
@@ -180,6 +192,8 @@ howlkraul.drops.Bombs.prototype.m_initEmitter = function () {
  * Handle damage and removes particle from scene.
  * 
  * @private
+ * @param {howlkraul.entity.Entity} target - the hit player or enemy.
+ * @param {howlkraul.projectile.Projectile} fragment - the fragment from the bomb.
  * @returns {undefined}
  */
 howlkraul.drops.Bombs.prototype.m_handleDamage = function (target, fragment) {

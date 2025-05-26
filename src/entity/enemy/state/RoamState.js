@@ -42,11 +42,21 @@ howlkraul.entity.RoamState.prototype.update = function (step) {
   }
 };
 
+/**
+ * The enemy follows the closest player.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.entity.RoamState.prototype.onEnter = function () {
   rune.state.State.prototype.onEnter.call(this);
 
   this.owner.speed = this.owner.defaultSpeed;
 };
+
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
 
 howlkraul.entity.RoamState.prototype.m_roam = function () {
   var now = Date.now();
