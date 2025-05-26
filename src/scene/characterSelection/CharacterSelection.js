@@ -291,13 +291,6 @@ howlkraul.scene.CharacterSelection.prototype.init = function () {
 howlkraul.scene.CharacterSelection.prototype.update = function (step) {
   rune.scene.Scene.prototype.update.call(this, step);
 
-  if (this.m_menuIsOpen) {
-    if (this.keyboard.justPressed("escape")) {
-      this.states.select("CSPlaying");
-    }
-    return;
-  }
-
 };
 
 /**

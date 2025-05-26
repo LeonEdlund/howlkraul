@@ -13,18 +13,18 @@
  * 
  * Represents the games menu.
  */
-howlkraul.ui.Menu = function () {
+howlkraul.ui.Menu = function (x, y) {
 
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
-  rune.display.DisplayObjectContainer.call(this, 30, 90, 200, 130);
+  rune.display.DisplayObjectContainer.call(this, x, y, 220, 130);
 
   //--------------------------------------------------------------------------
   // Private Properties
   //--------------------------------------------------------------------------
 
-  this.m_tweens = null;
+  // this.m_tweens = null;
 
   this.m_options = [];
 
@@ -65,7 +65,6 @@ howlkraul.ui.Menu.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
 
   this.m_initMenuOptions();
-  this.m_initTweens();
 };
 
 /**
@@ -105,15 +104,6 @@ howlkraul.ui.Menu.prototype.select = function () {
 // Private Methods
 //--------------------------------------------------------------------------
 
-howlkraul.ui.Menu.prototype.m_onSelect = function () {
-  switch (this.m_options[this.m_choice]) {
-    case "one player":
-      this.application.scenes.selected.states.select("CSPlaying");
-  }
-
-  return this.m_options[this.m_choice].text.toLowerCase();
-};
-
 /**
  * Creates a new overlay and add it to display group.
  * 
@@ -121,10 +111,10 @@ howlkraul.ui.Menu.prototype.m_onSelect = function () {
  * @returns {undefined}
  */
 howlkraul.ui.Menu.prototype.m_initMenuOptions = function () {
-  this.m_options.push(new rune.text.BitmapField("ONE PLAYER", "font_480x45"));
-  this.m_options.push(new rune.text.BitmapField("TWO PLAYER", "font_480x45"));
+  this.m_options.push(new rune.text.BitmapField("SOLO", "font_480x45"));
+  this.m_options.push(new rune.text.BitmapField("CO-OP", "font_480x45"));
   this.m_options.push(new rune.text.BitmapField("HOW TO", "font_480x45"));
-  this.m_options.push(new rune.text.BitmapField("CREDIT", "font_480x45"));
+  this.m_options.push(new rune.text.BitmapField("CREDITS", "font_480x45"));
 
   for (var i = 0; i < this.m_options.length; i++) {
     this.addChild(this.m_options[i]);
@@ -138,18 +128,6 @@ howlkraul.ui.Menu.prototype.m_initMenuOptions = function () {
       this.m_options[i].scaleX = 1.2;
       this.m_options[i].scaleY = 1.2;
     }
-  }
-};
-
-/**
- * Creates a new overlay and add it to display group.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.ui.Menu.prototype.m_initTweens = function () {
-  if (!this.m_tweens) {
-    this.m_tweens = new rune.tween.Tweens();
   }
 };
 

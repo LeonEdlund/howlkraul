@@ -143,7 +143,7 @@ howlkraul.ui.HighScore.prototype.m_initItems = function () {
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.m_initBackground = function () {
-  this.m_background = new rune.display.Graphic(0, 0, 93, 125, "highscore_v3_93x123");
+  this.m_background = new rune.display.Graphic(0, 0, 117, 123, "highscore_v4_117x123");
   this.addChild(this.m_background);
 };
 
@@ -154,7 +154,7 @@ howlkraul.ui.HighScore.prototype.m_initBackground = function () {
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.m_renderList = function () {
-  var defaultXScore = 80;
+  var defaultXScore = 110;
 
   for (var i = 0; i < this.m_hsList.length; i++) {
     this.m_hsItems[i].text = this.m_hsList[i].name.toUpperCase();

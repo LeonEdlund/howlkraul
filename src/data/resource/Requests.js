@@ -93,8 +93,8 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("player_hud_69x31", "./../asset/img/hud/hud-components/player_hud_69x31.png");
 	this.add("player_selection_p1_37x19", "./../asset/img/hud/selectors/player_selection_p1_37x19.png");
 	this.add("player_selection_p2_37x19", "./../asset/img/hud/selectors/player_selection_p2_37x19.png");
+	this.add("controller_242x89", "./../asset/img/hud/start-screen/controller_242x89.png");
 	this.add("controller_30x31", "./../asset/img/hud/start-screen/controller_30x31.png");
-	this.add("controllerl_302x132", "./../asset/img/hud/start-screen/controllerl_302x132.png");
 	this.add("highscoreV1_167x182", "./../asset/img/hud/start-screen/highscoreV1_167x182.png");
 	this.add("highscore_93x120", "./../asset/img/hud/start-screen/highscore_93x120.png");
 	this.add("highscore_v2_93x125", "./../asset/img/hud/start-screen/highscore_v2_93x125.png");
