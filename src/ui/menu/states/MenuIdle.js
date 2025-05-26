@@ -132,8 +132,9 @@ howlkraul.ui.MenuIdle.prototype.m_onSelect = function (choice) {
       case "how to":
         this.owner.states.select("MenuHowTo")
         break;
-      case "credit":
-
+      case "credits":
+        this.owner.states.select("MenuCredits")
+        break;
     }
   }, this);
 };
@@ -169,7 +170,7 @@ howlkraul.ui.MenuIdle.prototype.m_animateContent = function (reversed) {
     duration: 1000,
     args: {
       x: reversed ? 30 : -200,
-      alpha: 1
+      alpha: reversed ? 1 : 0
     }
   });
 
@@ -179,19 +180,7 @@ howlkraul.ui.MenuIdle.prototype.m_animateContent = function (reversed) {
     duration: 1000,
     args: {
       x: reversed ? 255 : 400,
-      alpha: 1
+      alpha: reversed ? 1 : 0
     }
-  })
-
-  this.owner.application.scenes.selected.tweens.create({
-    target: this.owner.logo,
-    scope: this,
-    duration: 1000,
-    args: {
-      centerX: reversed ? this.owner.centerX : 280,
-      y: reversed ? 1 : 18,
-      scaleX: reversed ? 1 : 0.7,
-      scaleY: reversed ? 1 : 0.7,
-    }
-  })
+  });
 };

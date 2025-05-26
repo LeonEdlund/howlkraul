@@ -160,6 +160,7 @@ howlkraul.ui.MainMenu.prototype.m_initStates = function () {
   this.states.load([
     new howlkraul.ui.MenuIdle(),
     new howlkraul.ui.MenuHowTo(),
+    new howlkraul.ui.MenuCredits(),
   ])
 };
 

@@ -106,6 +106,14 @@ howlkraul.entity.Wizard = function (x, y, color, input, hud) {
    */
   this.m_damageHitCoolDown = 1000;
 
+  /**
+   * Last dash in ms.
+   * 
+   * @private
+   * @type {number}
+   */
+  this.m_lastDash = 0;
+
   //--------------------------------------------------------------------------
   // Private Properties (FLAGS)
   //--------------------------------------------------------------------------
@@ -133,22 +141,6 @@ howlkraul.entity.Wizard = function (x, y, color, input, hud) {
    * @type {boolean}
    */
   this.m_isReviving = false;
-
-  /**
-   * Last dash in ms.
-   * 
-   * @private
-   * @type {number}
-   */
-  this.m_lastDash = 0;
-
-  /**
-   * Last dash in ms.
-   * 
-   * @private
-   * @type {number}
-   */
-  this.m_dashCooldown = 0;
 
   //--------------------------------------------------------------------------
   // Private Properties (OTHER OBJECTS)
@@ -559,10 +551,12 @@ howlkraul.entity.Wizard.prototype.dash = function () {
 
   if (now > this.m_lastDash) {
 
-    if (this.facing === "up-right" ||
+    if (
+      this.facing === "up-right" ||
       this.facing === "up-left" ||
       this.facing === "down-right" ||
       this.facing === "down-left") {
+
       this.speed = 2;
     } else {
       this.speed = 3;

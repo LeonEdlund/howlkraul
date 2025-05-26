@@ -18,20 +18,20 @@ howlkraul.ui.MenuHowTo = function () {
   rune.state.State.call(this, "MenuHowTo");
 
   /**
-   * Main Menu
+   * The text grapic
    * 
    * @private
-   * @type {howlkraul.ui.MainMenu}
+   * @type {rune.display.Graphic}
    */
-  this.m_menu = null;
+  this.m_text = null;
 
   /**
-   * Item selected.
+   * The controller grapic
    * 
    * @private
-   * @type {boolean}
+   * @type {rune.display.Graphic}
    */
-  this.m_itemSelected = false;
+  this.m_controlls = false;
 }
 
 //--------------------------------------------------------------------------
@@ -52,6 +52,7 @@ howlkraul.ui.MenuHowTo.prototype.constructor = howlkraul.ui.MenuHowTo;
 */
 howlkraul.ui.MenuHowTo.prototype.init = function () {
   rune.state.State.prototype.init.call(this);
+  this.m_initContent();
 };
 
 /**
@@ -60,7 +61,6 @@ howlkraul.ui.MenuHowTo.prototype.init = function () {
  * @returns {undefined}
 */
 howlkraul.ui.MenuHowTo.prototype.onEnter = function () {
-  this.m_initContent();
   this.m_animateContent();
 };
 
@@ -85,11 +85,10 @@ howlkraul.ui.MenuHowTo.prototype.update = function () {
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
 
-  if (keyboard.justPressed("enter") || gamepad1.stickLeftJustUp || gamepad2.stickLeftJustUp) {
+  if (keyboard.justPressed("enter") || gamepad1.justPressed(1) || gamepad2.justPressed(1)) {
     this.owner.states.select("MenuIdle");
   }
 };
-
 
 /**
  * ... 
@@ -108,8 +107,6 @@ howlkraul.ui.MenuHowTo.prototype.m_initContent = function () {
   this.owner.addChild(this.m_text);
   this.owner.addChild(this.m_controlls);
   this.owner.addChild(this.m_backBtn);
-
-  this.m_animateContent();
 };
 
 /**
@@ -120,6 +117,19 @@ howlkraul.ui.MenuHowTo.prototype.m_initContent = function () {
  * @returns {undefined}
  */
 howlkraul.ui.MenuHowTo.prototype.m_animateContent = function (reversed) {
+
+  this.owner.application.scenes.selected.tweens.create({
+    target: this.owner.logo,
+    scope: this,
+    duration: 1000,
+    args: {
+      centerX: reversed ? this.owner.centerX : 280,
+      y: reversed ? 1 : 18,
+      scaleX: reversed ? 1 : 0.7,
+      scaleY: reversed ? 1 : 0.7,
+    }
+  });
+
   this.owner.application.scenes.selected.tweens.create({
     target: this.m_text,
     scope: this,
@@ -138,35 +148,24 @@ howlkraul.ui.MenuHowTo.prototype.m_animateContent = function (reversed) {
     }
   });
 
-  this.owner.application.scenes.selected.timers.create({
-    duration: 1000,
-    scope: this,
-    onComplete: function () {
-      this.owner.application.scenes.selected.tweens.create({
-        target: this.m_backBtn,
-        scope: this,
-        duration: 3000,
-        args: {
-          alpha: reversed ? 0 : 1
-        }
-      });
-    }
-  });
-};
-
-/**
- * Updates the highscore list based on current menu selection
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.ui.MenuHowTo.prototype.m_updateHighscoreForCurrentItem = function () {
-  var currentItem = this.owner.m_menu.hoveredItem;
-
-  // Update highscore based on current selection
-  if (currentItem === "one player") {
-    this.owner.m_highscore.updateList(1);
-  } else if (currentItem === "two player") {
-    this.owner.m_highscore.updateList(2);
+  if (!reversed) {
+    this.m_backBtn.visible = true;
+    this.owner.application.scenes.selected.timers.create({
+      duration: 1000,
+      scope: this,
+      onComplete: function () {
+        this.owner.application.scenes.selected.tweens.create({
+          target: this.m_backBtn,
+          scope: this,
+          duration: 3000,
+          args: {
+            alpha: 1
+          }
+        });
+      }
+    });
+  } else {
+    this.m_backBtn.alpha = 0;
+    this.m_backBtn.visible = false;
   }
 };
