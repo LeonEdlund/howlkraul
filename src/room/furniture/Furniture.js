@@ -54,6 +54,10 @@ howlkraul.room.Furniture = function (x, y, width, height, texture) {
    * @type {number}
    */
   this.m_damageCoolDown = 500;
+
+  this.m_hitSounds = [];
+
+  this.m_breakSounds = [];
 }
 
 //--------------------------------------------------------------------------
@@ -77,6 +81,32 @@ Object.defineProperty(howlkraul.room.Furniture.prototype, "destroyed", {
   }
 });
 
+Object.defineProperty(howlkraul.room.Furniture.prototype, "hitSounds", {
+  get: function () {
+    return this.m_hitSounds;
+  }
+});
+
+Object.defineProperty(howlkraul.room.Furniture.prototype, "hitSound", {
+  get: function () {
+    var i = rune.util.Math.randomInt(0, this.m_hitSounds.length - 1);
+    return this.m_hitSounds[i];
+  }
+});
+
+Object.defineProperty(howlkraul.room.Furniture.prototype, "breakSounds", {
+  get: function () {
+    return this.m_breakSounds;
+  }
+});
+
+Object.defineProperty(howlkraul.room.Furniture.prototype, "breakSound", {
+  get: function () {
+    var i = rune.util.Math.randomInt(0, this.m_breakSounds.length - 1);
+    return this.m_breakSounds[i];
+  }
+});
+
 //--------------------------------------------------------------------------
 // Overide Methods
 //--------------------------------------------------------------------------
@@ -87,6 +117,7 @@ Object.defineProperty(howlkraul.room.Furniture.prototype, "destroyed", {
 howlkraul.room.Furniture.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
   this.m_initAnimations();
+  this.initSounds();
   this.m_initVelocity();
 }
 
@@ -110,6 +141,18 @@ howlkraul.room.Furniture.prototype.update = function () {
 howlkraul.room.Furniture.prototype.takeDamage = function () {
   this.m_health -= 1;
   this.m_changeFrame();
+
+
+  if (this.destroyed) {
+    if (this.breakSound) {
+      this.application.sounds.sound.get(this.breakSound).play(true);
+    }
+  } else {
+    if (this.hitSound) {
+      this.application.sounds.sound.get(this.hitSound).play(true);
+    }
+  }
+
 }
 
 /**
@@ -117,7 +160,7 @@ howlkraul.room.Furniture.prototype.takeDamage = function () {
  * 
  * @public
  * @returns {undefined} 
- */
+*/
 howlkraul.room.Furniture.prototype.takeDamageFromEnemy = function () {
   var now = Date.now();
 
@@ -203,6 +246,16 @@ howlkraul.room.Furniture.prototype.m_initVelocity = function () {
  * @returns {undefined}
  */
 howlkraul.room.Furniture.prototype.m_initAnimations = function () {
+  //OVERIDE IN SUB CLASS
+}
+
+/**
+ * Initializes sounds.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.room.Furniture.prototype.initSounds = function () {
   //OVERIDE IN SUB CLASS
 }
 

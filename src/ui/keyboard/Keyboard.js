@@ -66,7 +66,6 @@ howlkraul.ui.Keyboard.prototype.moveLeft = function () {
  * @returns {undefined}
  */
 howlkraul.ui.Keyboard.prototype.moveRight = function () {
-  console.log(this.m_currentKey === this.m_keys.length - 1);
   (this.m_currentKey === this.m_keys.length - 1) ? this.m_currentKey = this.m_keys.length - 2 : this.m_currentKey++;
   this.m_currentKey = rune.util.Math.wrap(this.m_currentKey, 0, this.m_keys.length - 2);
   this.m_moveSelector();

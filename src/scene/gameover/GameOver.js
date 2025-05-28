@@ -184,7 +184,7 @@ Object.defineProperty(howlkraul.scene.GameOver.prototype, "background", {
  */
 howlkraul.scene.GameOver.prototype.init = function () {
   rune.scene.Scene.prototype.init.call(this);
-  console.log(this.m_playerStats[0].killedBy)
+
   this.m_initStates();
   this.m_initGrapic();
   this.m_initKilledByText();
@@ -398,7 +398,6 @@ howlkraul.scene.GameOver.prototype.m_initKilledByText = function () {
  * @returns {string}
  */
 howlkraul.scene.GameOver.prototype.m_genKilledByText = function (killedBy) {
-  console.log(killedBy)
   var text = "";
 
   switch (killedBy) {

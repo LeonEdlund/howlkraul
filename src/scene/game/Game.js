@@ -440,9 +440,9 @@ howlkraul.scene.Game.prototype.m_spawnEnemies = function () {
  * @returns {undefined}
  */
 howlkraul.scene.Game.prototype.m_handlePause = function () {
-    if (this.keyboard.justPressed("escape")) {
-        this.application.scenes.load([new howlkraul.scene.Menu()]);
-    }
+    // if (this.keyboard.justPressed("escape")) {
+    //     this.application.scenes.load([new howlkraul.scene.Menu()]);
+    // }
 };
 
 /**

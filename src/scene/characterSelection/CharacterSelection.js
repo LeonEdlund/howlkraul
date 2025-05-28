@@ -370,7 +370,6 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
 * @ignore
 */
 howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
-  console.log("Hello")
   if (this.keyboard.justPressed("right") || this.gamepads.get(1).stickLeftJustRight) {
     this.m_p2Choice++;
   } else if (this.keyboard.justPressed("left") || this.gamepads.get(1).stickLeftJustLeft) {

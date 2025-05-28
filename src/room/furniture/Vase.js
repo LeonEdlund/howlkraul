@@ -47,3 +47,19 @@ howlkraul.room.Vase.prototype.constructor = howlkraul.room.Vase;
 howlkraul.room.Vase.prototype.m_initAnimations = function () {
   this.animation.create("animation", [0, 1, 2, 3, 4, 5, 6, 7], 1, false);
 }
+
+/**
+ * @inheritdoc
+ */
+howlkraul.room.Vase.prototype.initSounds = function () {
+  this.hitSounds.push(
+    "sfx_vase_hit1",
+    "sfx_vase_hit2",
+    "sfx_vase_hit3",
+  );
+
+  this.breakSounds.push(
+    "sfx_vase_crash",
+    "sfx_vase_crash2",
+  );
+}

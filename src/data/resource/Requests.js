@@ -177,5 +177,10 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("sfx_troll_hit1", "./../asset/sounds/sfx/enemies/troll/sfx_troll_hit1.mp3");
 	this.add("sfx_troll_hit2", "./../asset/sounds/sfx/enemies/troll/sfx_troll_hit2.mp3");
 	this.add("sfx_troll_hit3", "./../asset/sounds/sfx/enemies/troll/sfx_troll_hit3.mp3");
+	this.add("sfx_vase_crash", "./../asset/sounds/sfx/furniture/vase/sfx_vase_crash.mp3");
+	this.add("sfx_vase_crash2", "./../asset/sounds/sfx/furniture/vase/sfx_vase_crash2.mp3");
+	this.add("sfx_vase_hit1", "./../asset/sounds/sfx/furniture/vase/sfx_vase_hit1.mp3");
+	this.add("sfx_vase_hit2", "./../asset/sounds/sfx/furniture/vase/sfx_vase_hit2.mp3");
+	this.add("sfx_vase_hit3", "./../asset/sounds/sfx/furniture/vase/sfx_vase_hit3.mp3");
 	this.add("sfx_spell", "./../asset/sounds/sfx/projectiles/spell/sfx_spell.mp3");
 };
