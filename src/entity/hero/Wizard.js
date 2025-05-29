@@ -625,7 +625,7 @@ howlkraul.entity.Wizard.prototype.dash = function () {
       this.speed = 3;
     }
 
-    this.application.sounds.sound.get("sfx_dash").play(true);
+    this.application.sounds.sound.get("sfx_wizard_dash").play(true);
     this.m_lastDash = now + 200;
     this.m_takeEnergy(50);
   }
