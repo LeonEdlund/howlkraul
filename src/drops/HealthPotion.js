@@ -69,6 +69,18 @@ Object.defineProperty(howlkraul.drops.HealthPotion.prototype, "healingPower", {
   }
 });
 
+/**
+ * Play drinking sound.
+ * 
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.drops.HealthPotion.prototype.playSound = function () {
+  var sounds = ["sfx_hp_drink", "sfx_hp_drink2"];
+  var i = rune.util.Math.randomInt(0, sounds.length - 1);
+  this.application.sounds.sound.get(sounds[i]).play(true);
+}
+
 //--------------------------------------------------------------------------
 // Overide Rune Methods
 //--------------------------------------------------------------------------

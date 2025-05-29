@@ -185,6 +185,29 @@ howlkraul.entity.Wizard = function (x, y, color, input, hud) {
    * @type {howlkraul.util.SoundPool}
    */
   this.m_spellSound = null;
+
+  /**
+   * Sound ids for hits
+   * 
+   * @private
+   * @type {howlkraul.util.SoundPool}
+   */
+  this.m_damageSounds = [
+    "sfx_wizard_hit1",
+    "sfx_wizard_hit2",
+    "sfx_wizard_hit3",
+  ];
+
+  /**
+   * Sound ids for death
+   * 
+   * @private
+   * @type {howlkraul.util.SoundPool}
+   */
+  this.m_deathSounds = [
+    "sfx_wizard_death",
+    "sfx_wizard_death2",
+  ];
 };
 
 //------------------------------------------------------------------------------
@@ -386,6 +409,44 @@ Object.defineProperty(howlkraul.entity.Wizard.prototype, "stats", {
   }
 });
 
+/**
+ * Get a random damage sound id.
+ * 
+ * @member {string} damageSound
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "damageSound", {
+  /**
+   * @this howlkraul.entity.Wizard
+   * @ignore
+   */
+  get: function () {
+    var i = rune.util.Math.randomInt(0, this.m_damageSounds.length - 1);
+    return this.m_damageSounds[i];
+  }
+});
+
+/**
+ * Get a random death sound id.
+ * 
+ * @member {string} deathSound
+ * @memberof howlkraul.entity.Wizard
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.entity.Wizard.prototype, "deathSound", {
+  /**
+   * @this howlkraul.entity.Wizard
+   * @ignore
+   */
+  get: function () {
+    var i = rune.util.Math.randomInt(0, this.m_deathSounds.length - 1);
+    return this.m_deathSounds[i];
+  }
+});
+
 //--------------------------------------------------------------------------
 // Override Rune Methods
 //--------------------------------------------------------------------------
@@ -492,13 +553,14 @@ howlkraul.entity.Wizard.prototype.takeDamage = function (damageBy) {
   var now = Date.now();
 
   if (now > this.m_lastDamageHit && this.hp > 0) {
+    if (this.hp !== 1) this.application.sounds.sound.get(this.damageSound).play(true);
     this.m_statCounter.addHit();
     this.hp -= 1;
-    this.m_lastDamageHit = now + this.m_damageHitCoolDown;
+    if (this.m_hud) this.m_hud.updateHealth(this.hp);
 
     this.flicker.start(this.m_damageHitCoolDown);
     this.m_input.controller.vibrate(500);
-    if (this.m_hud) this.m_hud.updateHealth(this.hp);
+    this.m_lastDamageHit = now + this.m_damageHitCoolDown;
   }
 
   if (this.hp <= 0) this.die(damageBy);
@@ -515,6 +577,7 @@ howlkraul.entity.Wizard.prototype.takeDamage = function (damageBy) {
 howlkraul.entity.Wizard.prototype.die = function (killedBy) {
   if (this.m_isDead) return;
 
+  this.application.sounds.sound.get(this.deathSound).play(true);
   this.m_isDead = true;
   this.m_statCounter.addKilledBy(killedBy);
   this.animation.gotoAndPlay("dead");
@@ -545,7 +608,7 @@ howlkraul.entity.Wizard.prototype.raiseFromDead = function () {
  * @returns {undefined}
  */
 howlkraul.entity.Wizard.prototype.dash = function () {
-  if (this.m_energyEmpty) return;
+  if (this.m_energyEmpty || this.velocity.x === 0 && this.velocity.y === 0) return;
 
   var now = Date.now();
 
@@ -562,6 +625,7 @@ howlkraul.entity.Wizard.prototype.dash = function () {
       this.speed = 3;
     }
 
+    this.application.sounds.sound.get("sfx_dash").play(true);
     this.m_lastDash = now + 200;
     this.m_takeEnergy(50);
   }
@@ -889,7 +953,7 @@ howlkraul.entity.Wizard.prototype.m_initStatCounter = function () {
  * @private
 */
 howlkraul.entity.Wizard.prototype.m_initSpellSounds = function () {
-  this.m_spellSound = new howlkraul.utils.SoundPool(this.application, "sfx_spell", 10);
+  this.m_spellSound = new howlkraul.utils.SoundPool(this.application, "sfx_spell2", 10);
 };
 
 /**

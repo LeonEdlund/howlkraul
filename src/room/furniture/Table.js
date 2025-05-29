@@ -47,3 +47,19 @@ howlkraul.room.Table.prototype.constructor = howlkraul.room.Table;
 howlkraul.room.Table.prototype.m_initAnimations = function () {
   this.animation.create("animation", [0, 1, 2, 3, 4, 5, 6, 7], 1, false);
 }
+
+/**
+ * @inheritdoc
+ */
+howlkraul.room.Table.prototype.initSounds = function () {
+  this.hitSounds.push(
+    "sfx_table_hit1",
+    "sfx_table_hit2",
+    "sfx_table_hit3",
+  );
+
+  this.breakSounds.push(
+    "sfx_table_crash",
+    "sfx_table_crash2",
+  );
+}

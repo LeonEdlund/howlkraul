@@ -118,6 +118,7 @@ howlkraul.handler.CollisionHandler.prototype.m_handleEnemyProjectileHit = functi
  */
 howlkraul.handler.CollisionHandler.prototype.m_handlePotionPickup = function () {
   this.game.players.hitTestGroup(this.game.potions, function (player, potion) {
+    potion.playSound();
     player.regenHealth(potion.healingPower);
     this.game.potions.removeMember(potion, true);
   }, this);
