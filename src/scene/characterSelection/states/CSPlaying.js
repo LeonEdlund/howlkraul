@@ -44,7 +44,11 @@ howlkraul.scene.CSPlaying.prototype.update = function (step) {
   }
 
   if (this.owner.playerOne && !this.owner.twoPlayer || this.owner.playerOne && this.owner.playerTwo) {
-    this.owner.enviroment.openDoor();
+    if (!this.owner.enviroment.gateOpen) {
+      this.owner.m_sound.fade(0, 3000);
+      this.owner.enviroment.openDoor();
+
+    }
     this.owner.m_checkIfGameStarted();
   }
 

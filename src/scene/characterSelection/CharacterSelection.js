@@ -148,6 +148,14 @@ howlkraul.scene.CharacterSelection = function (twoPlayer) {
    * @type {howlkraul.ui.MainMenu}
    */
   this.m_menuIsOpen = true;
+
+  /**
+   * If the scene is transitioning.
+   * 
+   * @private
+   * @type {boolean}
+   */
+  this.m_transitioning = false;
 };
 
 //------------------------------------------------------------------------------
@@ -290,7 +298,6 @@ howlkraul.scene.CharacterSelection.prototype.init = function () {
 */
 howlkraul.scene.CharacterSelection.prototype.update = function (step) {
   rune.scene.Scene.prototype.update.call(this, step);
-
 };
 
 /**
@@ -471,27 +478,29 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP2 = function () {
 * @ignore
 */
 howlkraul.scene.CharacterSelection.prototype.m_checkIfGameStarted = function () {
-  var playerOneReady = this.m_playerOne.topLeft.x > this.application.screen.right;
+  var playerOneReady = this.m_playerOne && this.m_playerOne.topLeft.x > this.application.screen.right;
+  var playerTwoReady = this.m_playerTwo && this.m_playerTwo.topLeft.x > this.application.screen.right;
 
-  // TWO PLAYER
-  if (this.m_twoPlayer && this.m_playerTwo) {
-    var playerTwoReady = this.m_playerTwo.topLeft.x > this.application.screen.right;
+  var allPlayersReady = this.m_twoPlayer ? (playerOneReady && playerTwoReady) : playerOneReady;
 
-    if (playerOneReady && playerTwoReady) {
+  if (allPlayersReady) {
+    if (this.m_playerOne) {
       this.stage.removeChild(this.m_playerOne);
-      this.stage.removeChild(this.m_playerTwo);
       this.stage.removeChild(this.m_playerOne.HUD);
-      this.stage.removeChild(this.m_playerTwo.HUD);
-      this.application.scenes.load([new howlkraul.scene.Game(this.m_allActivePlayers)]);
     }
-    return;
-  }
 
-  // SINGLE PLAYER
-  if (playerOneReady) {
-    this.stage.removeChild(this.m_playerOne);
-    this.stage.removeChild(this.m_playerOne.HUD);
-    this.application.scenes.load([new howlkraul.scene.Game(this.m_allActivePlayers)]);
+    if (this.m_twoPlayer && this.m_playerTwo) {
+      this.stage.removeChild(this.m_playerTwo);
+      this.stage.removeChild(this.m_playerTwo.HUD);
+    }
+
+    if (!this.m_transitioning) {
+      this.m_transitioning = true;
+
+      this.cameras.getCameraAt(0).fade.out(1000, function () {
+        this.application.scenes.load([new howlkraul.scene.Game(this.m_allActivePlayers)]);
+      }, this);
+    }
   }
 };
 
@@ -540,8 +549,9 @@ howlkraul.scene.CharacterSelection.prototype.m_initStates = function () {
 howlkraul.scene.CharacterSelection.prototype.m_initSounds = function () {
   this.m_sound = this.application.sounds.music.get("music_characterSelect");
   this.m_sound.loop = true;
-  //this.m_sound.volume = 0;
+  this.m_sound.volume = 0;
   this.m_sound.play();
+  this.m_sound.fade(1, 3000)
 };
 
 /**
