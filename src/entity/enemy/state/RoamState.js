@@ -13,15 +13,35 @@ howlkraul.entity.RoamState = function () {
   //--------------------------------------------------------------------------
   // Super Call 
   //--------------------------------------------------------------------------
+
   rune.state.State.call(this, "Roam");
 
   //--------------------------------------------------------------------------
   // Private Properties
   //--------------------------------------------------------------------------
+
   this.m_endMoveTime = 0;
+
+  /**
+   * 
+   */
   this.m_moveTime = rune.util.Math.randomInt(1000, 5000);
+
+  /**
+   * The function of the movement in the correct direction.
+   * 
+   * @private
+   * @type {Function}
+   */
   this.m_direction = null;
-  this.m_directionIndex = null;
+
+  /**
+   * The index of the last direction.
+   * 
+   * @private
+   * @type {number} 
+   */
+  this.m_directionIndex = 0;
 }
 
 //--------------------------------------------------------------------------
@@ -31,8 +51,17 @@ howlkraul.entity.RoamState = function () {
 howlkraul.entity.RoamState.prototype = Object.create(rune.state.State.prototype);
 howlkraul.entity.RoamState.prototype.constructor = howlkraul.entity.RoamState;
 
+//--------------------------------------------------------------------------
+// Overide rune methods
+//--------------------------------------------------------------------------
+
 /**
+ * Updates the state on each frame.
+ * 
  * @override
+ * @public
+ * @param {number} step - Current time step.
+ * @returns {undefined}
 */
 howlkraul.entity.RoamState.prototype.update = function (step) {
   rune.state.State.prototype.update.call(this, step);
@@ -43,14 +72,13 @@ howlkraul.entity.RoamState.prototype.update = function (step) {
 };
 
 /**
- * The enemy follows the closest player.
+ * Initializes the state when it becomes active.
  * 
- * @private
+ * @override
+ * @public
  * @returns {undefined}
  */
 howlkraul.entity.RoamState.prototype.onEnter = function () {
-  rune.state.State.prototype.onEnter.call(this);
-
   this.owner.speed = this.owner.defaultSpeed;
 };
 
@@ -58,13 +86,19 @@ howlkraul.entity.RoamState.prototype.onEnter = function () {
 // Private Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Makes the enemy roam around randomly.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.entity.RoamState.prototype.m_roam = function () {
   var now = Date.now();
 
   if (now >= this.m_endMoveTime) {
     this.m_setDirection();
     this.m_moveTime = rune.util.Math.randomInt(1000, 5000);
-    this.m_endMoveTime = now + this.m_moveTime;
+    this.m_endMoveTime = now + rune.util.Math.randomInt(1000, 5000);
   }
 
   if (this.m_direction) {
@@ -72,6 +106,12 @@ howlkraul.entity.RoamState.prototype.m_roam = function () {
   }
 };
 
+/**
+ * Randomly selects a new direction for the enemy to move.
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.entity.RoamState.prototype.m_setDirection = function () {
   var directions = [
     this.owner.moveUp.bind(this.owner),
@@ -92,6 +132,12 @@ howlkraul.entity.RoamState.prototype.m_setDirection = function () {
   this.m_direction = directions[rIndex];
 };
 
+/**
+ * Checks if the enemy is stuck and unable to move.
+ * 
+ * @private
+ * @returns {boolean} True if the enemy is stuck, false otherwise.
+ */
 howlkraul.entity.RoamState.prototype.m_isStuck = function () {
   var isStuck = Math.abs(this.owner.velocity.x) < 0.01 && Math.abs(this.owner.velocity.y) < 0.01;
 

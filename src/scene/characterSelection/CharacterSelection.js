@@ -258,11 +258,28 @@ Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "playerOne",
 */
 Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "playerTwo", {
   /**
-   * @this rune.scene.Scene
+   * @this rune.scene.CharacterSelection
    * @ignore
    */
   get: function () {
     return this.m_playerTwo;
+  }
+});
+
+/**
+* True if the game should be 2 player. False if 1 player mode.
+*
+* @member {boolean} wizards
+* @memberof howlkraul.scene.CharacterSelection
+* @instance
+*/
+Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "wizards", {
+  /**
+   * @this rune.scene.Scene
+   * @ignore
+   */
+  get: function () {
+    return this.m_wizards;
   }
 });
 
