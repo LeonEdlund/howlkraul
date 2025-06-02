@@ -55,11 +55,11 @@ howlkraul.room.Table.prototype.initSounds = function () {
   this.hitSounds.push(
     "sfx_table_hit1",
     "sfx_table_hit2",
-    "sfx_table_hit3",
+    "sfx_table_hit3"
   );
 
   this.breakSounds.push(
     "sfx_table_crash",
-    "sfx_table_crash2",
+    "sfx_table_crash2"
   );
 }

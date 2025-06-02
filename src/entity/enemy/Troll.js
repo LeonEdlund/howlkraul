@@ -37,8 +37,29 @@ howlkraul.entity.Troll = function (x, y) {
    * @inheritdoc
    */
   this.defaultSpeed = this.speed;
+
+  /**
+   * Time since last attack in ms.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_lastAttack = 0;
+
+  /**
+   * Time between attacks
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_attackCoolDown = 500;
+
+  /**
+   * Array with clothes objects. 
+   * 
+   * @private
+   * @type {array<howlkraul.entity.TrollClothes>}
+   */
   this.m_clothes = [];
 }
 
@@ -84,6 +105,7 @@ howlkraul.entity.Troll.prototype.attack = function () {
 
   if (now > this.m_lastAttack) {
     this.isAttacking = true;
+    console.log(this.isAttacking)
     this.states.select("Attack");
     this.m_lastAttack = now + this.m_attackCoolDown;
   }
@@ -160,6 +182,7 @@ howlkraul.entity.Troll.prototype.setRunningAnimation = function () {
  * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.setState = function () {
+  console.log(this.isAttacking)
   if (this.isAttacking || !this.closestPlayer) return;
 
   if (this.distanceToClosestPlayer < 12) {

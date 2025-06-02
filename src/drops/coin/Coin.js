@@ -108,6 +108,7 @@ howlkraul.drops.Coin.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
 
   this.m_initAnimations();
+  this.m_checkIfOutOfBounds();
 }
 
 /**
@@ -170,4 +171,31 @@ howlkraul.drops.Coin.prototype.m_countDown = function () {
   if (this.m_lifespan > this.m_flickerTime - 100 && this.m_lifespan < this.m_flickerTime) {
     this.flicker.start(this.m_flickerTime, 80);
   }
+}
+
+/**
+ * Counts down, flicker and removes coin when counter reaches 0.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.drops.Coin.prototype.m_checkIfOutOfBounds = function () {
+  var threshold = 10;
+  var bottom = this.application.screen.bottom - threshold;
+  var left = this.application.screen.left + threshold;
+  var right = this.application.screen.right - threshold;
+
+  if (this.centerX > right) {
+    this.moveTo(this.x - threshold, this.y);
+  }
+
+  if (this.centerX < left) {
+    this.moveTo(this.x + threshold, this.y);
+  }
+
+  if (this.centerY > bottom) {
+    this.moveTo(this.x, this.y - threshold);
+  }
+
+  console.log(this.centerX)
 }

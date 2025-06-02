@@ -74,7 +74,11 @@ howlkraul.scene.CSPlaying.prototype.m_checkReadyPlayers = function () {
  * @returns {undefined}
 */
 howlkraul.scene.CSPlaying.prototype.m_handleReload = function () {
-  if (this.owner.keyboard.justPressed("escape")) {
+  var escKey = this.owner.keyboard.justPressed("escape");
+  var gp1Key = this.owner.gamepads.get(0).justPressed(9);
+  var gp2Key = this.owner.gamepads.get(1).justPressed(9);
+
+  if (escKey || gp1Key || gp2Key) {
     this.owner.m_sound.fade(0, 500);
     this.owner.cameras.getCameraAt(0).fade.out(500, function () {
       this.owner.application.scenes.load([new howlkraul.scene.CharacterSelection()]);

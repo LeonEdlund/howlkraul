@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The Attack state is used to make enemies roam the map.
+ * The state is used to make enemies roam the map.
  */
 howlkraul.entity.RoamState = function () {
   //--------------------------------------------------------------------------
@@ -20,12 +20,13 @@ howlkraul.entity.RoamState = function () {
   // Private Properties
   //--------------------------------------------------------------------------
 
-  this.m_endMoveTime = 0;
-
   /**
+   * When the next movement should happen. 
    * 
+   * @private
+   * @type {number}
    */
-  this.m_moveTime = rune.util.Math.randomInt(1000, 5000);
+  this.m_endMoveTime = 0;
 
   /**
    * The function of the movement in the correct direction.
@@ -97,7 +98,6 @@ howlkraul.entity.RoamState.prototype.m_roam = function () {
 
   if (now >= this.m_endMoveTime) {
     this.m_setDirection();
-    this.m_moveTime = rune.util.Math.randomInt(1000, 5000);
     this.m_endMoveTime = now + rune.util.Math.randomInt(1000, 5000);
   }
 
