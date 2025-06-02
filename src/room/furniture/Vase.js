@@ -55,11 +55,11 @@ howlkraul.room.Vase.prototype.initSounds = function () {
   this.hitSounds.push(
     "sfx_vase_hit1",
     "sfx_vase_hit2",
-    "sfx_vase_hit3",
+    "sfx_vase_hit3"
   );
 
   this.breakSounds.push(
     "sfx_vase_crash",
-    "sfx_vase_crash2",
+    "sfx_vase_crash2"
   );
 }

@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The Attack state is used to make enemies follow the closest player. 
+ * The FollowPlayer State is used to make enemies follow the closest player.
  */
 howlkraul.entity.FollowPlayerState = function () {
   //--------------------------------------------------------------------------

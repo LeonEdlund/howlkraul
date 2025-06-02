@@ -143,7 +143,7 @@ howlkraul.drops.Bombs.prototype.dispose = function () {
  */
 howlkraul.drops.Bombs.prototype.m_initEmitter = function () {
   this.m_emitter = new rune.particle.Emitter(this.x, this.y, 10, 10, {
-    capacity: 30,
+    capacity: 100,
     accelerationY: 0,
     maxVelocityX: 3,
     minVelocityX: -3,
@@ -157,7 +157,7 @@ howlkraul.drops.Bombs.prototype.m_initEmitter = function () {
   });
 
   this.m_smokeEmitter = new rune.particle.Emitter(this.x, this.y, 10, 10, {
-    capacity: 30,
+    capacity: 100,
     accelerationY: 0,
     maxVelocityX: 1,
     minVelocityX: -1,
@@ -171,7 +171,7 @@ howlkraul.drops.Bombs.prototype.m_initEmitter = function () {
   });
 
   this.m_cloudEmitter = new rune.particle.Emitter(this.x, this.y, 20, 20, {
-    capacity: 10,
+    capacity: 30,
     maxVelocityX: 0.1,
     minVelocityX: -0.1,
     maxVelocityY: 0.1,

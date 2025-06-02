@@ -131,6 +131,14 @@ Object.defineProperty(howlkraul.entity.Enemy.prototype, "isAttacking", {
    */
   get: function () {
     return this.m_isAttacking;
+  },
+
+  /**
+   * @this howlkraul.entity.Enemy
+   * @ignore
+   */
+  set: function (value) {
+    this.m_isAttacking = value;
   }
 });
 

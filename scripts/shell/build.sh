@@ -16,6 +16,8 @@ npx google-closure-compiler \
 --js "./../../src/ui/keyboard/Keyboard.js" \
 --js "./../../src/ui/menu/Menu.js" \
 --js "./../../src/ui/menu/HighScore.js" \
+--js "./../../src/ui/menu/states/MenuHowTo.js" \
+--js "./../../src/ui/menu/states/MenuCredits.js" \
 --js "./../../src/ui/menu/states/MenuIdle.js" \
 --js "./../../src/ui/menu/MainMenu.js" \
 --js "./../../src/ui/hud/PlayerHud.js" \
