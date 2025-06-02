@@ -91,6 +91,7 @@ howlkraul.data.Requests.prototype.m_construct = function() {
 	this.add("face_hud_22x25", "./../asset/img/hud/hud-characters/face_hud_22x25.png");
 	this.add("coin_hud_12x18", "./../asset/img/hud/hud-components/coin_hud_12x18.png");
 	this.add("player_hud_69x31", "./../asset/img/hud/hud-components/player_hud_69x31.png");
+	this.add("arrow_74x37", "./../asset/img/hud/reminder/arrow_74x37.png");
 	this.add("player_selection_p1_37x19", "./../asset/img/hud/selectors/player_selection_p1_37x19.png");
 	this.add("player_selection_p2_37x19", "./../asset/img/hud/selectors/player_selection_p2_37x19.png");
 	this.add("controller_242x89", "./../asset/img/hud/start-screen/controller_242x89.png");
