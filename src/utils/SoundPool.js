@@ -106,8 +106,7 @@ howlkraul.utils.SoundPool.prototype.dispose = function () {
 /**
  * Instantiate sounds and ad them to the pool.
  * 
- * @public
- * @param {boolean} reStart - True if thea sound should restart, false if not. 
+ * @private
  * @returns {undefined}
  */
 howlkraul.utils.SoundPool.prototype.m_initSounds = function () {
