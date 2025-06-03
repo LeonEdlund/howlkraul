@@ -1,9 +1,14 @@
 howlkraul.ui.InputArea = function () {
+
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
 
   rune.display.DisplayObjectContainer.call(this, 0, 0, 70, 15);
+
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
 
   /**
    * All keys in the InputArea.
@@ -38,10 +43,22 @@ howlkraul.ui.InputArea.prototype = Object.create(rune.display.DisplayObjectConta
 howlkraul.ui.InputArea.prototype.constructor = howlkraul.ui.InputArea;
 
 //--------------------------------------------------------------------------
-// Public Methods
+// Getters and Setters
 //--------------------------------------------------------------------------
 
+/**
+ * The name that is added to the inputarea.
+ *
+ * @member {string} name
+ * @memberof howlkraul.ui.InputArea
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.ui.InputArea.prototype, "name", {
+  /**
+   * @this howlkraul.ui.InputArea
+   * @ignore
+   */
   get: function () {
     return this.m_name;
   }
@@ -52,7 +69,7 @@ Object.defineProperty(howlkraul.ui.InputArea.prototype, "name", {
 //--------------------------------------------------------------------------
 
 /**
- * add a character to input area
+ * add a character to input area.
  * 
  * @public
  * @param {string} value - the character.
@@ -101,8 +118,22 @@ howlkraul.ui.InputArea.prototype.remove = function () {
  */
 howlkraul.ui.InputArea.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
-  this.m_initLine();
 
+  this.m_initLine();
+}
+
+/**
+ * Dispose and clean up resources.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.ui.InputArea.prototype.dispose = function () {
+  this.removeChildren(true);
+  this.m_characters = null;
+
+  rune.display.DisplayObjectContainer.prototype.dispose.call(this);
 }
 
 //--------------------------------------------------------------------------
@@ -123,7 +154,7 @@ howlkraul.ui.InputArea.prototype.m_initLine = function () {
 }
 
 /**
- * Moves selector.
+ * Render the text.
  * 
  * @private
  * @returns {undefined}

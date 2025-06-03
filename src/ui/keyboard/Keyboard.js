@@ -1,3 +1,14 @@
+/**
+ * Creates a new Keyboard instance
+ *
+ * @constructor
+ * @extends rune.display.DisplayObjectContainer
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Represents a virtual keyboard.
+ */
 howlkraul.ui.Keyboard = function () {
   //--------------------------------------------------------------------------
   // Super call
@@ -5,11 +16,15 @@ howlkraul.ui.Keyboard = function () {
 
   rune.display.DisplayObjectContainer.call(this, 0, 0, 320, 30);
 
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
+
   /**
    * All keys in the keyboard.
    * 
    * @private
-   * @type {array}
+   * @type {array<howlkraul.ui.Key>}
    */
   this.m_keys = [];
 
@@ -17,7 +32,7 @@ howlkraul.ui.Keyboard = function () {
    * Key selector.
    * 
    * @private
-   * @type {array}
+   * @type {rune.display.Graphic}
    */
   this.m_selector = null;
 
@@ -57,6 +72,7 @@ howlkraul.ui.Keyboard.prototype.moveLeft = function () {
   (this.m_currentKey === this.m_keys.length - 1) ? this.m_currentKey = 0 : this.m_currentKey--;
   this.m_currentKey = rune.util.Math.wrap(this.m_currentKey, 0, this.m_keys.length - 2);
   this.m_moveSelector();
+  this.m_playSound();
 }
 
 /**
@@ -69,6 +85,7 @@ howlkraul.ui.Keyboard.prototype.moveRight = function () {
   (this.m_currentKey === this.m_keys.length - 1) ? this.m_currentKey = this.m_keys.length - 2 : this.m_currentKey++;
   this.m_currentKey = rune.util.Math.wrap(this.m_currentKey, 0, this.m_keys.length - 2);
   this.m_moveSelector();
+  this.m_playSound();
 }
 
 /**
@@ -80,6 +97,7 @@ howlkraul.ui.Keyboard.prototype.moveRight = function () {
 howlkraul.ui.Keyboard.prototype.moveToSave = function () {
   this.m_currentKey = this.m_keys.length - 1;
   this.m_moveSelector();
+  this.m_playSound();
 }
 
 /**
@@ -91,6 +109,7 @@ howlkraul.ui.Keyboard.prototype.moveToSave = function () {
 howlkraul.ui.Keyboard.prototype.moveBackToKeyboard = function () {
   this.m_currentKey = 13;
   this.m_moveSelector();
+  this.m_playSound();
 }
 
 /**
@@ -100,13 +119,14 @@ howlkraul.ui.Keyboard.prototype.moveBackToKeyboard = function () {
  * @returns {rune.text.BitmapField}
  */
 howlkraul.ui.Keyboard.prototype.select = function () {
-
+  this.m_playSound();
   return this.m_keys[this.m_currentKey].text;
 }
 
 //--------------------------------------------------------------------------
 // Overide rune Methods
 //--------------------------------------------------------------------------
+
 
 /**
  * Init keyboard.
@@ -123,9 +143,33 @@ howlkraul.ui.Keyboard.prototype.init = function () {
   this.m_initSelector();
 }
 
+/**
+ * Dispose resources.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.ui.Keyboard.prototype.dispose = function () {
+  this.removeChildren(true);
+
+  rune.display.DisplayObjectContainer.prototype.dispose.call(this);
+}
+
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
+
+/**
+ * Play tick sound
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.ui.Keyboard.prototype.m_playSound = function () {
+  var sound = this.application.sounds.sound.get("sfx_menu_tick");
+  sound.play(true);
+};
 
 /**
  * Moves selector.

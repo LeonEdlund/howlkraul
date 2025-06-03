@@ -114,6 +114,10 @@ howlkraul.drops.Bomb.prototype.m_setAnimationScript = function (animation) {
     bombGroup.explode(new rune.geom.Vector2D(this.centerX, this.centerY));
     bombGroup.removeMember(this, true);
   }, this);
+
+  animation.scripts.add(7, function () {
+    this.application.sounds.sound.get("sfx_fuse").play(true);
+  }, this);
 }
 
 /**

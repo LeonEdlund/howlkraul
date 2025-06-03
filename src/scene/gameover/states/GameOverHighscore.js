@@ -1,5 +1,5 @@
 /**
- * Represents a state where the main menu overlayes the character selection.
+ * Creates a new instance of GameOverHighscore.
  *
  * @constructor
  * @extends rune.state.State
@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The menu over character selection. 
+ * Represents a state where the user can input a name. 
  */
 howlkraul.scene.GameOverHighscore = function () {
 
@@ -17,6 +17,12 @@ howlkraul.scene.GameOverHighscore = function () {
 
   rune.state.State.call(this, "GameOverHighscore");
 
+  /**
+   * The virtual keyboard.
+   * 
+   * @private
+   * @type {howlkraul.ui.Keyboard}
+   */
   this.m_keyboard = null;
 }
 
@@ -32,11 +38,13 @@ howlkraul.scene.GameOverHighscore.prototype.constructor = howlkraul.scene.GameOv
 //--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Runs every frame. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
-howlkraul.scene.GameOverHighscore.prototype.update = function (step) {
+howlkraul.scene.GameOverHighscore.prototype.update = function () {
   var keyboard = this.owner.keyboard;
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
@@ -75,8 +83,10 @@ howlkraul.scene.GameOverHighscore.prototype.update = function (step) {
 };
 
 /**
- * ... 
+ * Runs when scene is selected.
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.scene.GameOverHighscore.prototype.onEnter = function () {
@@ -97,8 +107,10 @@ howlkraul.scene.GameOverHighscore.prototype.onEnter = function () {
 };
 
 /**
- * ... 
+ * Runs when scene is deselected.
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.scene.GameOverHighscore.prototype.onExit = function () {
@@ -121,7 +133,7 @@ howlkraul.scene.GameOverHighscore.prototype.m_saveHighscore = function (name) {
 //--------------------------------------------------------------------------
 
 /**
- * Sets the background.
+ * Initalize the background.
  * 
  * @private
  * @returns {undefined}
@@ -131,7 +143,7 @@ howlkraul.scene.GameOverHighscore.prototype.m_initBackground = function () {
 };
 
 /**
- * Sets the text.
+ * Initalize the text.
  * 
  * @private
  * @returns {undefined}

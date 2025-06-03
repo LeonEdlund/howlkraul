@@ -1,5 +1,5 @@
 /**
- * Creates a new GameOverState object.
+ * Creates a new GameOverStats object.
  *
  * @constructor
  * @extends rune.state.State
@@ -48,7 +48,7 @@ howlkraul.scene.GameOverStats.prototype.constructor = howlkraul.scene.GameOverSt
  * @public
  * @returns {undefined}
 */
-howlkraul.scene.GameOverStats.prototype.update = function (step) {
+howlkraul.scene.GameOverStats.prototype.update = function () {
   this.m_handleInput();
 };
 
@@ -124,7 +124,7 @@ howlkraul.scene.GameOverStats.prototype.m_isHighscore = function () {
 //--------------------------------------------------------------------------
 
 /**
- * Creates the player cards. 
+ * Initalizes background.
  * 
  * @private
  * @returns {undefined}
@@ -178,7 +178,7 @@ howlkraul.scene.GameOverStats.prototype.m_displayCards = function () {
  * Apply tween animation to card.
  * 
  * @private
- * @param {howlkraul.ui.PlayerCard}
+ * @param {number} index - the index of the player card. 
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.m_animateCard = function (index) {
@@ -206,10 +206,9 @@ howlkraul.scene.GameOverStats.prototype.m_animateCard = function (index) {
 
 
 /**
- * Apply tween animation to card.
+ * Show new highscore text if the player beats the Highscore.
  * 
  * @private
- * @param {howlkraul.ui.PlayerCard}
  * @returns {undefined}
 */
 howlkraul.scene.GameOverStats.prototype.m_showHighscoreText = function () {

@@ -1,12 +1,9 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
  * Creates a new GameOver scene object.
  *
  * @constructor
  * @extends rune.scene.Scene
+ * 
  * @param {number} score - the score that should be displayed. 
  * @param {array<howlkraul.utils.playerStats>} playerStats - an array with playerstats objects from the played game. 
  * 
@@ -190,6 +187,7 @@ howlkraul.scene.GameOver.prototype.init = function () {
   this.m_initKilledByText();
   this.addNextButton();
   this.m_initScore();
+  this.m_playSound();
 };
 
 /**
@@ -228,6 +226,12 @@ howlkraul.scene.GameOver.prototype.dispose = function () {
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Fade back to menu.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.scene.GameOver.prototype.fadeToMainMenu = function () {
   this.cameras.getCameraAt(0).fade.out(1000, function () {
     this.application.scenes.load([new howlkraul.scene.CharacterSelection()]);
@@ -263,6 +267,16 @@ howlkraul.scene.GameOver.prototype.addNextButton = function () {
 //--------------------------------------------------------------------------
 // Private Methods (INIT)
 //--------------------------------------------------------------------------
+
+/**
+ * Play death sound. 
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.scene.GameOver.prototype.m_playSound = function () {
+  // this.application.sounds.master.get("sfx_gameover").play(true);
+};
 
 /**
  * Fade in next button
@@ -313,7 +327,7 @@ howlkraul.scene.GameOver.prototype.m_initGrapic = function () {
   this.tweens.create({
     target: this.m_graphic,
     scope: this,
-    duration: 1000,
+    duration: 2000,
     args: {
       alpha: 1,
     }
@@ -423,8 +437,6 @@ howlkraul.scene.GameOver.prototype.m_genKilledByText = function (killedBy) {
 
   return text.toUpperCase();
 };
-
-
 
 //--------------------------------------------------------------------------
 // Private Methods (DISPOSE)

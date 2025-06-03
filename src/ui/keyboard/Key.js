@@ -1,8 +1,26 @@
+/**
+ * Creates a new Key instance.
+ *
+ * @constructor
+ * @extends rune.display.BitmapField
+ * 
+ * @param {string} key - The key value.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Represents a individual key.
+ */
 howlkraul.ui.Key = function (key) {
 
+  //--------------------------------------------------------------------------
+  // Abstract Properties
+  //--------------------------------------------------------------------------
+
   /**
-   * The value of the key
+   * The value of the key.
    * 
+   * @private
    * @type {string}
   */
   this.m_value = key;
@@ -25,15 +43,29 @@ howlkraul.ui.Key.prototype.constructor = howlkraul.ui.Key;
 // Public Methods
 //--------------------------------------------------------------------------
 
-howlkraul.ui.Key.prototype.press = function (key) {
+/**
+ * Returns the value of the key.
+ * 
+ * @public
+ * @returns {string} - The value of the key.
+ */
+howlkraul.ui.Key.prototype.press = function () {
   return this.m_value;
 }
 
 //--------------------------------------------------------------------------
-// Private Methods
+// Overide Rune Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Runs when object is created.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.ui.Key.prototype.init = function () {
   rune.text.BitmapField.prototype.init.call(this);
+
   this.autoSize = true;
 }

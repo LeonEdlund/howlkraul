@@ -20,6 +20,7 @@ howlkraul.ui.Manabar = function (character) {
   /**
    * The wizard the manabar is tied to.
    * 
+   * @private
    * @type {howlkraul.entity.Wizard} 
    */
   this.m_character = character;

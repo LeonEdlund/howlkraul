@@ -1,5 +1,5 @@
 /**
- * Represents a state where the main menu overlayes the character selection.
+ * Creates a new instance of GameOverIdle.
  *
  * @constructor
  * @extends rune.state.State
@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The menu over character selection. 
+ * Represents a state where the GameOver screen is shown.
  */
 howlkraul.scene.GameOverIdle = function () {
 
@@ -36,7 +36,7 @@ howlkraul.scene.GameOverIdle.prototype.constructor = howlkraul.scene.GameOverIdl
  * @public
  * @returns {undefined}
 */
-howlkraul.scene.GameOverIdle.prototype.update = function (step) {
+howlkraul.scene.GameOverIdle.prototype.update = function () {
   var keyboard = this.owner.keyboard;
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
@@ -47,8 +47,10 @@ howlkraul.scene.GameOverIdle.prototype.update = function (step) {
 };
 
 /**
- * ... 
+ * Runs when scene is deselected.
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.scene.GameOverIdle.prototype.onExit = function () {

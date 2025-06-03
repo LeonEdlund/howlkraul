@@ -1,13 +1,29 @@
+/**
+ * Creates a new Heart instance.
+ *
+ * @constructor
+ * @extends rune.display.Graphic
+ * 
+ * @param {number} [x=0] - The x position.
+ * @param {number} [y=0] - The y position.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Represents a single heart in the hud. 
+ */
 howlkraul.ui.Heart = function (x, y) {
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
-  rune.display.Sprite.call(this, x, y, 11, 12, "hearts_11x12");
+
+  rune.display.Sprite.call(this, x || 0, y || 0, 11, 12, "hearts_11x12");
 }
 
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.ui.Heart.prototype = Object.create(rune.display.Sprite.prototype);
 howlkraul.ui.Heart.prototype.constructor = howlkraul.ui.Heart;
 
@@ -35,6 +51,8 @@ howlkraul.ui.Heart.prototype.setHeart = function (state) {
     case 0:
       this.animation.goto("empty");
       break;
+    default:
+      throw new Error('state needs to be between 0 and 2')
   }
 };
 
@@ -43,7 +61,11 @@ howlkraul.ui.Heart.prototype.setHeart = function (state) {
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Is run once when an instance is created.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
  */
 howlkraul.ui.Heart.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);

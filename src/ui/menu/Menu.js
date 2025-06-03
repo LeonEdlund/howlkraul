@@ -123,6 +123,7 @@ howlkraul.ui.Menu.prototype.up = function () {
   this.m_previousChoice = this.m_choice;
   this.m_choice--;
   this.m_choice = rune.util.Math.wrap(this.m_choice, 0, this.m_options.length - 1);
+  this.m_playSound();
   this.m_scaleChoice();
 };
 
@@ -136,6 +137,7 @@ howlkraul.ui.Menu.prototype.down = function () {
   this.m_previousChoice = this.m_choice;
   this.m_choice++;
   this.m_choice = rune.util.Math.wrap(this.m_choice, 0, this.m_options.length - 1);
+  this.m_playSound();
   this.m_scaleChoice();
 };
 
@@ -146,12 +148,24 @@ howlkraul.ui.Menu.prototype.down = function () {
  * @returns {undefined}
  */
 howlkraul.ui.Menu.prototype.select = function () {
+  this.m_playSound();
   return this.m_options[this.m_choice];
 };
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
+
+/**
+ * Creates and adds all options in the menu.
+ * 
+ * @private
+ * @returns {undefined}
+ */
+howlkraul.ui.Menu.prototype.m_playSound = function () {
+  var sound = this.application.sounds.sound.get("sfx_menu_tick");
+  sound.play(true);
+};
 
 /**
  * Creates and adds all options in the menu.

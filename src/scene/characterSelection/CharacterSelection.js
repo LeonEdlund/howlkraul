@@ -297,6 +297,7 @@ Object.defineProperty(howlkraul.scene.CharacterSelection.prototype, "wizards", {
 howlkraul.scene.CharacterSelection.prototype.init = function () {
   rune.scene.Scene.prototype.init.call(this);
 
+  this.application.sounds.master.clear();
   this.m_initStates();
   this.m_initSounds();
   this.m_initEnvironment();
@@ -372,8 +373,10 @@ howlkraul.scene.CharacterSelection.prototype.initSelectors = function () {
 howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
   if (this.keyboard.justPressed("d") || this.gamepads.get(0).stickLeftJustRight) {
     this.m_p1Choice++;
+    this.m_playTickSound();
   } else if (this.keyboard.justPressed("a") || this.gamepads.get(0).stickLeftJustLeft) {
     this.m_p1Choice--;
+    this.m_playTickSound();
   }
 
   this.m_p1Choice = rune.util.Math.wrap(this.m_p1Choice, 0, this.m_wizards.length - 1);
@@ -396,8 +399,10 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP1Selector = function () {
 howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
   if (this.keyboard.justPressed("right") || this.gamepads.get(1).stickLeftJustRight) {
     this.m_p2Choice++;
+    this.m_playTickSound();
   } else if (this.keyboard.justPressed("left") || this.gamepads.get(1).stickLeftJustLeft) {
     this.m_p2Choice--;
+    this.m_playTickSound();
   }
 
   this.m_p2Choice = rune.util.Math.wrap(this.m_p2Choice, 0, this.m_wizards.length - 1);
@@ -422,6 +427,7 @@ howlkraul.scene.CharacterSelection.prototype.m_moveP2Selector = function () {
 howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP1 = function () {
   this.m_playerOne = this.m_wizards[this.m_p1Choice];
   this.m_playerOne.manabar.visible = true;
+  this.m_playSelectSound();
 
   var p1Input = new howlkraul.handler.InputHandler(
     this.gamepads.get(0),
@@ -460,6 +466,7 @@ howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP1 = function () {
 howlkraul.scene.CharacterSelection.prototype.m_selectPlayerP2 = function () {
   this.m_playerTwo = this.m_wizards[this.m_p2Choice];
   this.m_playerTwo.manabar.visible = true;
+  this.m_playSelectSound();
 
   var p2Input = new howlkraul.handler.InputHandler(
     this.gamepads.get(1),
@@ -569,6 +576,34 @@ howlkraul.scene.CharacterSelection.prototype.m_initSounds = function () {
   this.m_sound.volume = 0;
   this.m_sound.play();
   this.m_sound.fade(1, 3000)
+};
+
+/**
+* Play tick sound.
+* 
+* @private
+* @returns {undefined}
+* @ignore
+*/
+howlkraul.scene.CharacterSelection.prototype.m_playTickSound = function () {
+  var sound = this.application.sounds.sound.get("sfx_menu_tick");
+  if (sound) {
+    sound.play(true);
+  }
+};
+
+/**
+* Play select sound.
+* 
+* @private
+* @returns {undefined}
+* @ignore
+*/
+howlkraul.scene.CharacterSelection.prototype.m_playSelectSound = function () {
+  var sound = this.application.sounds.sound.get("sfx_select_wizard", true);
+  if (sound) {
+    sound.play(true);
+  }
 };
 
 /**

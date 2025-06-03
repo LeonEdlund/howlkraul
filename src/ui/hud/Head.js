@@ -1,16 +1,36 @@
+/**
+ * Creates a new Head instance.
+ *
+ * @constructor
+ * @extends rune.display.Graphic
+ * 
+ * @param {number} [x=0] - The x position.
+ * @param {number} [y=0] - The y position.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Represents the head of the wizard in the hud.
+ */
 howlkraul.ui.Head = function (x, y) {
+
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
+
   rune.display.Graphic.call(this, x, y, 22, 25, "face_hud_22x25");
 }
 
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.ui.Head.prototype = Object.create(rune.display.Graphic.prototype);
 howlkraul.ui.Head.prototype.constructor = howlkraul.ui.Head;
 
+//--------------------------------------------------------------------------
+// Public Methods
+//--------------------------------------------------------------------------
 
 /**
  * Change color of head.
@@ -90,7 +110,6 @@ howlkraul.ui.Head.prototype.changeColor = function (color) {
       newC9 = new rune.color.Color24(70, 35, 35);
       break;
   }
-
 
   this.texture.replaceColor(originalC1, newC1);
   this.texture.replaceColor(originalC2, newC2);

@@ -523,7 +523,9 @@ howlkraul.scene.Game.prototype.m_handleGameOver = function () {
         playerStats.push(player.stats);
     }, this);
 
-    this.cameras.getCameraAt(0).fade.out(800, function () {
+    this.application.sounds.master.get("sfx_gameover").play(true);
+
+    this.cameras.getCameraAt(0).fade.out(1500, function () {
         this.application.scenes.load([new howlkraul.scene.GameOver(this.m_moneyCounter.score, playerStats)])
     }, this);
 };

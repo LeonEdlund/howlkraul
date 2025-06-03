@@ -20,7 +20,11 @@ howlkraul.ui.PlayerHud.prototype = Object.create(rune.display.DisplayObjectConta
 howlkraul.ui.PlayerHud.prototype.constructor = howlkraul.ui.PlayerHud;
 
 /**
- * @inheritdoc
+ * Is run once when an instance is created.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
  */
 howlkraul.ui.PlayerHud.prototype.init = function () {
   rune.display.DisplayObjectContainer.prototype.init.call(this);
@@ -32,21 +36,32 @@ howlkraul.ui.PlayerHud.prototype.init = function () {
 };
 
 /**
- * @inheritdoc
+ * Dispose and clean up resources.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
  */
 howlkraul.ui.PlayerHud.prototype.dispose = function () {
-  rune.display.DisplayObjectContainer.prototype.init.call(this);
-
   this.removeChildren(true);
   this.m_character = null;
   this.m_hearts = null;
   this.m_head = null;
+
+  rune.display.DisplayObjectContainer.prototype.dispose.call(this);
 };
 
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Updates the hearts based on players health.
+ * 
+ * @public
+ * @param {number} health - the players health. 
+ * @returns {undefined}
+ */
 howlkraul.ui.PlayerHud.prototype.updateHealth = function (health) {
   switch (health) {
     case 6:
@@ -84,11 +99,13 @@ howlkraul.ui.PlayerHud.prototype.updateHealth = function (health) {
       this.m_hearts.heart1.setHeart(0);
       this.m_hearts.heart0.setHeart(0);
       break;
+    default:
+      throw new Error('health needs to be between 0 - 6');
   }
 };
 
 /**
- * Change color of character.
+ * Change color of hud elements.
  * 
  * @public
  * @param {string} color - The color to make the character as a string. 
@@ -105,11 +122,23 @@ howlkraul.ui.PlayerHud.prototype.changeColor = function (color) {
 // Private Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Initalize background.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.ui.PlayerHud.prototype.m_initBackground = function () {
   this.m_background = new howlkraul.ui.HudBackground(0, 0)
   this.addChild(this.m_background);
 };
 
+/**
+ * Initalize hearts.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.ui.PlayerHud.prototype.m_initHearts = function () {
   for (var i = 0; i < 3; i++) {
     this.m_hearts["heart" + i] = new howlkraul.ui.Heart(28 + (i * 12), 10, "heart" + i);
@@ -117,6 +146,12 @@ howlkraul.ui.PlayerHud.prototype.m_initHearts = function () {
   }
 };
 
+/**
+ * Initalize head.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.ui.PlayerHud.prototype.m_initHead = function () {
   this.m_head = new howlkraul.ui.Head(2, 3)
   this.addChild(this.m_head);
