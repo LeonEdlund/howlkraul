@@ -1,5 +1,4 @@
 howlkraul.particle.Blood = function () {
-
   this.textures = [
     "blood1",
     "blood2",

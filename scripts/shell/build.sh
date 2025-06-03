@@ -46,7 +46,6 @@ npx google-closure-compiler \
 --js "./../../src/projectile/arrow/Arrow.js" \
 --js "./../../src/projectile/spell/Spell.js" \
 --js "./../../src/particle/blood/Blood.js" \
---js "./../../src/particle/bodyparts/goblin/GoblinHead.js" \
 --js "./../../src/particle/bodyparts/goblin/GoblinChunk.js" \
 --js "./../../src/particle/furniture/TablePiece.js" \
 --js "./../../src/particle/furniture/VasePiece.js" \

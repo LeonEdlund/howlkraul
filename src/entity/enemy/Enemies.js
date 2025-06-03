@@ -179,7 +179,7 @@ howlkraul.entity.Enemies.prototype.m_initEmitters = function () {
     minLifespan: 1000,
     maxLifespan: 1200,
     particles: [
-      howlkraul.particle.GoblinHead,
+      // howlkraul.particle.GoblinHead,
       howlkraul.particle.GoblinChunk,
     ]
   });
