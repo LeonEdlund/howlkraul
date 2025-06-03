@@ -1,10 +1,48 @@
+/**
+ * Creates a new PlayerCard instance.
+ *
+ * @constructor
+ * 
+ * @param {howlkraul.utils.StatCounter} playerStats - A reference to the players stat object.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Represents a visual card where the player can see the stats from a previus game.
+ */
 howlkraul.ui.PlayerCard = function (playerStats) {
 
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * A reference to the players stat object.
+   * 
+   * @private
+   * @type {howlkraul.utils.playerStats}
+   */
   this.m_playerStats = playerStats;
 
+  /**
+   * Name of the card texture.
+   * 
+   * @private
+   * @type {string}
+   */
   this.m_texture = "";
 
+  /**
+   * An array with all the score objects as BitmapFields.
+   * 
+   * @private
+   * @type {array<rune.text.BitmapField>}
+   */
   this.m_scores = [];
+
+  //--------------------------------------------------------------------------
+  // Init Calls
+  //--------------------------------------------------------------------------
 
   this.m_setTexture();
 
@@ -27,7 +65,7 @@ howlkraul.ui.PlayerCard.prototype.constructor = howlkraul.ui.PlayerCard;
 //--------------------------------------------------------------------------
 
 /**
- * Runs when instantiated.
+ * Runs when object is instantiated.
  * 
  * @overide
  * @public
@@ -41,7 +79,7 @@ howlkraul.ui.PlayerCard.prototype.init = function () {
 };
 
 /**
- * Dispose resources.
+ * Dispose and clean up resources.
  * 
  * @overide
  * @public
@@ -52,7 +90,6 @@ howlkraul.ui.PlayerCard.prototype.dispose = function () {
 
   rune.display.Graphic.prototype.dispose.call(this);
 };
-
 
 //--------------------------------------------------------------------------
 // Public methods
@@ -83,7 +120,7 @@ howlkraul.ui.PlayerCard.prototype.m_setTexture = function () {
 };
 
 /**
- * creates cards.
+ * Creates all stat objects.
  * 
  * @private
  * @returns {undefined}
@@ -101,7 +138,7 @@ howlkraul.ui.PlayerCard.prototype.m_setStats = function () {
 };
 
 /**
- * creates cards.
+ * Render the scores on the card.
  * 
  * @private
  * @returns {undefined}
@@ -121,4 +158,3 @@ howlkraul.ui.PlayerCard.prototype.m_renderScores = function () {
     }
   }
 };
-
