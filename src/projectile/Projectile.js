@@ -1,5 +1,27 @@
+/**
+ * Abstract class for a Projectile.
+ *
+ * @constructor
+ * @extends rune.display.Sprite
+ * @abstract
+ * 
+ * @param {number} [x=0] - X spawn position.
+ * @param {number} [y=0] - Y spawn position.
+ * @param {string} texture - The name of the texture.
+ * 
+ * @class
+ * @classdesc
+ *
+ * Represents a abstract class for Projectile. 
+ * Used to creat a shooting particle.
+ */
 howlkraul.projectile.Projectile = function (x, y, texture) {
-  rune.display.Sprite.call(this, x, y, 27, 32, texture);
+
+  //--------------------------------------------------------------------------
+  // Super call
+  //--------------------------------------------------------------------------
+
+  rune.display.Sprite.call(this, x || 0, y || 0, 27, 32, texture);
 }
 
 //--------------------------------------------------------------------------
@@ -10,49 +32,17 @@ howlkraul.projectile.Projectile.prototype = Object.create(rune.display.Sprite.pr
 howlkraul.projectile.Projectile.prototype.constructor = howlkraul.projectile.Projectile;
 
 //--------------------------------------------------------------------------
-// Overide Methods
-//--------------------------------------------------------------------------
-
-/** 
- * @override
- */
-howlkraul.projectile.Projectile.prototype.init = function () {
-  rune.display.Sprite.prototype.init.call(this);
-  
-  this.m_initAnimation();
-  this.m_initSounds();
-  this.m_initHitbox();
-};
-
-/** 
- * @override
- */
-howlkraul.projectile.Projectile.prototype.update = function () {
-  rune.display.Sprite.prototype.update.call(this);
-
-  if (this.m_isOutOfBounds()) {
-    this.dispose();
-  }
-};
-
-/**
- * @override
- */
-howlkraul.projectile.Projectile.prototype.dispose = function () {
-  rune.display.Sprite.prototype.dispose.call(this);
-};
-
-//--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
 /**
- * Initialize hitbox
+ * Shot projectile in set a direction.
  * 
- * @method
  * @public
  * @param {string} direction - The direction as a string.
- * @param {rune.display.DisplayGroup} direction - The direction as a string.
+ * @param {number} speed - The speed of the projectile.
+ * @param {rune.display.DisplayGroup} group - The group the projectile should be added to.
+ * @returns {undefined} 
  */
 howlkraul.projectile.Projectile.prototype.shootInDirection = function (direction, speed, group) {
   this.velocity.acceleration.x = 0.9;
@@ -103,33 +93,72 @@ howlkraul.projectile.Projectile.prototype.shootInDirection = function (direction
 }
 
 /**
- * Initialize hitbox
+ * Shoot projectile in 360 deg.
  * 
  * @protected
+ * @param {rune.geom.point} point - Where the projectile should aim.
+ * @param {rune.display.DisplayGroup} group - The group the projectile should be added to.
  * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.shootAtPoint = function (point, group) {
-  // Calculate the angle in radians
   var dx = point.x - this.centerX;
   var dy = point.y - this.centerY;
   var radians = Math.atan2(dy, dx);
-
-  // Calculate the angle in degrees (for rotation)
   var degrees = radians * (180 / Math.PI);
-
-  // Set projectile speed (adjust this value as needed)
   var speed = 3;
 
-  // Calculate velocity.acceleration components using the angle
   this.velocity.x = rune.util.Math.cos(radians) * speed;
   this.velocity.y = rune.util.Math.sin(radians) * speed;
 
-  // Set the rotation to match the direction
   this.rotation = degrees;
 
-  // Add the projectile to the group
   group.addMember(this);
 }
+
+//--------------------------------------------------------------------------
+// Overide Rune Methods
+//--------------------------------------------------------------------------
+
+/**
+ * Is run once when an instance is created.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.projectile.Projectile.prototype.init = function () {
+  rune.display.Sprite.prototype.init.call(this);
+
+  this.m_initAnimation();
+  this.m_initSounds();
+  this.m_initHitbox();
+};
+
+/**
+* This method is automatically executed once per "tick".
+*
+* @public
+* @param {number} step Fixed time step.
+* @returns {undefined}
+*/
+howlkraul.projectile.Projectile.prototype.update = function (step) {
+  rune.display.Sprite.prototype.update.call(this, step);
+
+  if (this.m_isOutOfBounds()) {
+    this.dispose();
+  }
+};
+
+/**
+ * Clean up and remove resources.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
+ */
+howlkraul.projectile.Projectile.prototype.dispose = function () {
+  rune.display.Sprite.prototype.dispose.call(this);
+};
 
 //--------------------------------------------------------------------------
 // Private Methods
@@ -173,6 +202,7 @@ howlkraul.projectile.Projectile.prototype.m_isOutOfBounds = function () {
  * Initialize sprite animations.
  * 
  * @protected
+ * @abstract
  * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.m_initAnimation = function () {
@@ -183,6 +213,7 @@ howlkraul.projectile.Projectile.prototype.m_initAnimation = function () {
  * Initialize hitbox
  * 
  * @protected
+ * @abstract
  * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.m_initHitbox = function () {
@@ -193,6 +224,7 @@ howlkraul.projectile.Projectile.prototype.m_initHitbox = function () {
  * Initialize sounds
  * 
  * @protected
+ * @abstract
  * @return {undefined}
  */
 howlkraul.projectile.Projectile.prototype.m_initSounds = function () {

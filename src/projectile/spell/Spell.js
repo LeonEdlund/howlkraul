@@ -1,31 +1,76 @@
+/**
+ * Creates a new instance of Spell.
+ *
+ * @constructor
+ * @extends howlkraul.projectile.Projectile
+ * 
+ * @param {number} [x=0] - X spawn position.
+ * @param {number} [y=0] - Y spawn position.
+ * @param {howlkraul.entity.Wizard} castedBy - The name of the texture.
+ * 
+ * @class
+ * @classdesc
+ *
+ * Represents a spell casted by the wizard.
+ */
 howlkraul.projectile.Spell = function (x, y, castedBy) {
+
+  //--------------------------------------------------------------------------
+  // Super call
+  //--------------------------------------------------------------------------
+
   rune.display.Sprite.call(this, x, y, 27, 32, "magic_27x27");
 
-  this.acceleration = 1;
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
 
-  this.castedBy = castedBy;
+  /**
+   * Who casted the spell.
+   * 
+   * @private
+   * @type {howlkraul.entity.Wizard}
+   */
+  this.m_castedBy = castedBy;
 }
+
+//--------------------------------------------------------------------------
+// Inheritance
+//--------------------------------------------------------------------------
 
 howlkraul.projectile.Spell.prototype = Object.create(howlkraul.projectile.Projectile.prototype);
 howlkraul.projectile.Spell.prototype.constructor = howlkraul.projectile.Spell;
 
-/**
- * @inheritdoc
- */
-howlkraul.projectile.Spell.prototype.init = function () {
-  howlkraul.projectile.Projectile.prototype.init.call(this);
+//--------------------------------------------------------------------------
+// Getters And Setters
+//--------------------------------------------------------------------------
 
-  // this.m_sound = this.application.sounds.sound.get("sfx_spell", true);
-  // this.m_sound.play();
-};
+/**
+ * Who casted the spell
+ *
+ * @member {boolean} castedBy
+ * @memberof howlkraul.projectile.Spell
+ * @instance
+ * @readonly
+ */
+Object.defineProperty(howlkraul.projectile.Spell.prototype, "castedBy", {
+  /**
+   * @this howlkraul.projectile.Spell
+   * @ignore
+   */
+  get: function () {
+    return this.m_castedBy;
+  }
+});
+
+//--------------------------------------------------------------------------
+// Overide Methods
+//--------------------------------------------------------------------------
 
 /**
  * @inheritdoc
  */
 howlkraul.projectile.Spell.prototype.dispose = function () {
-  //this.m_sound = this.application.sounds.sound.remove(this.m_sound, true);
-
-  this.m_sound = null;
   this.castedBy = null;
 
   howlkraul.projectile.Projectile.prototype.dispose.call(this);

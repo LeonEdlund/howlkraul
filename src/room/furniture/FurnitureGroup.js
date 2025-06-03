@@ -12,6 +12,7 @@
  * Represents a group of furniture.
  */
 howlkraul.room.FurnitureGroup = function (scene) {
+
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
@@ -23,10 +24,10 @@ howlkraul.room.FurnitureGroup = function (scene) {
   //--------------------------------------------------------------------------
 
   /**
-   * The health.
+   * Referense to the active scene.
    * 
    * @protected
-   * @type {rune}
+   * @type {rune.scene.Scene}
   */
   this.m_scene = scene;
 
@@ -34,7 +35,7 @@ howlkraul.room.FurnitureGroup = function (scene) {
    * The health.
    * 
    * @protected
-   * @type {array <howlkraul.room.Furniture>}
+   * @type {array<howlkraul.room.Furniture>}
   */
   this.m_furniture = [];
 
@@ -86,11 +87,15 @@ howlkraul.room.FurnitureGroup.prototype.spawnRandomFurniture = function () {
 }
 
 //--------------------------------------------------------------------------
-// Overide Methods
+// Overide Rune Methods
 //--------------------------------------------------------------------------
 
 /**
+ * Is run once when an instance is created.
+ * 
  * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.room.FurnitureGroup.prototype.init = function () {
   rune.display.DisplayGroup.prototype.init.call(this);
@@ -99,8 +104,12 @@ howlkraul.room.FurnitureGroup.prototype.init = function () {
 }
 
 /**
- * @override
- */
+ * This method is automatically executed once per "tick".
+*
+* @public
+* @param {number} step Fixed time step.
+* @returns {undefined}
+*/
 howlkraul.room.FurnitureGroup.prototype.update = function (step) {
   rune.display.DisplayGroup.prototype.update.call(this, step);
 
@@ -108,11 +117,12 @@ howlkraul.room.FurnitureGroup.prototype.update = function (step) {
 }
 
 /**
- * @override
- */
+* Removes and cleans up resources.
+*
+* @public
+* @returns {undefined}
+*/
 howlkraul.room.FurnitureGroup.prototype.dispose = function () {
-  rune.display.DisplayGroup.prototype.dispose.call(this);
-
   this.application.scenes.selected.stage.removeChild(this.m_vaseEmitter, true);
   this.application.scenes.selected.stage.removeChild(this.m_tableEmitter, true);
 
@@ -120,6 +130,8 @@ howlkraul.room.FurnitureGroup.prototype.dispose = function () {
   this.m_furniture = null;
   this.m_vaseEmitter = null;
   this.m_tableEmitter = null;
+
+  rune.display.DisplayGroup.prototype.dispose.call(this);
 }
 
 //--------------------------------------------------------------------------
@@ -197,7 +209,7 @@ howlkraul.room.FurnitureGroup.prototype.m_generateFurniture = function (maxAmoun
 }
 
 /**
- * Handles coillision on furniture.
+ * Handles coillision with furniture.
  * 
  * @private
  * @returns {undefined}
@@ -207,7 +219,6 @@ howlkraul.room.FurnitureGroup.prototype.m_handleCollisonHit = function () {
   var enemies = this.application.scenes.selected.enemies;
   var spells = this.application.scenes.selected.spells;
   var enemyProjectile = this.application.scenes.selected.enemyProjectiles;
-
 
   this.hitTestAndSeparateGroup(players);
   this.hitTestAndSeparateGroup(enemies, this.m_handleDamage, this);
@@ -219,6 +230,8 @@ howlkraul.room.FurnitureGroup.prototype.m_handleCollisonHit = function () {
  * Callback function for hits.
  * 
  * @private
+ * @param {howlkraul.room.Furniture} - The furniture.
+ * @param {howlkraul.projectile.Spell || howlkraul.projectile.Arrow || howlkraul.entity.Enemy} - attacker.
  * @returns {undefined}
  */
 howlkraul.room.FurnitureGroup.prototype.m_handleDamage = function (target, attacker) {
@@ -247,11 +260,11 @@ howlkraul.room.FurnitureGroup.prototype.m_handleDamage = function (target, attac
   }
 }
 
-
 /**
- * Emmits debree based on furniture type.
+ * Emits debree based on furniture type.
  * 
  * @private
+ * @param {howlkraul.room.Furniture} - The type of furniture.
  * @returns {undefined}
  */
 howlkraul.room.FurnitureGroup.prototype.m_emitDebre = function (furniture) {

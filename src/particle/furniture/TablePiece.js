@@ -1,3 +1,14 @@
+/**
+ * Creates a new instance of a TablePiece.
+ *
+ * @constructor
+ * @extends rune.particle.Particle
+ * 
+ * @class
+ * @classdesc
+ *
+ * Represents a random TablePiece used as particle for emitters.
+ */
 howlkraul.particle.TablePiece = function () {
 
   this.textures = [

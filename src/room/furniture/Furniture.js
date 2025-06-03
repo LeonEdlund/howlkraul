@@ -5,8 +5,8 @@
  * @extends rune.display.Sprite
  * @abstract
  * 
- * @param {number} x - X spawn position.
- * @param {number} y - Y spawn position.
+ * @param {number} [x=0] - X spawn position.
+ * @param {number} [y=0] - Y spawn position.
  * @param {number} width - Width of the sprite.
  * @param {number} height - Height of the sprite.
  * @param {string} texture - The name of the texture.
@@ -17,9 +17,11 @@
  * Represents a abstract class for furniture.
  */
 howlkraul.room.Furniture = function (x, y, width, height, texture) {
+
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
+
   rune.display.Sprite.call(this, x || 0, y || 0, width, height, texture);
 
   //--------------------------------------------------------------------------
@@ -55,8 +57,20 @@ howlkraul.room.Furniture = function (x, y, width, height, texture) {
    */
   this.m_damageCoolDown = 500;
 
+  /**
+   * Array of sound id's for hits
+   * 
+   * @private
+   * @type {Array<string>}
+   */
   this.m_hitSounds = [];
 
+  /**
+   * Array of sound id's for break sounds
+   * 
+   * @private
+   * @type {Array<string>}
+   */
   this.m_breakSounds = [];
 }
 
@@ -71,7 +85,19 @@ howlkraul.room.Furniture.prototype.constructor = howlkraul.room.Furniture;
 // Getters and Setters
 //--------------------------------------------------------------------------
 
+/**
+ * Flag for if furniture is destroyed or not
+ *
+ * @member {boolean} destroyed
+ * @memberof howlkraul.room.Furniture
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Furniture.prototype, "destroyed", {
+  /**
+   * @this howlkraul.room.Furniture
+   * @ignore
+   */
   get: function () {
     if (this.m_health > 0) {
       return false;
@@ -81,26 +107,74 @@ Object.defineProperty(howlkraul.room.Furniture.prototype, "destroyed", {
   }
 });
 
+/**
+ * Array of sound id's for hit.
+ *
+ * @member {Array<string>} hitSounds
+ * @memberof howlkraul.room.Furniture
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Furniture.prototype, "hitSounds", {
+  /**
+   * @this howlkraul.room.Furniture
+   * @ignore
+   */
   get: function () {
     return this.m_hitSounds;
   }
 });
 
+/**
+ * A random hitsound.
+ *
+ * @member {rune.media.Sound} hitSound
+ * @memberof howlkraul.room.Furniture
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Furniture.prototype, "hitSound", {
+  /**
+   * @this howlkraul.room.Furniture
+   * @ignore
+   */
   get: function () {
     var i = rune.util.Math.randomInt(0, this.m_hitSounds.length - 1);
     return this.m_hitSounds[i];
   }
 });
 
+/**
+ * Array of sound id's for break.
+ *
+ * @member {Array<string>} breakSounds
+ * @memberof howlkraul.room.Furniture
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Furniture.prototype, "breakSounds", {
+  /**
+   * @this howlkraul.room.Furniture
+   * @ignore
+   */
   get: function () {
     return this.m_breakSounds;
   }
 });
 
+/**
+ * A random break sound.
+ *
+ * @member {rune.media.Sound} hitSound
+ * @memberof howlkraul.room.Furniture
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Furniture.prototype, "breakSound", {
+  /**
+   * @this howlkraul.room.Furniture
+   * @ignore
+   */
   get: function () {
     var i = rune.util.Math.randomInt(0, this.m_breakSounds.length - 1);
     return this.m_breakSounds[i];
@@ -112,8 +186,12 @@ Object.defineProperty(howlkraul.room.Furniture.prototype, "breakSound", {
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
-*/
+ * Is run once when an instance is created.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.room.Furniture.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
   this.m_initAnimations();
@@ -122,9 +200,13 @@ howlkraul.room.Furniture.prototype.init = function () {
 }
 
 /**
- * @inheritdoc
+* This method is automatically executed once per "tick".
+*
+* @public
+* @param {number} step Fixed time step.
+* @returns {undefined}
 */
-howlkraul.room.Furniture.prototype.update = function () {
+howlkraul.room.Furniture.prototype.update = function (step) {
   rune.display.Sprite.prototype.update.call(this);
 }
 
@@ -156,7 +238,7 @@ howlkraul.room.Furniture.prototype.takeDamage = function () {
 }
 
 /**
- * Give damage to furniture and change frame.
+ * Give damage to furniture from a enemy and change frame.
  * 
  * @public
  * @returns {undefined} 
@@ -184,7 +266,6 @@ howlkraul.room.Furniture.prototype.dropLoot = function () {
   } else if (rune.util.Math.chance(60)) {
     this.m_dropBomb();
   }
-
 }
 
 //--------------------------------------------------------------------------
@@ -226,6 +307,16 @@ howlkraul.room.Furniture.prototype.m_dropBomb = function () {
 }
 
 /**
+ * Change animation frame on damage.
+ * 
+ * @protected
+ * @returns {undefined}
+ */
+howlkraul.room.Furniture.prototype.m_changeFrame = function () {
+  this.animation.gotoNextFrame();
+}
+
+/**
  * Init velocity.
  * 
  * @public
@@ -243,6 +334,7 @@ howlkraul.room.Furniture.prototype.m_initVelocity = function () {
  * Initializes animations.
  * 
  * @protected
+ * @abstract
  * @returns {undefined}
  */
 howlkraul.room.Furniture.prototype.m_initAnimations = function () {
@@ -253,18 +345,10 @@ howlkraul.room.Furniture.prototype.m_initAnimations = function () {
  * Initializes sounds.
  * 
  * @protected
+ * @abstract
  * @returns {undefined}
  */
 howlkraul.room.Furniture.prototype.initSounds = function () {
   //OVERIDE IN SUB CLASS
 }
 
-/**
- * Change animation frame on damage.
- * 
- * @protected
- * @returns {undefined}
- */
-howlkraul.room.Furniture.prototype.m_changeFrame = function () {
-  this.animation.gotoNextFrame();
-}

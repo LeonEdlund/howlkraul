@@ -1,5 +1,15 @@
+/**
+ * Creates a new instance of a VasePiece.
+ *
+ * @constructor
+ * @extends rune.particle.Particle
+ * 
+ * @class
+ * @classdesc
+ *
+ * Represents a random VasePiece used as particle for emitters.
+ */
 howlkraul.particle.VasePiece = function () {
-
   this.textures = [
     "vase_part1_18x18",
     "vase_part2_18x18",
@@ -13,6 +23,7 @@ howlkraul.particle.VasePiece = function () {
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
+
   rune.particle.Particle.call(this, 0, 0, 18, 18, this.textures[i]);
 }
 

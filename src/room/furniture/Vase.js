@@ -5,8 +5,8 @@
  * @extends howlkraul.room.Furniture
  * @abstract
  * 
- * @param {number} x - X spawn position.
- * @param {number} y - Y spawn position.
+ * @param {number} [x=0] - X spawn position.
+ * @param {number} [y=0] - Y spawn position.
  * 
  * @class
  * @classdesc
@@ -14,6 +14,7 @@
  * Represents a Vase object that can be placed on the stage.
  */
 howlkraul.room.Vase = function (x, y) {
+
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------

@@ -2,19 +2,21 @@
  * Creates a new Outdoor object.
  *
  * @constructor
- * @extends rune.display.DisplayGroup
+ * @extends rune.display.Sprite
  *
  * @param {rune.scene.Scene} game - The scene where the group should be added.
  * 
  * @class
  * @classdesc
  *
- * Represents a Outdoor.
+ * Represents the outdoor area.
  */
 howlkraul.room.Outdoor = function (game) {
+
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
+
   rune.display.Sprite.call(this, 0, 0, 400, 225, "outside_400x225");
 
   //--------------------------------------------------------------------------
@@ -65,13 +67,37 @@ howlkraul.room.Outdoor.prototype.constructor = howlkraul.room.Outdoor;
 // Getter and setters
 //--------------------------------------------------------------------------
 
+/**
+ * The displaygroup that holds the invisible borders.
+ *
+ * @member {rune.display.DisplayGroup} borders
+ * @memberof howlkraul.room.Outdoor
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Outdoor.prototype, "borders", {
+  /**
+   * @this howlkraul.room.Outdoor
+   * @ignore
+   */
   get: function () {
     return this.m_borders;
   }
 });
 
+/**
+ * Flag that checks if gate is open or not.
+ *
+ * @member {boolean} gateOpen
+ * @memberof howlkraul.room.Outdoor
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Outdoor.prototype, "gateOpen", {
+  /**
+   * @this howlkraul.room.Outdoor
+   * @ignore
+   */
   get: function () {
     return this.m_gateOpen;
   }
@@ -82,7 +108,11 @@ Object.defineProperty(howlkraul.room.Outdoor.prototype, "gateOpen", {
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Is run once when an instance is created.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.room.Outdoor.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
@@ -91,13 +121,16 @@ howlkraul.room.Outdoor.prototype.init = function () {
 }
 
 /**
- * @inheritdoc
+ * Clean up and remove resources.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.room.Outdoor.prototype.dispose = function () {
   this.m_borders.removeMembers(true);
   this.m_game = null;
   this.m_borders = null;
-
 
   rune.display.Sprite.prototype.dispose.call(this);
 }
@@ -159,8 +192,6 @@ howlkraul.room.Outdoor.prototype.m_initBorders = function () {
 
     this.m_borders.forEachMember(function (wall) {
       wall.immovable = true;
-      // wall.backgroundColor = "red";
-      // wall.alpha = 0.5;
     }, this);
   }
 }

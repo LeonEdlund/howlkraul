@@ -2,7 +2,7 @@
  * Creates a new Room object.
  *
  * @constructor
- * @extends rune.display.DisplayGroup
+ * @extends rune.display.Sprite
  *
  * @param {rune.scene.Scene} game - The scene where the group should be added.
  * 
@@ -12,9 +12,11 @@
  * Represents a room.
  */
 howlkraul.room.Room = function (game) {
+
   //--------------------------------------------------------------------------
   // Super call
   //--------------------------------------------------------------------------
+
   rune.display.Sprite.call(this, 0, 0, 400, 225, "room_400x225");
 
   //--------------------------------------------------------------------------
@@ -38,7 +40,7 @@ howlkraul.room.Room = function (game) {
   this.m_borders = null;
 
   /**
-   * Invisible walls, used as room borders.
+   * The display group that holds all furniture.
    * 
    * @private 
    * @type {howlkraul.room.FurnitureGroup}
@@ -81,19 +83,55 @@ howlkraul.room.Room.prototype.constructor = howlkraul.room.Room;
 // Getter and setters
 //--------------------------------------------------------------------------
 
+/**
+ * Referes to the borders of the room.
+ *
+ * @member {rune.display.DisplayGroup} walls
+ * @memberof howlkraul.room.Room
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Room.prototype, "walls", {
+  /**
+   * @this howlkraul.room.Room
+   * @ignore
+   */
   get: function () {
     return this.m_borders;
   }
 });
 
+/**
+ * Referes to furniture group that holds all furniture
+ *
+ * @member {howlkraul.room.FurnitureGroup} furniture
+ * @memberof howlkraul.room.Room
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Room.prototype, "furniture", {
+  /**
+   * @this howlkraul.room.Room
+   * @ignore
+   */
   get: function () {
     return this.m_furniture;
   }
 });
 
+/**
+ * Flag that checks if gate is open or not.
+ *
+ * @member {boolean} gateOpen
+ * @memberof howlkraul.room.Room
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.room.Room.prototype, "gateOpen", {
+  /**
+   * @this howlkraul.room.Room
+   * @ignore
+   */
   get: function () {
     return this.m_gateOpen;
   }
@@ -104,7 +142,11 @@ Object.defineProperty(howlkraul.room.Room.prototype, "gateOpen", {
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Is run once when an instance is created.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.room.Room.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
@@ -115,11 +157,13 @@ howlkraul.room.Room.prototype.init = function () {
 }
 
 /**
- * @inheritdoc
+ * Clean up and remove resources.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.room.Room.prototype.dispose = function () {
-  rune.display.Sprite.prototype.dispose.call(this);
-
   this.m_borders.removeMembers(true);
   this.m_furniture.removeMembers(true);
   this.m_lastColor.dispose();
@@ -128,6 +172,8 @@ howlkraul.room.Room.prototype.dispose = function () {
   this.m_borders = null;
   this.m_furniture = null;
   this.m_lastColor = null;
+
+  rune.display.Sprite.prototype.dispose.call(this);
 }
 
 //--------------------------------------------------------------------------
