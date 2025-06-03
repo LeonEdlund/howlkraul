@@ -55,7 +55,6 @@ howlkraul.ui.HighScore.prototype.constructor = howlkraul.ui.HighScore;
 //--------------------------------------------------------------------------
 
 /**
- * Initializes all objects for the main menu.
  * Is run once when an instance is created.
  * 
  * @overide
