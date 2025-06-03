@@ -1,12 +1,26 @@
 /**
+ * Creates a new instance of CollisionHandler.
+ *
+ * @constructor
  * 
+ * @param {rune.display.Scene} game - reference to the active scene.
  * 
  * @class
- * @classdesc - creates an instance of CollisionHandler.
- * 
- * @param {rune.display.scene} game 
+ * @classdesc
+ *
+ * Represents a class that handles collisions.
  */
 howlkraul.handler.CollisionHandler = function (game) {
+  //--------------------------------------------------------------------------
+  // Private Methods
+  //--------------------------------------------------------------------------
+
+  /**
+   * reference to the active scene.
+   * 
+   * @private
+   * @type {rune.display.Scene}
+   */
   this.game = game;
 }
 
@@ -47,8 +61,6 @@ howlkraul.handler.CollisionHandler.prototype.update = function () {
 howlkraul.handler.CollisionHandler.prototype.dispose = function () {
   this.game = null;
 };
-
-
 
 //--------------------------------------------------------------------------
 // Private Methods

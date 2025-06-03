@@ -1,9 +1,30 @@
+/**
+ * Creates a new TrollClothes object.
+ * 
+ * @constructor
+ * @extends howlkraul.entity.Enemy
+ * 
+ * @param {array<string>} textures - An array with clothes that should be created.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Creates a clothes object for the troll.
+ */
 howlkraul.entity.TrollClothes = function (textures) {
   this.textures = textures || [];
   var i = rune.util.Math.randomInt(0, this.textures.length - 1);
 
+  //--------------------------------------------------------------------------
+  // Super Call
+  //--------------------------------------------------------------------------
+
   rune.display.Sprite.call(this, 0, 0, 29, 29, this.textures[i] || null);
 }
+
+//--------------------------------------------------------------------------
+// Inheritance
+//--------------------------------------------------------------------------
 
 howlkraul.entity.TrollClothes.prototype = Object.create(rune.display.Sprite.prototype);
 howlkraul.entity.TrollClothes.prototype.constructor = howlkraul.particle.TrollClothes;
@@ -12,6 +33,13 @@ howlkraul.entity.TrollClothes.prototype.constructor = howlkraul.particle.TrollCl
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * set the correct animation for the clothes.
+ * 
+ * @public
+ * @param {string} animation - The name of the animation that should be played.
+ * @returns {undefined}
+ */
 howlkraul.entity.TrollClothes.prototype.setAnimation = function (animation) {
   if (this.animation.find(animation)) {
     this.animation.gotoAndPlay(animation);
@@ -23,7 +51,11 @@ howlkraul.entity.TrollClothes.prototype.setAnimation = function (animation) {
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Method is run once when an instance of the object is created.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
  */
 howlkraul.entity.TrollClothes.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
@@ -31,17 +63,27 @@ howlkraul.entity.TrollClothes.prototype.init = function () {
 }
 
 /**
- * @inheritdoc
+ * Clean up and remove resources.
+ * 
+ * @override
+ * @public
+ * @returns {undefined}
  */
 howlkraul.entity.TrollClothes.prototype.dispose = function () {
-  rune.display.Sprite.prototype.dispose.call(this);
   this.textures = null;
+  rune.display.Sprite.prototype.dispose.call(this);
 }
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Initalize Animations. 
+ * 
+ * @private
+ * @returns {undefined}
+ */
 howlkraul.entity.TrollClothes.prototype.m_initAnimations = function () {
   // IDLE
   this.animation.create("idle", [0], 0, false);
