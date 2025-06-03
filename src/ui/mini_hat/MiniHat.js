@@ -1,13 +1,29 @@
+/**
+ * Creates a new MiniHat instance.
+ *
+ * @constructor
+ * 
+ * @param {number} [x=0] - X position.
+ * @param {number} [y=0] - Y position.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Represents a small visual hat that can change color based on the wizards color.
+ */
 howlkraul.ui.MiniHat = function (x, y) {
+
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
-  rune.display.Graphic.call(this, x, y, 12, 13, "player_x_died_12x13");
+
+  rune.display.Graphic.call(this, x || 0, y || 0, 12, 13, "player_x_died_12x13");
 }
 
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.ui.MiniHat.prototype = Object.create(rune.display.Graphic.prototype);
 howlkraul.ui.MiniHat.prototype.constructor = howlkraul.ui.MiniHat;
 
@@ -16,7 +32,7 @@ howlkraul.ui.MiniHat.prototype.constructor = howlkraul.ui.MiniHat;
 //--------------------------------------------------------------------------
 
 /**
- * Change color.
+ * Change color of the hat.
  * 
  * @public
  * @param {number} color - The color that it should be replaced by.
