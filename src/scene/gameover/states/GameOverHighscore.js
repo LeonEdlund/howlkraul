@@ -161,5 +161,4 @@ howlkraul.scene.GameOverHighscore.prototype.m_initText = function () {
 
   this.owner.stage.addChild(bigText)
   this.owner.stage.addChild(smallText)
-
 };

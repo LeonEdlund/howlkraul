@@ -1,5 +1,5 @@
 /**
- * Represents a state where the main menu overlayes the character selection.
+ * Creates a new instance of CSPlaying
  *
  * @constructor
  * @extends rune.state.State
@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The menu over character selection. 
+ * Represents a state where the player can choose character.
  */
 howlkraul.scene.CSPlaying = function () {
 
@@ -30,11 +30,13 @@ howlkraul.scene.CSPlaying.prototype.constructor = howlkraul.scene.CSPlaying;
 //--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Runs every frame. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
-howlkraul.scene.CSPlaying.prototype.update = function (step) {
+howlkraul.scene.CSPlaying.prototype.update = function () {
   if (!this.owner.playerOne) this.owner.m_moveP1Selector();
   if (this.owner.twoPlayer && !this.owner.playerTwo) this.owner.m_moveP2Selector();
   this.m_checkReadyPlayers();
@@ -43,13 +45,19 @@ howlkraul.scene.CSPlaying.prototype.update = function (step) {
 };
 
 /**
- * ... 
+ * Runs when scene is selected.
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.scene.CSPlaying.prototype.onEnter = function () {
   this.owner.initSelectors();
 };
+
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
 
 /**
  * Checks if both players are ready and if game has started.

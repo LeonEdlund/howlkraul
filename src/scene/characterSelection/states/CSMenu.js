@@ -38,8 +38,10 @@ howlkraul.scene.CSMenu.prototype.constructor = howlkraul.scene.CSMenu;
 //--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Run once when object is instantiated.
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.scene.CSMenu.prototype.init = function () {
@@ -48,8 +50,10 @@ howlkraul.scene.CSMenu.prototype.init = function () {
 };
 
 /**
- * ... 
+ * Runs when state is deselected.
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.scene.CSMenu.prototype.onExit = function () {

@@ -1,13 +1,9 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
  * Creates a new CharacterSelection scene object.
  *
  * @constructor
  * @extends rune.scene.Scene
- * @param {bool} twoPlayer  - If the game should be 2 player. Default: False. Optional.
+ * @param {boolean} twoPlayer  - If the game should be 2 player. Default: False. Optional.
  * 
  * @class
  * @classdesc
