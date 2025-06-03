@@ -1,45 +1,53 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
- * Creates a new DisplayObjectContainer for highscore display.
+ * Creates a new highscore instance.
  *
  * @constructor
- * @extends rune.display.DisplayObjectContainer
+ * @extends rune.display.Graphic
  * 
  * @class
  * @classdesc
  * 
- * Represents the games highscore display
+ * Represents the games highscore display.
  */
 howlkraul.ui.HighScore = function () {
+
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
-  rune.display.DisplayObjectContainer.call(this, 0, 0, this.application.screen.width, this.application.screen.height);
+
+  rune.display.Graphic.call(this, 0, 0, 117, 123, "highscore_v4_117x123");
 
   //--------------------------------------------------------------------------
   // Private Properties
   //--------------------------------------------------------------------------
 
   /**
-   * The background
+   * List highscore objects.
    * 
-   * @type {rune.display.Graphic}
+   * @type {Object}
    */
-  this.m_background = null;
-
   this.m_hsList = [];
 
+  /**
+   * List of names.
+   * 
+   * @type {array<rune.text.BitmapField>}
+   */
   this.m_hsItems = [];
+
+  /**
+   * List of scores.
+   * 
+   * @type {array<rune.text.BitmapField>}
+   */
   this.m_hsScores = [];
 }
 
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
-howlkraul.ui.HighScore.prototype = Object.create(rune.display.DisplayObjectContainer.prototype);
+
+howlkraul.ui.HighScore.prototype = Object.create(rune.display.Graphic.prototype);
 howlkraul.ui.HighScore.prototype.constructor = howlkraul.ui.HighScore;
 
 //--------------------------------------------------------------------------
@@ -50,25 +58,28 @@ howlkraul.ui.HighScore.prototype.constructor = howlkraul.ui.HighScore;
  * Initializes all objects for the main menu.
  * Is run once when an instance is created.
  * 
+ * @overide
  * @public
  * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.init = function () {
-  rune.display.DisplayObjectContainer.prototype.init.call(this);
+  rune.display.Graphic.prototype.init.call(this);
 
-  this.m_initBackground();
   this.m_initItems();
-
   this.updateList(1);
 };
 
 /**
- * @inheritdoc
+ * Dispose and clean up resources.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
  */
 howlkraul.ui.HighScore.prototype.dispose = function () {
-  rune.display.DisplayObjectContainer.prototype.dispose.call(this);
-
   this.removeChildren(true);
+
+  rune.display.Graphic.prototype.dispose.call(this);
 };
 
 //--------------------------------------------------------------------------
@@ -76,7 +87,7 @@ howlkraul.ui.HighScore.prototype.dispose = function () {
 //--------------------------------------------------------------------------
 
 /**
- * Updates the list based on amount of players.
+ * Updates the list based on nr of players.
  * 
  * @public
  * @param {boolean} nrPlayers - what list should be used.
@@ -103,7 +114,7 @@ howlkraul.ui.HighScore.prototype.updateList = function (nrPlayers) {
 //--------------------------------------------------------------------------
 
 /**
- * Creates a new overlay and add it to display group.
+ * Initalize BitmapFields for names.
  * 
  * @private
  * @returns {undefined}
@@ -137,18 +148,7 @@ howlkraul.ui.HighScore.prototype.m_initItems = function () {
 };
 
 /**
- * Creates a new overlay and add it to display group.
- * 
- * @private
- * @returns {undefined}
- */
-howlkraul.ui.HighScore.prototype.m_initBackground = function () {
-  this.m_background = new rune.display.Graphic(0, 0, 117, 123, "highscore_v4_117x123");
-  this.addChild(this.m_background);
-};
-
-/**
- * Creates a new overlay and add it to display group.
+ * Render list of highscores.
  * 
  * @private
  * @returns {undefined}

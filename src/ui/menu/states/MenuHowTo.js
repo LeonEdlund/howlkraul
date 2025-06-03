@@ -1,5 +1,5 @@
 /**
- * Represents a state where the main menu overlayes the character selection.
+ * Creates a new instance of MenuHowTo.
  *
  * @constructor
  * @extends rune.state.State
@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The menu over character selection. 
+ * This state represents the how to part of the menu.
  */
 howlkraul.ui.MenuHowTo = function () {
 
@@ -16,6 +16,10 @@ howlkraul.ui.MenuHowTo = function () {
   //--------------------------------------------------------------------------
 
   rune.state.State.call(this, "MenuHowTo");
+
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
 
   /**
    * The text grapic
@@ -46,18 +50,20 @@ howlkraul.ui.MenuHowTo.prototype.constructor = howlkraul.ui.MenuHowTo;
 //--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Is run once when an instance is created.
  * 
+ * @public
  * @returns {undefined}
-*/
+ */
 howlkraul.ui.MenuHowTo.prototype.init = function () {
-  rune.state.State.prototype.init.call(this);
   this.m_initContent();
 };
 
 /**
- * ... 
+ * Runs when state is selected. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuHowTo.prototype.onEnter = function () {
@@ -65,8 +71,10 @@ howlkraul.ui.MenuHowTo.prototype.onEnter = function () {
 };
 
 /**
- * ... 
+ * Runs when state is deselected. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuHowTo.prototype.onExit = function () {
@@ -74,13 +82,12 @@ howlkraul.ui.MenuHowTo.prototype.onExit = function () {
 };
 
 /**
- * ... 
+ * Runs every frame. 
  * 
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuHowTo.prototype.update = function () {
-  if (this.m_itemSelected) return;
-
   var keyboard = this.owner.keyboard;
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
@@ -90,11 +97,17 @@ howlkraul.ui.MenuHowTo.prototype.update = function () {
   }
 };
 
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
+
 /**
- * ... 
+ * Initalize content.
  * 
+ * @private
+ * @param {boolean} reversed - true if reversed, False if not. 
  * @returns {undefined}
-*/
+ */
 howlkraul.ui.MenuHowTo.prototype.m_initContent = function () {
   this.m_text = new rune.display.Graphic(-120, 20, 114, 61, "tutorial_text_114x61");
   this.m_controlls = new rune.display.Graphic(500, 100, 242, 89, "controller_242x89");
@@ -113,7 +126,7 @@ howlkraul.ui.MenuHowTo.prototype.m_initContent = function () {
  * Animate content.
  * 
  * @private
- * @param {boolean} reversed
+ * @param {boolean} reversed - true if reversed, False if not. 
  * @returns {undefined}
  */
 howlkraul.ui.MenuHowTo.prototype.m_animateContent = function (reversed) {

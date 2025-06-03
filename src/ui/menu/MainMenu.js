@@ -52,22 +52,6 @@ howlkraul.ui.MainMenu = function () {
    * @type {howlkraul.ui.Highscore}
    */
   this.m_highscore = null;
-
-  /**
-   * reference to the how to text.
-   * 
-   * @private
-   * @type {rune.display.Graphic}
-   */
-  this.m_howToText = null;
-
-  /**
-   * reference to the how to controller.
-   * 
-   * @private
-   * @type {rune.display.Graphic}
-   */
-  this.m_controller = null;
 }
 
 //--------------------------------------------------------------------------
@@ -132,42 +116,6 @@ Object.defineProperty(howlkraul.ui.MainMenu.prototype, "highscore", {
    */
   get: function () {
     return this.m_highscore;
-  }
-});
-
-/**
- * The how to text.
- *
- * @member {string} howToText
- * @memberof howlkraul.ui.MainMenu
- * @instance
- * @readonly
- */
-Object.defineProperty(howlkraul.ui.MainMenu.prototype, "howToText", {
-  /**
-   * @this howlkraul.ui.MainMenu
-   * @ignore
-   */
-  get: function () {
-    return this.m_howToText;
-  }
-});
-
-/**
- * The controller grapic.
- *
- * @member {string} controller
- * @memberof howlkraul.ui.MainMenu
- * @instance
- * @readonly
- */
-Object.defineProperty(howlkraul.ui.MainMenu.prototype, "controller", {
-  /**
-   * @this howlkraul.ui.MainMenu
-   * @ignore
-   */
-  get: function () {
-    return this.m_controller;
   }
 });
 

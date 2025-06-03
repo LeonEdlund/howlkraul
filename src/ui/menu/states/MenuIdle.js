@@ -1,5 +1,5 @@
 /**
- * Represents a state where the main menu overlayes the character selection.
+ * Creates a new instance of MenuIdle.
  *
  * @constructor
  * @extends rune.state.State
@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The menu over character selection. 
+ * This state handles the selection and is the default state.
  */
 howlkraul.ui.MenuIdle = function () {
 
@@ -17,16 +17,12 @@ howlkraul.ui.MenuIdle = function () {
 
   rune.state.State.call(this, "MenuIdle");
 
-  /**
-   * Main Menu
-   * 
-   * @private
-   * @type {howlkraul.ui.MainMenu}
-   */
-  this.m_menu = null;
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
 
   /**
-   * Item selected.
+   * Flag if an item has been selected.
    * 
    * @private
    * @type {boolean}
@@ -46,17 +42,10 @@ howlkraul.ui.MenuIdle.prototype.constructor = howlkraul.ui.MenuIdle;
 //--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Runs when state is selected. 
  * 
- * @returns {undefined}
-*/
-howlkraul.ui.MenuIdle.prototype.init = function () {
-  rune.state.State.prototype.init.call(this);
-};
-
-/**
- * ... 
- * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuIdle.prototype.onEnter = function () {
@@ -65,8 +54,10 @@ howlkraul.ui.MenuIdle.prototype.onEnter = function () {
 };
 
 /**
- * ... 
+ * Runs when state is deselected. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuIdle.prototype.onExit = function () {
@@ -74,8 +65,9 @@ howlkraul.ui.MenuIdle.prototype.onExit = function () {
 };
 
 /**
- * ... 
+ * Runs every frame. 
  * 
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuIdle.prototype.update = function () {
@@ -86,25 +78,30 @@ howlkraul.ui.MenuIdle.prototype.update = function () {
   var gamepad2 = this.owner.gamepads.get(1);
 
   if (keyboard.justPressed("w") || gamepad1.stickLeftJustUp || gamepad2.stickLeftJustUp) {
-    this.owner.m_menu.up();
+    this.owner.menu.up();
     this.m_updateHighscoreForCurrentItem();
   }
 
   if (keyboard.justPressed("s") || gamepad1.stickLeftJustDown || gamepad2.stickLeftJustDown) {
-    this.owner.m_menu.down();
+    this.owner.menu.down();
     this.m_updateHighscoreForCurrentItem();
   }
 
   if (keyboard.justPressed("enter") || gamepad1.justPressed(0) || gamepad2.justPressed(0)) {
-    var selectedOption = this.owner.m_menu.select();
+    var selectedOption = this.owner.menu.select();
     this.m_onSelect(selectedOption);
   };
 };
 
+//--------------------------------------------------------------------------
+// Private Methods
+//--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Handle menu item selection. 
  * 
+ * @private
+ * @param {string} choice - The selected menu item.
  * @returns {undefined}
 */
 howlkraul.ui.MenuIdle.prototype.m_onSelect = function (choice) {
@@ -116,10 +113,10 @@ howlkraul.ui.MenuIdle.prototype.m_onSelect = function (choice) {
     switch (text) {
       case "solo":
       case "co-op":
-        this.owner.application.scenes.selected.tweens.create({
+        scene.tweens.create({
           target: this.owner,
           scope: this,
-          duration: 2000,
+          duration: 1000,
           onDispose: function (obj) {
             if (text === "co-op") scene.twoPlayer = true;
             scene.states.select("CSPlaying");
@@ -148,7 +145,6 @@ howlkraul.ui.MenuIdle.prototype.m_onSelect = function (choice) {
 howlkraul.ui.MenuIdle.prototype.m_updateHighscoreForCurrentItem = function () {
   var currentItem = this.owner.m_menu.hoveredItem;
 
-  // Update highscore based on current selection
   if (currentItem === "solo") {
     this.owner.m_highscore.updateList(1);
   } else if (currentItem === "co-op") {
@@ -160,7 +156,7 @@ howlkraul.ui.MenuIdle.prototype.m_updateHighscoreForCurrentItem = function () {
  * Animate content.
  * 
  * @private
- * @param {boolean} reversed
+ * @param {boolean} reversed - true if reversed, False if not. 
  * @returns {undefined}
  */
 howlkraul.ui.MenuIdle.prototype.m_animateContent = function (reversed) {

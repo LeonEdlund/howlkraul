@@ -1,5 +1,5 @@
 /**
- * Represents a state where the main menu overlayes the character selection.
+ * Creates a new instance of MenuCredits.
  *
  * @constructor
  * @extends rune.state.State
@@ -7,7 +7,7 @@
  * @class
  * @classdesc
  *
- * The menu over character selection. 
+ * This state represents the credits part of the menu.
  */
 howlkraul.ui.MenuCredits = function () {
 
@@ -17,21 +17,33 @@ howlkraul.ui.MenuCredits = function () {
 
   rune.state.State.call(this, "MenuCredits");
 
-  /**
-   * Main Menu
-   * 
-   * @private
-   * @type {howlkraul.ui.MainMenu}
-   */
-  this.m_menu = null;
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
 
   /**
-   * Item selected.
+   * Made by graphic.
    * 
    * @private
-   * @type {boolean}
+   * @type {rune.text.BitmapField}
    */
-  this.m_itemSelected = false;
+  this.m_madeBy = null;
+
+  /**
+   * Leon by graphic.
+   * 
+   * @private
+   * @type {rune.text.BitmapField}
+   */
+  this.m_leon = null;
+
+  /**
+   * Theo by graphic.
+   * 
+   * @private
+   * @type {rune.text.BitmapField}
+   */
+  this.m_theo = null;
 }
 
 //--------------------------------------------------------------------------
@@ -46,18 +58,20 @@ howlkraul.ui.MenuCredits.prototype.constructor = howlkraul.ui.MenuCredits;
 //--------------------------------------------------------------------------
 
 /**
- * ... 
+ * Is run once when an instance is created.
  * 
+ * @public
  * @returns {undefined}
-*/
+ */
 howlkraul.ui.MenuCredits.prototype.init = function () {
-  rune.state.State.prototype.init.call(this);
   this.m_initContent();
 };
 
 /**
- * ... 
+ * Runs when state is selected. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuCredits.prototype.onEnter = function () {
@@ -65,8 +79,10 @@ howlkraul.ui.MenuCredits.prototype.onEnter = function () {
 };
 
 /**
- * ... 
+ * Runs when state is deselected. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuCredits.prototype.onExit = function () {
@@ -74,13 +90,13 @@ howlkraul.ui.MenuCredits.prototype.onExit = function () {
 };
 
 /**
- * ... 
+ * Runs every frame. 
  * 
+ * @override
+ * @public
  * @returns {undefined}
 */
 howlkraul.ui.MenuCredits.prototype.update = function () {
-  if (this.m_itemSelected) return;
-
   var keyboard = this.owner.keyboard;
   var gamepad1 = this.owner.gamepads.get(0);
   var gamepad2 = this.owner.gamepads.get(1);
@@ -90,9 +106,14 @@ howlkraul.ui.MenuCredits.prototype.update = function () {
   }
 };
 
+//--------------------------------------------------------------------------
+// Private methods
+//--------------------------------------------------------------------------
+
 /**
- * ... 
+ * Initalize content. 
  * 
+ * @private
  * @returns {undefined}
 */
 howlkraul.ui.MenuCredits.prototype.m_initContent = function () {
@@ -115,7 +136,7 @@ howlkraul.ui.MenuCredits.prototype.m_initContent = function () {
  * Animate content.
  * 
  * @private
- * @param {boolean} reversed
+ * @param {boolean} reversed - true if reversed, False if not. 
  * @returns {undefined}
  */
 howlkraul.ui.MenuCredits.prototype.m_animateContent = function (reversed) {
