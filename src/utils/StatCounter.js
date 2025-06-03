@@ -1,7 +1,3 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
  * Creates a new StatCounter.
  *
@@ -12,7 +8,8 @@
  * @class
  * @classdesc
  * 
- * Represents a class that works as a counter. Its used to keep track of a players stats during a game.
+ * Represents a class that works as a counter. 
+ * Its used to keep track of a players stats during a game.
  */
 howlkraul.utils.StatCounter = function (wizColor) {
 
@@ -23,6 +20,7 @@ howlkraul.utils.StatCounter = function (wizColor) {
   /**
    * The color of the associated wizard.
    * 
+   * @private
    * @type {string}
    */
   this.m_wizColor = wizColor || "blue";
@@ -37,6 +35,7 @@ howlkraul.utils.StatCounter = function (wizColor) {
   /**
    * Number of coins picked up.
    * 
+   * @private
    * @type {number}
    */
   this.m_coins = 0;
@@ -44,6 +43,7 @@ howlkraul.utils.StatCounter = function (wizColor) {
   /**
    * Number of hits taken.
    * 
+   * @private
    * @type {number}
    */
   this.m_hits = 0;
@@ -51,9 +51,10 @@ howlkraul.utils.StatCounter = function (wizColor) {
   /**
   * Killed by.
   * 
+  * @private
   * @type {string}
   */
-  this.m_killedBy = "slime";
+  this.m_killedBy = "";
 }
 
 //--------------------------------------------------------------------------
@@ -200,6 +201,11 @@ howlkraul.utils.StatCounter.prototype.addKilledBy = function (killedBy) {
   }
 
   if (killedBy instanceof howlkraul.entity.Troll) {
+    this.m_killedBy = "troll";
+    return;
+  }
+
+  if (killedBy instanceof howlkraul.entity.BigTroll) {
     this.m_killedBy = "troll";
     return;
   }

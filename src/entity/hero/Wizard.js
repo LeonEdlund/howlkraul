@@ -462,7 +462,6 @@ howlkraul.entity.Wizard.prototype.init = function () {
   this.m_initSpellSounds();
   this.m_changeColor();
   this.m_initManabar();
-
 };
 
 /**
@@ -484,6 +483,7 @@ howlkraul.entity.Wizard.prototype.dispose = function () {
   this.m_disposeInputHandler();
   this.m_disposeHUD();
   this.m_disposeManabar();
+  this.m_disposeSounds();
 
   howlkraul.entity.Entity.prototype.update.call(this);
 };
@@ -953,7 +953,7 @@ howlkraul.entity.Wizard.prototype.m_initStatCounter = function () {
  * @private
 */
 howlkraul.entity.Wizard.prototype.m_initSpellSounds = function () {
-  this.m_spellSound = new howlkraul.utils.SoundPool(this.application, "sfx_spell2", 10);
+  this.m_spellSound = new howlkraul.utils.SoundPool(this.application.sounds.sound, "sfx_spell2", 5);
 };
 
 /**
@@ -1116,5 +1116,18 @@ howlkraul.entity.Wizard.prototype.m_disposeHUD = function () {
   if (this.m_hud) {
     this.m_hud.dispose();
     this.m_hud = null;
+  }
+};
+
+/**
+ * Dispose sounds from sound pool.
+ * 
+ * @returns {undefined}
+ * @private
+*/
+howlkraul.entity.Wizard.prototype.m_disposeSounds = function () {
+  if (this.m_spellSound) {
+    this.m_spellSound.dispose();
+    this.m_spellSound = null;
   }
 };

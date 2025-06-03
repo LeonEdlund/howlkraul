@@ -104,7 +104,7 @@ howlkraul.drops.Coins.prototype.dispose = function () {
  * @returns {undefined}
  */
 howlkraul.drops.Coins.prototype.m_initSounds = function () {
-  this.m_sound = new howlkraul.utils.SoundPool(this.application, "sfx_coin", 10)
+  this.m_sound = new howlkraul.utils.SoundPool(this.application.sounds.sound, "sfx_coin", 10)
 }
 
 /**
