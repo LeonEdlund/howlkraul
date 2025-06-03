@@ -1,15 +1,41 @@
+/**
+ * Creates a new CounterCoin.
+ *
+ * @constructor
+ * 
+ * @param {number} [x=0] - x position.
+ * @param {number} [y=0] - y position.
+ * 
+ * @class
+ * @classdesc
+ * 
+ * Represents a visual coin that can spin.
+ */
 howlkraul.ui.CounterCoin = function (x, y) {
+
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
-  rune.display.Sprite.call(this, x, y, 12, 18, "coin_hud_12x18");
 
+  rune.display.Sprite.call(this, x || 0, y || 0, 12, 18, "coin_hud_12x18");
+
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * The small coin emitter.
+   * 
+   * @private
+   * @type {rune.particle.Emitter}
+   */
   this.m_emitter = null;
 }
 
 //--------------------------------------------------------------------------
 // Inheritance
 //--------------------------------------------------------------------------
+
 howlkraul.ui.CounterCoin.prototype = Object.create(rune.display.Sprite.prototype);
 howlkraul.ui.CounterCoin.prototype.constructor = howlkraul.ui.CounterCoin;
 
@@ -18,10 +44,15 @@ howlkraul.ui.CounterCoin.prototype.constructor = howlkraul.ui.CounterCoin;
 //--------------------------------------------------------------------------
 
 /**
- * @inheritdoc
+ * Runs when object is instantiated.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
  */
 howlkraul.ui.CounterCoin.prototype.init = function () {
   rune.display.Sprite.prototype.init.call(this);
+
   this.m_initAnimations();
   this.m_initEmitter();
 }
@@ -31,7 +62,7 @@ howlkraul.ui.CounterCoin.prototype.init = function () {
 //--------------------------------------------------------------------------
 
 /**
- * Spinns the coin.
+ * Spins the coin and emits a coin.
  * 
  * @public
  * @returns {undefined}
@@ -59,7 +90,7 @@ howlkraul.ui.CounterCoin.prototype.m_initAnimations = function () {
 };
 
 /**
- * Initalizes animations.
+ * Initalizes emitter and adds it to stage.
  * 
  * @private
  * @returns {undefined}
@@ -79,5 +110,5 @@ howlkraul.ui.CounterCoin.prototype.m_initEmitter = function () {
     minVelocityY: -0.5,
   });
 
-  this.application.scenes.selected.stage.addChild(this.m_emitter);
+  this.stage.addChild(this.m_emitter);
 };
