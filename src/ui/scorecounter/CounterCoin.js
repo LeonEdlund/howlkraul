@@ -2,6 +2,7 @@
  * Creates a new CounterCoin.
  *
  * @constructor
+ * @extends rune.display.Sprite
  * 
  * @param {number} [x=0] - x position.
  * @param {number} [y=0] - y position.

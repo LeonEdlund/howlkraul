@@ -2,6 +2,7 @@
  * Creates a new PlayerCard instance.
  *
  * @constructor
+ * @extends rune.display.Graphic
  * 
  * @param {howlkraul.utils.StatCounter} playerStats - A reference to the players stat object.
  * 

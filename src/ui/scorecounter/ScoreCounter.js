@@ -2,6 +2,7 @@
  * Creates a new ScoreCounter.
  *
  * @constructor
+ * @extends {rune.display.DisplayObjectContainer}
  * 
  * @param {number} [x=0] - x position.
  * @param {number} [y=0] - y position.

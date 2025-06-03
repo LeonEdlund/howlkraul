@@ -1,35 +1,51 @@
-//------------------------------------------------------------------------------
-// Constructor scope
-//------------------------------------------------------------------------------
-
 /**
- * Creates a new menu DisplayObjectContainer.
+ * Creates a new Menu instance.
  *
  * @constructor
  * @extends rune.display.DisplayObjectContainer
  * 
+ * @param {number} [x=0] - X position.
+ * @param {number} [y=0] - Y position.
+ * 
  * @class
  * @classdesc
  * 
- * Represents the games menu.
+ * Represents the games menu system.
  */
 howlkraul.ui.Menu = function (x, y) {
 
   //--------------------------------------------------------------------------
   // Super Call
   //--------------------------------------------------------------------------
-  rune.display.DisplayObjectContainer.call(this, x, y, 220, 130);
+
+  rune.display.DisplayObjectContainer.call(this, x || 0, y || 0, 220, 130);
 
   //--------------------------------------------------------------------------
   // Private Properties
   //--------------------------------------------------------------------------
 
-  // this.m_tweens = null;
-
+  /**
+   * An array with all menu options.
+   * 
+   * @private
+   * @type {array<rune.text.BitmapField>}
+   */
   this.m_options = [];
 
+  /**
+   * Index of the current choice.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_choice = 0;
 
+  /**
+   * Index of the previous choice.
+   * 
+   * @private
+   * @type {number}
+   */
   this.m_previousChoice = 0;
 }
 
@@ -44,7 +60,19 @@ howlkraul.ui.Menu.prototype.constructor = howlkraul.ui.Menu;
 // Getters and setters
 //--------------------------------------------------------------------------
 
+/**
+ * The hovered item text.
+ *
+ * @member {string} hoveredItem
+ * @memberof howlkraul.ui.Menu
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.ui.Menu.prototype, "hoveredItem", {
+  /**
+   * @this howlkraul.ui.Menu
+   * @ignore
+   */
   get: function () {
     return this.m_options[this.m_choice].text.toLowerCase();
   }
@@ -58,6 +86,7 @@ Object.defineProperty(howlkraul.ui.Menu.prototype, "hoveredItem", {
  * Initializes all objects for the main menu.
  * Is run once when an instance is created.
  * 
+ * @overide
  * @public
  * @returns {undefined}
  */
@@ -68,18 +97,28 @@ howlkraul.ui.Menu.prototype.init = function () {
 };
 
 /**
- * @inheritdoc
+ * Dispose and clean up resources.
+ * 
+ * @overide
+ * @public
+ * @returns {undefined}
  */
 howlkraul.ui.Menu.prototype.dispose = function () {
-  rune.display.DisplayObjectContainer.prototype.dispose.call(this);
-
   this.removeChildren(true);
+
+  rune.display.DisplayObjectContainer.prototype.dispose.call(this);
 };
 
 //--------------------------------------------------------------------------
 // Public Methods
 //--------------------------------------------------------------------------
 
+/**
+ * Move up in menu.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.ui.Menu.prototype.up = function () {
   this.m_previousChoice = this.m_choice;
   this.m_choice--;
@@ -87,6 +126,12 @@ howlkraul.ui.Menu.prototype.up = function () {
   this.m_scaleChoice();
 };
 
+/**
+ * Move down in menu.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.ui.Menu.prototype.down = function () {
   this.m_previousChoice = this.m_choice;
   this.m_choice++;
@@ -94,18 +139,22 @@ howlkraul.ui.Menu.prototype.down = function () {
   this.m_scaleChoice();
 };
 
+/**
+ * Select option.
+ * 
+ * @public
+ * @returns {undefined}
+ */
 howlkraul.ui.Menu.prototype.select = function () {
   return this.m_options[this.m_choice];
 };
-
-
 
 //--------------------------------------------------------------------------
 // Private Methods
 //--------------------------------------------------------------------------
 
 /**
- * Creates a new overlay and add it to display group.
+ * Creates and adds all options in the menu.
  * 
  * @private
  * @returns {undefined}
@@ -123,7 +172,6 @@ howlkraul.ui.Menu.prototype.m_initMenuOptions = function () {
     this.m_options[i].x = 15;
     this.m_options[i].y = 10 + (i * 30);
 
-    // Scale up the first option (default selection)
     if (i === 0) {
       this.m_options[i].scaleX = 1.2;
       this.m_options[i].scaleY = 1.2;

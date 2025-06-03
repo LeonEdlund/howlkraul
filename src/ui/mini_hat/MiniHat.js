@@ -2,6 +2,7 @@
  * Creates a new MiniHat instance.
  *
  * @constructor
+ * @extends rune.display.Graphic
  * 
  * @param {number} [x=0] - X position.
  * @param {number} [y=0] - Y position.
