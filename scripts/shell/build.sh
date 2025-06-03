@@ -21,6 +21,7 @@ npx google-closure-compiler \
 --js "./../../src/ui/menu/states/MenuIdle.js" \
 --js "./../../src/ui/menu/MainMenu.js" \
 --js "./../../src/ui/hud/PlayerHud.js" \
+--js "./../../src/ui/hud/HudBackground.js" \
 --js "./../../src/ui/hud/Heart.js" \
 --js "./../../src/ui/hud/Head.js" \
 --js "./../../src/ui/manabar/Manabar.js" \
