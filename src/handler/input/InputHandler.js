@@ -1,14 +1,73 @@
+/**
+ * Creates a new instance of InputHandler.
+ *
+ * @constructor
+ * 
+ * @param {rune.input.Gamepad} controller - refference to the controller to be used.
+ * @param {rune.input.Keyboard} keyboard - refference to the controller to be used.
+ * @param {Object} keys - A object with the keys that should be bound.
+ * 
+ * @class
+ * @classdesc
+ *
+ * Represents a class that handles input from keyboard and Gamepads.
+ */
 howlkraul.handler.InputHandler = function (controller, keyboard, keys) {
+
+  //--------------------------------------------------------------------------
+  // Private Properties
+  //--------------------------------------------------------------------------
+
+  /**
+   * Referense to the controller
+   * 
+   * @private
+   * @type {rune.input.Gamepad}
+   */
   this.m_controller = controller;
+
+  /**
+   * Referense to the Keyboard
+   * 
+   * @private
+   * @type {rune.input.Keyboard}
+   */
   this.m_keyboard = keyboard;
+
+  /**
+   * Config object holding what keys should be used. 
+   * 
+   * @private
+   * @type {rune.input.Keyboard}
+   */
   this.m_keys = keys || {};
 }
 
+//--------------------------------------------------------------------------
+// Getters And Setters 
+//--------------------------------------------------------------------------
+
+/**
+ * Referense to the controller.
+ *
+ * @member {rune.input.Gamepad} controller
+ * @memberof howlkraul.handler.InputHandler
+ * @instance
+ * @readonly
+ */
 Object.defineProperty(howlkraul.handler.InputHandler.prototype, "controller", {
+  /**
+   * @this howlkraul.handler.InputHandler
+   * @ignore
+   */
   get: function () {
     return this.m_controller;
   }
-})
+});
+
+//--------------------------------------------------------------------------
+// Public Methods
+//--------------------------------------------------------------------------
 
 /**
  * Clean up resources.
@@ -21,7 +80,6 @@ howlkraul.handler.InputHandler.prototype.dispose = function () {
   this.m_keyboard = null;
   this.m_keys = null;
 }
-
 
 /**
  * Returns the current inputs.
