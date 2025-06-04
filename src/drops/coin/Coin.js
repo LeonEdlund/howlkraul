@@ -196,6 +196,4 @@ howlkraul.drops.Coin.prototype.m_checkIfOutOfBounds = function () {
   if (this.centerY > bottom) {
     this.moveTo(this.x, this.y - threshold);
   }
-
-  console.log(this.centerX)
 }

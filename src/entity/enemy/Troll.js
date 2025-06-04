@@ -105,7 +105,6 @@ howlkraul.entity.Troll.prototype.attack = function () {
 
   if (now > this.m_lastAttack) {
     this.isAttacking = true;
-    console.log(this.isAttacking)
     this.states.select("Attack");
     this.m_lastAttack = now + this.m_attackCoolDown;
   }
@@ -182,7 +181,6 @@ howlkraul.entity.Troll.prototype.setRunningAnimation = function () {
  * @inheritdoc
  */
 howlkraul.entity.Troll.prototype.setState = function () {
-  console.log(this.isAttacking)
   if (this.isAttacking || !this.closestPlayer) return;
 
   if (this.distanceToClosestPlayer < 12) {
