@@ -181,4 +181,17 @@ howlkraul.ui.MenuCredits.prototype.m_animateContent = function (reversed) {
       alpha: reversed ? 0 : 1,
     }
   });
+
+  if (!reversed) {
+    this.owner.application.scenes.selected.tweens.create({
+      target: this.owner.m_backBtn,
+      scope: this,
+      duration: 900,
+      args: {
+        alpha: 1
+      }
+    })
+  } else {
+    this.owner.m_backBtn.alpha = 0;
+  }
 }

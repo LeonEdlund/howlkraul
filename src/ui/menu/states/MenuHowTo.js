@@ -112,14 +112,8 @@ howlkraul.ui.MenuHowTo.prototype.m_initContent = function () {
   this.m_text = new rune.display.Graphic(-120, 20, 114, 61, "tutorial_text_114x61");
   this.m_controlls = new rune.display.Graphic(500, 100, 242, 89, "controller_242x89");
 
-  this.m_backBtn = new rune.display.Sprite(350, 195, 24, 24, "continue_24x24");
-  this.m_backBtn.animation.create("blink", [0, 1], 2, true)
-  this.m_backBtn.rotation = -90;
-  this.m_backBtn.alpha = 0;
-
   this.owner.addChild(this.m_text);
   this.owner.addChild(this.m_controlls);
-  this.owner.addChild(this.m_backBtn);
 };
 
 /**
@@ -162,23 +156,15 @@ howlkraul.ui.MenuHowTo.prototype.m_animateContent = function (reversed) {
   });
 
   if (!reversed) {
-    this.m_backBtn.visible = true;
-    this.owner.application.scenes.selected.timers.create({
-      duration: 1000,
+    this.owner.application.scenes.selected.tweens.create({
+      target: this.owner.m_backBtn,
       scope: this,
-      onComplete: function () {
-        this.owner.application.scenes.selected.tweens.create({
-          target: this.m_backBtn,
-          scope: this,
-          duration: 3000,
-          args: {
-            alpha: 1
-          }
-        });
+      duration: 900,
+      args: {
+        alpha: 1
       }
-    });
+    })
   } else {
-    this.m_backBtn.alpha = 0;
-    this.m_backBtn.visible = false;
+    this.owner.m_backBtn.alpha = 0;
   }
 };

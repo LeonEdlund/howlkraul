@@ -38,6 +38,14 @@ howlkraul.ui.MainMenu = function () {
   this.m_logo = null;
 
   /**
+   * The backBtn.
+   * 
+   * @private
+   * @type {rune.display.Graphic}
+   */
+  this.m_backBtn = null;
+
+  /**
    * reference to the menu.
    * 
    * @private
@@ -138,7 +146,7 @@ howlkraul.ui.MainMenu.prototype.init = function () {
   this.m_initLogo();
   this.m_initMenu();
   this.m_initHighscore();
-
+  this.m_initBackbtn();
 };
 
 /**
@@ -229,5 +237,22 @@ howlkraul.ui.MainMenu.prototype.m_initHighscore = function () {
     this.m_highscore = new howlkraul.ui.HighScore();
     this.addChild(this.m_highscore);
     this.m_highscore.moveTo(255, 90)
+  }
+};
+
+/**
+ * Method that initializes the visual highscore grapic.
+ * 
+ * @private
+ * @returns {undefined}
+ * @ignore
+ */
+howlkraul.ui.MainMenu.prototype.m_initBackbtn = function () {
+  if (!this.m_backBtn) {
+    this.m_backBtn = new rune.display.Sprite(350, 195, 24, 24, "continue_24x24");
+    this.m_backBtn.animation.create("blink", [0, 1], 2, true)
+    this.m_backBtn.rotation = -90;
+    this.m_backBtn.alpha = 0;
+    this.addChild(this.m_backBtn);
   }
 };
