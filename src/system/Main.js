@@ -30,7 +30,7 @@ howlkraul.system.Main = function () {
         useGamepads: true,
         useKeyboard: true,
         framerate: 60,
-        debug: true,
+        debug: false,
         numHighscores: 3,
         numHighscoreTables: 2
     });
